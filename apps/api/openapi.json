@@ -1,0 +1,3297 @@
+{
+  "components": {
+    "schemas": {
+      "AUProfile": {
+        "additionalProperties": false,
+        "properties": {
+          "coverType": {
+            "enum": [
+              "hospital",
+              "extras",
+              "combined"
+            ],
+            "title": "Covertype",
+            "type": "string"
+          },
+          "hospital": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/HospitalCover"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "kind": {
+            "const": "AU",
+            "default": "AU",
+            "title": "Kind",
+            "type": "string"
+          }
+        },
+        "required": [
+          "kind",
+          "coverType",
+          "hospital"
+        ],
+        "title": "AUProfile",
+        "type": "object"
+      },
+      "AnalyzeChunkResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "issues": {
+            "items": {
+              "$ref": "#/components/schemas/Issue"
+            },
+            "title": "Issues",
+            "type": "array"
+          },
+          "pages": {
+            "description": "1-based booklet page numbers covered by this chunk.",
+            "items": {
+              "type": "integer"
+            },
+            "title": "Pages",
+            "type": "array"
+          },
+          "rows": {
+            "$ref": "#/components/schemas/ExtractedRows"
+          },
+          "traceId": {
+            "title": "Traceid",
+            "type": "string"
+          },
+          "usage": {
+            "$ref": "#/components/schemas/Usage"
+          }
+        },
+        "required": [
+          "pages",
+          "rows",
+          "usage",
+          "traceId"
+        ],
+        "title": "AnalyzeChunkResponse",
+        "type": "object"
+      },
+      "AssembleChunk": {
+        "additionalProperties": false,
+        "properties": {
+          "pages": {
+            "items": {
+              "type": "integer"
+            },
+            "title": "Pages",
+            "type": "array"
+          },
+          "rows": {
+            "$ref": "#/components/schemas/ExtractedRows"
+          }
+        },
+        "required": [
+          "pages",
+          "rows"
+        ],
+        "title": "AssembleChunk",
+        "type": "object"
+      },
+      "AssembleRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "chunks": {
+            "items": {
+              "$ref": "#/components/schemas/AssembleChunk"
+            },
+            "maxItems": 40,
+            "title": "Chunks",
+            "type": "array"
+          },
+          "documentName": {
+            "default": "Uploaded booklet",
+            "title": "Documentname",
+            "type": "string"
+          },
+          "pageCount": {
+            "maximum": 120,
+            "minimum": 1,
+            "title": "Pagecount",
+            "type": "integer"
+          },
+          "region": {
+            "enum": [
+              "CA",
+              "AU"
+            ],
+            "title": "Region",
+            "type": "string"
+          }
+        },
+        "required": [
+          "region",
+          "pageCount",
+          "chunks"
+        ],
+        "title": "AssembleRequest",
+        "type": "object"
+      },
+      "AssembleResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "issues": {
+            "items": {
+              "$ref": "#/components/schemas/Issue"
+            },
+            "title": "Issues",
+            "type": "array"
+          },
+          "plan": {
+            "$ref": "#/components/schemas/Plan"
+          }
+        },
+        "required": [
+          "plan"
+        ],
+        "title": "AssembleResponse",
+        "type": "object"
+      },
+      "Benefit": {
+        "additionalProperties": false,
+        "properties": {
+          "categoryId": {
+            "title": "Categoryid",
+            "type": "string"
+          },
+          "costShareIds": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Costshareids",
+            "type": "array"
+          },
+          "coverage": {
+            "$ref": "#/components/schemas/Coverage"
+          },
+          "frequency": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Frequency"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "itemCodes": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Itemcodes",
+            "type": "array"
+          },
+          "keywords": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Keywords",
+            "type": "array"
+          },
+          "limits": {
+            "items": {
+              "$ref": "#/components/schemas/Limit"
+            },
+            "title": "Limits",
+            "type": "array"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Notes"
+          },
+          "poolId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Poolid"
+          },
+          "requirements": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Requirements",
+            "type": "array"
+          },
+          "source": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SourceRef"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "waitingPeriod": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/WaitingPeriod"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          }
+        },
+        "required": [
+          "id",
+          "categoryId",
+          "name",
+          "keywords",
+          "itemCodes",
+          "coverage",
+          "limits",
+          "frequency",
+          "waitingPeriod",
+          "requirements",
+          "poolId",
+          "costShareIds",
+          "notes",
+          "source"
+        ],
+        "title": "Benefit",
+        "type": "object"
+      },
+      "CAProfile": {
+        "additionalProperties": false,
+        "properties": {
+          "hsa": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/HealthSpendingAccount"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "kind": {
+            "const": "CA",
+            "default": "CA",
+            "title": "Kind",
+            "type": "string"
+          },
+          "province": {
+            "enum": [
+              "AB",
+              "BC",
+              "MB",
+              "NB",
+              "NL",
+              "NS",
+              "NT",
+              "NU",
+              "ON",
+              "PE",
+              "QC",
+              "SK",
+              "YT"
+            ],
+            "title": "Province",
+            "type": "string"
+          },
+          "spousePlan": {
+            "default": false,
+            "title": "Spouseplan",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "kind",
+          "province",
+          "hsa",
+          "spousePlan"
+        ],
+        "title": "CAProfile",
+        "type": "object"
+      },
+      "Category": {
+        "additionalProperties": false,
+        "properties": {
+          "benefits": {
+            "items": {
+              "$ref": "#/components/schemas/Benefit"
+            },
+            "title": "Benefits",
+            "type": "array"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "paramedical",
+              "vision",
+              "dental",
+              "drugs",
+              "hospital",
+              "extras",
+              "medical_equipment",
+              "ambulance",
+              "travel",
+              "hsa",
+              "other"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "kind",
+          "benefits"
+        ],
+        "title": "Category",
+        "type": "object"
+      },
+      "ChatContext": {
+        "additionalProperties": false,
+        "description": "Small, aliased context the browser sends with each chat turn (\u22642 KB serialized).",
+        "properties": {
+          "categories": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 40,
+            "title": "Categories",
+            "type": "array"
+          },
+          "currency": {
+            "enum": [
+              "CAD",
+              "AUD"
+            ],
+            "title": "Currency",
+            "type": "string"
+          },
+          "memberAliases": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 12,
+            "title": "Memberaliases",
+            "type": "array"
+          },
+          "planName": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Planname"
+          },
+          "region": {
+            "enum": [
+              "CA",
+              "AU"
+            ],
+            "title": "Region",
+            "type": "string"
+          },
+          "today": {
+            "description": "ISO date in the user's time zone.",
+            "title": "Today",
+            "type": "string"
+          },
+          "tz": {
+            "title": "Tz",
+            "type": "string"
+          }
+        },
+        "required": [
+          "region",
+          "today",
+          "tz",
+          "currency"
+        ],
+        "title": "ChatContext",
+        "type": "object"
+      },
+      "ChatRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "activeAgent": {
+            "anyOf": [
+              {
+                "enum": [
+                  "plan_claims",
+                  "knowledge"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Activeagent"
+          },
+          "context": {
+            "$ref": "#/components/schemas/ChatContext"
+          },
+          "messages": {
+            "description": "AI SDK UIMessage objects (id, role, parts).",
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "maxItems": 80,
+            "title": "Messages",
+            "type": "array"
+          }
+        },
+        "required": [
+          "messages",
+          "context"
+        ],
+        "title": "ChatRequest",
+        "type": "object"
+      },
+      "Claim": {
+        "additionalProperties": false,
+        "properties": {
+          "attachments": {
+            "items": {
+              "$ref": "#/components/schemas/ClaimAttachment"
+            },
+            "title": "Attachments",
+            "type": "array"
+          },
+          "createdAt": {
+            "title": "Createdat",
+            "type": "string"
+          },
+          "deadline": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Deadline"
+          },
+          "history": {
+            "items": {
+              "$ref": "#/components/schemas/ClaimHistoryEntry"
+            },
+            "title": "History",
+            "type": "array"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "lines": {
+            "items": {
+              "$ref": "#/components/schemas/ClaimLine"
+            },
+            "title": "Lines",
+            "type": "array"
+          },
+          "outcome": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ClaimOutcome"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "patientMemberId": {
+            "title": "Patientmemberid",
+            "type": "string"
+          },
+          "planId": {
+            "title": "Planid",
+            "type": "string"
+          },
+          "provider": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Provider"
+          },
+          "status": {
+            "enum": [
+              "draft",
+              "submitted",
+              "paid",
+              "partially_paid",
+              "rejected"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "updatedAt": {
+            "title": "Updatedat",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "planId",
+          "status",
+          "patientMemberId",
+          "provider",
+          "lines",
+          "outcome",
+          "attachments",
+          "history",
+          "deadline",
+          "createdAt",
+          "updatedAt"
+        ],
+        "title": "Claim",
+        "type": "object"
+      },
+      "ClaimAttachment": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "default": "receipt",
+            "enum": [
+              "receipt",
+              "eob",
+              "referral",
+              "other"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "receiptId": {
+            "title": "Receiptid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "receiptId",
+          "kind"
+        ],
+        "title": "ClaimAttachment",
+        "type": "object"
+      },
+      "ClaimHistoryEntry": {
+        "additionalProperties": false,
+        "properties": {
+          "actor": {
+            "enum": [
+              "user",
+              "agent"
+            ],
+            "title": "Actor",
+            "type": "string"
+          },
+          "agentName": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Agentname"
+          },
+          "agentVersion": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Agentversion"
+          },
+          "at": {
+            "description": "ISO timestamp.",
+            "title": "At",
+            "type": "string"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Note"
+          },
+          "status": {
+            "enum": [
+              "draft",
+              "submitted",
+              "paid",
+              "partially_paid",
+              "rejected"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "traceId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Traceid"
+          }
+        },
+        "required": [
+          "status",
+          "at",
+          "actor",
+          "agentName",
+          "agentVersion",
+          "traceId",
+          "note"
+        ],
+        "title": "ClaimHistoryEntry",
+        "type": "object"
+      },
+      "ClaimLine": {
+        "additionalProperties": false,
+        "properties": {
+          "benefitId": {
+            "title": "Benefitid",
+            "type": "string"
+          },
+          "chargedCents": {
+            "minimum": 0,
+            "title": "Chargedcents",
+            "type": "integer"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "itemCode": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Itemcode"
+          },
+          "otherPlanPaidCents": {
+            "default": 0,
+            "minimum": 0,
+            "title": "Otherplanpaidcents",
+            "type": "integer"
+          },
+          "quantity": {
+            "default": 1,
+            "exclusiveMinimum": 0,
+            "title": "Quantity",
+            "type": "number"
+          },
+          "serviceDate": {
+            "format": "date",
+            "title": "Servicedate",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "serviceDate",
+          "benefitId",
+          "itemCode",
+          "description",
+          "quantity",
+          "chargedCents",
+          "otherPlanPaidCents"
+        ],
+        "title": "ClaimLine",
+        "type": "object"
+      },
+      "ClaimOutcome": {
+        "additionalProperties": false,
+        "properties": {
+          "decidedOn": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Decidedon"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Note"
+          },
+          "paidCents": {
+            "minimum": 0,
+            "title": "Paidcents",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "paidCents",
+          "decidedOn",
+          "note"
+        ],
+        "title": "ClaimOutcome",
+        "type": "object"
+      },
+      "ClaimRules": {
+        "additionalProperties": false,
+        "description": "Deadline: ``submissionDays`` after the service date, or ``daysAfterPeriodEnd`` after the end\nof the benefit period the service fell in. When both are set, the later date applies.",
+        "properties": {
+          "coordinationOfBenefits": {
+            "default": false,
+            "title": "Coordinationofbenefits",
+            "type": "boolean"
+          },
+          "daysAfterPeriodEnd": {
+            "anyOf": [
+              {
+                "maximum": 730,
+                "minimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Daysafterperiodend"
+          },
+          "notes": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Notes",
+            "type": "array"
+          },
+          "receiptsRequired": {
+            "default": true,
+            "title": "Receiptsrequired",
+            "type": "boolean"
+          },
+          "source": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SourceRef"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "submissionDays": {
+            "anyOf": [
+              {
+                "maximum": 1095,
+                "minimum": 1,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Submissiondays"
+          }
+        },
+        "required": [
+          "submissionDays",
+          "daysAfterPeriodEnd",
+          "receiptsRequired",
+          "coordinationOfBenefits",
+          "notes",
+          "source"
+        ],
+        "title": "ClaimRules",
+        "type": "object"
+      },
+      "CostShare": {
+        "additionalProperties": false,
+        "description": "Something the member pays before or alongside the plan.\n\n``deductible`` (CA) and ``excess`` (AU hospital) are amounts per ``period``; ``copay`` is a fixed\namount per service; ``coinsurance`` is informational because coverage percent already encodes it.",
+        "properties": {
+          "amountCents": {
+            "anyOf": [
+              {
+                "minimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Amountcents"
+          },
+          "appliesToBenefitIds": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Appliestobenefitids",
+            "type": "array"
+          },
+          "appliesToCategoryIds": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Appliestocategoryids",
+            "type": "array"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "deductible",
+              "excess",
+              "copay",
+              "coinsurance"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "percent": {
+            "anyOf": [
+              {
+                "maximum": 100,
+                "minimum": 0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Percent"
+          },
+          "period": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Period"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "scope": {
+            "default": "per_person",
+            "enum": [
+              "per_person",
+              "per_family",
+              "per_policy"
+            ],
+            "title": "Scope",
+            "type": "string"
+          },
+          "source": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SourceRef"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "kind",
+          "amountCents",
+          "percent",
+          "period",
+          "scope",
+          "appliesToCategoryIds",
+          "appliesToBenefitIds",
+          "source"
+        ],
+        "title": "CostShare",
+        "type": "object"
+      },
+      "Coverage": {
+        "additionalProperties": false,
+        "description": "How much of an eligible charge the plan pays.\n\n- ``percent``: ``percent`` of the charge.\n- ``percent_capped``: ``percent`` of the charge, at most ``capCents`` per service.\n- ``fixed_per_service``: ``amountCents`` per service (never more than the charge).\n- ``per_diem``: ``amountCents`` per day (quantity = days).\n- ``schedule``: benefit looked up by item code in ``scheduleItems`` (AU extras), else ``percent``\n  as a fallback when set.",
+        "properties": {
+          "amountCents": {
+            "anyOf": [
+              {
+                "minimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Amountcents"
+          },
+          "capCents": {
+            "anyOf": [
+              {
+                "minimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Capcents"
+          },
+          "kind": {
+            "enum": [
+              "percent",
+              "percent_capped",
+              "fixed_per_service",
+              "per_diem",
+              "schedule"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "percent": {
+            "anyOf": [
+              {
+                "maximum": 100,
+                "minimum": 0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Percent"
+          },
+          "scheduleItems": {
+            "items": {
+              "$ref": "#/components/schemas/ScheduleItem"
+            },
+            "title": "Scheduleitems",
+            "type": "array"
+          },
+          "scheduleNote": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Schedulenote"
+          }
+        },
+        "required": [
+          "kind",
+          "percent",
+          "capCents",
+          "amountCents",
+          "scheduleNote",
+          "scheduleItems"
+        ],
+        "title": "Coverage",
+        "type": "object"
+      },
+      "ErrorBody": {
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "enum": [
+              "payload_too_large",
+              "pii_detected",
+              "unsafe_image",
+              "rate_limited",
+              "budget_exhausted",
+              "ai_disabled",
+              "invalid_request",
+              "unsupported_media_type",
+              "page_cap_exceeded",
+              "booklet_cap_exceeded",
+              "upstream_error",
+              "content_filtered",
+              "prompt_injection",
+              "internal_error"
+            ],
+            "title": "Code",
+            "type": "string"
+          },
+          "details": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/PiiDetectedDetail"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Details"
+          },
+          "message": {
+            "title": "Message",
+            "type": "string"
+          },
+          "retryAfterSeconds": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Retryafterseconds"
+          },
+          "traceId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Traceid"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "title": "ErrorBody",
+        "type": "object"
+      },
+      "ErrorResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "error": {
+            "$ref": "#/components/schemas/ErrorBody"
+          }
+        },
+        "required": [
+          "error"
+        ],
+        "title": "ErrorResponse",
+        "type": "object"
+      },
+      "ExBenefitRow": {
+        "additionalProperties": false,
+        "properties": {
+          "benefit_name": {
+            "title": "Benefit Name",
+            "type": "string"
+          },
+          "category_kind": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category Kind"
+          },
+          "category_name": {
+            "title": "Category Name",
+            "type": "string"
+          },
+          "coverage_amount": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Coverage Amount"
+          },
+          "coverage_cap_amount": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Coverage Cap Amount"
+          },
+          "coverage_kind": {
+            "anyOf": [
+              {
+                "enum": [
+                  "percent",
+                  "percent_capped",
+                  "fixed_per_service",
+                  "per_diem",
+                  "schedule"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Coverage Kind"
+          },
+          "coverage_percent": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Coverage Percent"
+          },
+          "frequency_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Frequency Count"
+          },
+          "frequency_period_kind": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Frequency Period Kind"
+          },
+          "frequency_period_months": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Frequency Period Months"
+          },
+          "item_codes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Comma-separated item codes, if the table lists them.",
+            "title": "Item Codes"
+          },
+          "keywords": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Comma-separated synonyms, e.g. 'RMT, massage therapy'.",
+            "title": "Keywords"
+          },
+          "limit_period_kind": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Limit Period Kind"
+          },
+          "limit_period_months": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Limit Period Months"
+          },
+          "limit_scope": {
+            "anyOf": [
+              {
+                "enum": [
+                  "per_person",
+                  "per_family",
+                  "per_policy"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Limit Scope"
+          },
+          "limit_unit": {
+            "anyOf": [
+              {
+                "enum": [
+                  "dollars",
+                  "visits",
+                  "items",
+                  "days",
+                  "hours"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Limit Unit"
+          },
+          "limit_value": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Limit Value"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/RowMeta"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "page": {
+            "title": "Page",
+            "type": "integer"
+          },
+          "pool_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pool Name"
+          },
+          "quote": {
+            "title": "Quote",
+            "type": "string"
+          },
+          "requirements": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Requirements"
+          },
+          "row_id": {
+            "title": "Row Id",
+            "type": "string"
+          },
+          "waiting_period_months": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Waiting Period Months"
+          }
+        },
+        "required": [
+          "row_id",
+          "page",
+          "quote",
+          "category_name",
+          "category_kind",
+          "benefit_name",
+          "keywords",
+          "item_codes",
+          "coverage_kind",
+          "coverage_percent",
+          "coverage_cap_amount",
+          "coverage_amount",
+          "limit_unit",
+          "limit_value",
+          "limit_period_kind",
+          "limit_period_months",
+          "limit_scope",
+          "frequency_count",
+          "frequency_period_kind",
+          "frequency_period_months",
+          "waiting_period_months",
+          "requirements",
+          "pool_name",
+          "notes",
+          "meta"
+        ],
+        "title": "ExBenefitRow",
+        "type": "object"
+      },
+      "ExCostShareRow": {
+        "additionalProperties": false,
+        "properties": {
+          "amount": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Amount"
+          },
+          "applies_to": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Comma-separated category or benefit names.",
+            "title": "Applies To"
+          },
+          "kind": {
+            "anyOf": [
+              {
+                "enum": [
+                  "deductible",
+                  "excess",
+                  "copay",
+                  "coinsurance"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Kind"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/RowMeta"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "page": {
+            "title": "Page",
+            "type": "integer"
+          },
+          "percent": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Percent"
+          },
+          "period_kind": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Period Kind"
+          },
+          "quote": {
+            "title": "Quote",
+            "type": "string"
+          },
+          "row_id": {
+            "title": "Row Id",
+            "type": "string"
+          },
+          "scope": {
+            "anyOf": [
+              {
+                "enum": [
+                  "per_person",
+                  "per_family",
+                  "per_policy"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scope"
+          }
+        },
+        "required": [
+          "row_id",
+          "page",
+          "quote",
+          "name",
+          "kind",
+          "amount",
+          "percent",
+          "period_kind",
+          "scope",
+          "applies_to",
+          "meta"
+        ],
+        "title": "ExCostShareRow",
+        "type": "object"
+      },
+      "ExHeaderRow": {
+        "additionalProperties": false,
+        "properties": {
+          "benefit_period_kind": {
+            "anyOf": [
+              {
+                "enum": [
+                  "benefit_year",
+                  "policy_anniversary"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Benefit Period Kind"
+          },
+          "benefit_period_start_month": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Benefit Period Start Month"
+          },
+          "cover_type": {
+            "anyOf": [
+              {
+                "enum": [
+                  "hospital",
+                  "extras",
+                  "combined"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cover Type"
+          },
+          "currency": {
+            "anyOf": [
+              {
+                "enum": [
+                  "CAD",
+                  "AUD"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Currency"
+          },
+          "effective_date": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Effective Date"
+          },
+          "hospital_plus": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hospital Plus"
+          },
+          "hospital_tier": {
+            "anyOf": [
+              {
+                "enum": [
+                  "gold",
+                  "silver",
+                  "bronze",
+                  "basic"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hospital Tier"
+          },
+          "hsa_annual_credit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hsa Annual Credit"
+          },
+          "hsa_carry_forward_years": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hsa Carry Forward Years"
+          },
+          "insurer": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Insurer"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/RowMeta"
+          },
+          "page": {
+            "title": "Page",
+            "type": "integer"
+          },
+          "plan_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Plan Name"
+          },
+          "province": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Province"
+          },
+          "quote": {
+            "title": "Quote",
+            "type": "string"
+          },
+          "row_id": {
+            "title": "Row Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "row_id",
+          "page",
+          "quote",
+          "insurer",
+          "plan_name",
+          "currency",
+          "effective_date",
+          "benefit_period_kind",
+          "benefit_period_start_month",
+          "province",
+          "cover_type",
+          "hospital_tier",
+          "hospital_plus",
+          "hsa_annual_credit",
+          "hsa_carry_forward_years",
+          "meta"
+        ],
+        "title": "ExHeaderRow",
+        "type": "object"
+      },
+      "ExHospitalCategoryRow": {
+        "additionalProperties": false,
+        "properties": {
+          "meta": {
+            "$ref": "#/components/schemas/RowMeta"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "page": {
+            "title": "Page",
+            "type": "integer"
+          },
+          "quote": {
+            "title": "Quote",
+            "type": "string"
+          },
+          "row_id": {
+            "title": "Row Id",
+            "type": "string"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "enum": [
+                  "covered",
+                  "restricted",
+                  "excluded"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Status"
+          }
+        },
+        "required": [
+          "row_id",
+          "page",
+          "quote",
+          "name",
+          "status",
+          "meta"
+        ],
+        "title": "ExHospitalCategoryRow",
+        "type": "object"
+      },
+      "ExPoolRow": {
+        "additionalProperties": false,
+        "properties": {
+          "benefit_names": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Comma-separated benefit names sharing this maximum.",
+            "title": "Benefit Names"
+          },
+          "limit_unit": {
+            "anyOf": [
+              {
+                "enum": [
+                  "dollars",
+                  "visits",
+                  "items",
+                  "days",
+                  "hours"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Limit Unit"
+          },
+          "limit_value": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Limit Value"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/RowMeta"
+          },
+          "page": {
+            "title": "Page",
+            "type": "integer"
+          },
+          "period_kind": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Period Kind"
+          },
+          "period_months": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Period Months"
+          },
+          "pool_name": {
+            "title": "Pool Name",
+            "type": "string"
+          },
+          "quote": {
+            "title": "Quote",
+            "type": "string"
+          },
+          "row_id": {
+            "title": "Row Id",
+            "type": "string"
+          },
+          "scope": {
+            "anyOf": [
+              {
+                "enum": [
+                  "per_person",
+                  "per_family",
+                  "per_policy"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scope"
+          }
+        },
+        "required": [
+          "row_id",
+          "page",
+          "quote",
+          "pool_name",
+          "limit_unit",
+          "limit_value",
+          "period_kind",
+          "period_months",
+          "scope",
+          "benefit_names",
+          "meta"
+        ],
+        "title": "ExPoolRow",
+        "type": "object"
+      },
+      "ExRuleRow": {
+        "additionalProperties": false,
+        "properties": {
+          "deadline_basis": {
+            "anyOf": [
+              {
+                "enum": [
+                  "service_date",
+                  "period_end"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Deadline Basis"
+          },
+          "deadline_days": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Deadline Days"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/RowMeta"
+          },
+          "page": {
+            "title": "Page",
+            "type": "integer"
+          },
+          "quote": {
+            "title": "Quote",
+            "type": "string"
+          },
+          "row_id": {
+            "title": "Row Id",
+            "type": "string"
+          },
+          "rule_kind": {
+            "enum": [
+              "submission_deadline",
+              "receipts_required",
+              "coordination_of_benefits",
+              "other"
+            ],
+            "title": "Rule Kind",
+            "type": "string"
+          },
+          "text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Text"
+          }
+        },
+        "required": [
+          "row_id",
+          "page",
+          "quote",
+          "rule_kind",
+          "deadline_days",
+          "deadline_basis",
+          "text",
+          "meta"
+        ],
+        "title": "ExRuleRow",
+        "type": "object"
+      },
+      "ExtractedRows": {
+        "additionalProperties": false,
+        "properties": {
+          "benefits": {
+            "items": {
+              "$ref": "#/components/schemas/ExBenefitRow"
+            },
+            "title": "Benefits",
+            "type": "array"
+          },
+          "cost_shares": {
+            "items": {
+              "$ref": "#/components/schemas/ExCostShareRow"
+            },
+            "title": "Cost Shares",
+            "type": "array"
+          },
+          "header": {
+            "items": {
+              "$ref": "#/components/schemas/ExHeaderRow"
+            },
+            "title": "Header",
+            "type": "array"
+          },
+          "hospital_categories": {
+            "items": {
+              "$ref": "#/components/schemas/ExHospitalCategoryRow"
+            },
+            "title": "Hospital Categories",
+            "type": "array"
+          },
+          "pools": {
+            "items": {
+              "$ref": "#/components/schemas/ExPoolRow"
+            },
+            "title": "Pools",
+            "type": "array"
+          },
+          "rules": {
+            "items": {
+              "$ref": "#/components/schemas/ExRuleRow"
+            },
+            "title": "Rules",
+            "type": "array"
+          }
+        },
+        "title": "ExtractedRows",
+        "type": "object"
+      },
+      "FieldConfidence": {
+        "additionalProperties": false,
+        "properties": {
+          "confidence": {
+            "maximum": 1,
+            "minimum": 0,
+            "title": "Confidence",
+            "type": "number"
+          },
+          "source": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "CU source string, e.g. D(1,0.5,1.2,...).",
+            "title": "Source"
+          }
+        },
+        "required": [
+          "confidence",
+          "source"
+        ],
+        "title": "FieldConfidence",
+        "type": "object"
+      },
+      "Frequency": {
+        "additionalProperties": false,
+        "description": "At most ``count`` services per ``period`` (e.g. one eye exam every 24 months).",
+        "properties": {
+          "count": {
+            "minimum": 1,
+            "title": "Count",
+            "type": "integer"
+          },
+          "period": {
+            "$ref": "#/components/schemas/Period"
+          },
+          "scope": {
+            "default": "per_person",
+            "enum": [
+              "per_person",
+              "per_family",
+              "per_policy"
+            ],
+            "title": "Scope",
+            "type": "string"
+          }
+        },
+        "required": [
+          "count",
+          "period",
+          "scope"
+        ],
+        "title": "Frequency",
+        "type": "object"
+      },
+      "HealthResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "agentVersions": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Agentversions",
+            "type": "object"
+          },
+          "aiEnabled": {
+            "title": "Aienabled",
+            "type": "boolean"
+          },
+          "aiMode": {
+            "enum": [
+              "live",
+              "fake",
+              "off"
+            ],
+            "title": "Aimode",
+            "type": "string"
+          },
+          "budgetRemainingPct": {
+            "description": "Lowest remaining share across demo namespaces.",
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Budgetremainingpct",
+            "type": "number"
+          },
+          "budgets": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "title": "Budgets",
+            "type": "object"
+          },
+          "ok": {
+            "title": "Ok",
+            "type": "boolean"
+          },
+          "version": {
+            "title": "Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "ok",
+          "aiEnabled",
+          "aiMode",
+          "budgetRemainingPct",
+          "version"
+        ],
+        "title": "HealthResponse",
+        "type": "object"
+      },
+      "HealthSpendingAccount": {
+        "additionalProperties": false,
+        "properties": {
+          "annualCreditCents": {
+            "minimum": 0,
+            "title": "Annualcreditcents",
+            "type": "integer"
+          },
+          "carryForwardYears": {
+            "default": 0,
+            "maximum": 2,
+            "minimum": 0,
+            "title": "Carryforwardyears",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "annualCreditCents",
+          "carryForwardYears"
+        ],
+        "title": "HealthSpendingAccount",
+        "type": "object"
+      },
+      "HospitalCategory": {
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "source": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SourceRef"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "status": {
+            "enum": [
+              "covered",
+              "restricted",
+              "excluded"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "status",
+          "source"
+        ],
+        "title": "HospitalCategory",
+        "type": "object"
+      },
+      "HospitalCover": {
+        "additionalProperties": false,
+        "properties": {
+          "categories": {
+            "items": {
+              "$ref": "#/components/schemas/HospitalCategory"
+            },
+            "title": "Categories",
+            "type": "array"
+          },
+          "excess": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/HospitalExcess"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "plus": {
+            "default": false,
+            "title": "Plus",
+            "type": "boolean"
+          },
+          "tier": {
+            "enum": [
+              "gold",
+              "silver",
+              "bronze",
+              "basic"
+            ],
+            "title": "Tier",
+            "type": "string"
+          }
+        },
+        "required": [
+          "tier",
+          "plus",
+          "categories",
+          "excess"
+        ],
+        "title": "HospitalCover",
+        "type": "object"
+      },
+      "HospitalExcess": {
+        "additionalProperties": false,
+        "properties": {
+          "amountCents": {
+            "minimum": 0,
+            "title": "Amountcents",
+            "type": "integer"
+          },
+          "maxPerYearCents": {
+            "anyOf": [
+              {
+                "minimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Maxperyearcents"
+          },
+          "per": {
+            "enum": [
+              "admission",
+              "year"
+            ],
+            "title": "Per",
+            "type": "string"
+          }
+        },
+        "required": [
+          "amountCents",
+          "per",
+          "maxPerYearCents"
+        ],
+        "title": "HospitalExcess",
+        "type": "object"
+      },
+      "Issue": {
+        "additionalProperties": false,
+        "properties": {
+          "category": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "PII category, never the matched value.",
+            "title": "Category"
+          },
+          "code": {
+            "enum": [
+              "pii_advisory",
+              "prompt_injection",
+              "page_excluded",
+              "page_irrelevant",
+              "unsupported_row",
+              "low_confidence",
+              "ungrounded_quote",
+              "verifier_rounds_exhausted",
+              "duplicate_removed",
+              "unlinked_pool",
+              "unlinked_cost_share",
+              "ocr_empty",
+              "field_missing",
+              "content_filtered",
+              "assumed_default"
+            ],
+            "title": "Code",
+            "type": "string"
+          },
+          "message": {
+            "title": "Message",
+            "type": "string"
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Page"
+          },
+          "rowId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Rowid"
+          },
+          "severity": {
+            "enum": [
+              "info",
+              "warning",
+              "error"
+            ],
+            "title": "Severity",
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "severity",
+          "message"
+        ],
+        "title": "Issue",
+        "type": "object"
+      },
+      "Limit": {
+        "additionalProperties": false,
+        "description": "A maximum. ``unit == \"cents\"`` means ``value`` is money in cents; otherwise a count.",
+        "properties": {
+          "period": {
+            "$ref": "#/components/schemas/Period"
+          },
+          "scope": {
+            "default": "per_person",
+            "enum": [
+              "per_person",
+              "per_family",
+              "per_policy"
+            ],
+            "title": "Scope",
+            "type": "string"
+          },
+          "unit": {
+            "enum": [
+              "cents",
+              "visits",
+              "items",
+              "days",
+              "hours"
+            ],
+            "title": "Unit",
+            "type": "string"
+          },
+          "value": {
+            "minimum": 0,
+            "title": "Value",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "unit",
+          "value",
+          "period",
+          "scope"
+        ],
+        "title": "Limit",
+        "type": "object"
+      },
+      "LimitPool": {
+        "additionalProperties": false,
+        "description": "A combined maximum shared by several benefits (e.g. paramedical combined $1,500).",
+        "properties": {
+          "benefitIds": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Benefitids",
+            "type": "array"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "limit": {
+            "$ref": "#/components/schemas/Limit"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "source": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SourceRef"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "limit",
+          "benefitIds",
+          "source"
+        ],
+        "title": "LimitPool",
+        "type": "object"
+      },
+      "Member": {
+        "additionalProperties": false,
+        "properties": {
+          "alias": {
+            "description": "Alias token such as [MEMBER_A]; the raw name never leaves the browser.",
+            "title": "Alias",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "relationship": {
+            "enum": [
+              "self",
+              "spouse",
+              "child",
+              "dependent"
+            ],
+            "title": "Relationship",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "alias",
+          "relationship"
+        ],
+        "title": "Member",
+        "type": "object"
+      },
+      "Period": {
+        "additionalProperties": false,
+        "description": "A window that limits, frequencies and deductibles reset on.\n\n- ``benefit_year``: calendar-style year starting ``startMonth``/``startDay`` (Jan 1 when omitted).\n- ``policy_anniversary``: year starting on the plan's ``effectiveDate`` anniversary.\n- ``rolling_months``: any ``months``-long window ending on the service date.\n- ``consecutive_benefit_years``: ``years`` benefit years in a row (e.g. glasses every 2 years).\n- ``lifetime``: never resets.\n- ``per_visit`` / ``per_admission``: applies to each visit or hospital admission.",
+        "properties": {
+          "kind": {
+            "enum": [
+              "benefit_year",
+              "policy_anniversary",
+              "rolling_months",
+              "consecutive_benefit_years",
+              "lifetime",
+              "per_visit",
+              "per_admission"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "months": {
+            "anyOf": [
+              {
+                "maximum": 120,
+                "minimum": 1,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Months"
+          },
+          "startDay": {
+            "anyOf": [
+              {
+                "maximum": 31,
+                "minimum": 1,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Startday"
+          },
+          "startMonth": {
+            "anyOf": [
+              {
+                "maximum": 12,
+                "minimum": 1,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Startmonth"
+          },
+          "years": {
+            "anyOf": [
+              {
+                "maximum": 10,
+                "minimum": 1,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Years"
+          }
+        },
+        "required": [
+          "kind",
+          "startMonth",
+          "startDay",
+          "months",
+          "years"
+        ],
+        "title": "Period",
+        "type": "object"
+      },
+      "PiiDetectedDetail": {
+        "additionalProperties": false,
+        "properties": {
+          "category": {
+            "title": "Category",
+            "type": "string"
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Page"
+          },
+          "polygon": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "number"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Page-relative polygon in inches (CU word polygon), if available.",
+            "title": "Polygon"
+          }
+        },
+        "required": [
+          "category"
+        ],
+        "title": "PiiDetectedDetail",
+        "type": "object"
+      },
+      "Plan": {
+        "additionalProperties": false,
+        "properties": {
+          "benefitPeriod": {
+            "$ref": "#/components/schemas/Period"
+          },
+          "categories": {
+            "items": {
+              "$ref": "#/components/schemas/Category"
+            },
+            "title": "Categories",
+            "type": "array"
+          },
+          "claimRules": {
+            "$ref": "#/components/schemas/ClaimRules"
+          },
+          "costShares": {
+            "items": {
+              "$ref": "#/components/schemas/CostShare"
+            },
+            "title": "Costshares",
+            "type": "array"
+          },
+          "currency": {
+            "enum": [
+              "CAD",
+              "AUD"
+            ],
+            "title": "Currency",
+            "type": "string"
+          },
+          "document": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PlanDocument"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "effectiveDate": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Effectivedate"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "identifiers": {
+            "description": "Alias tokens for policy/group/certificate numbers, e.g. [POLICY_1].",
+            "items": {
+              "type": "string"
+            },
+            "title": "Identifiers",
+            "type": "array"
+          },
+          "insurer": {
+            "title": "Insurer",
+            "type": "string"
+          },
+          "limitPools": {
+            "items": {
+              "$ref": "#/components/schemas/LimitPool"
+            },
+            "title": "Limitpools",
+            "type": "array"
+          },
+          "members": {
+            "items": {
+              "$ref": "#/components/schemas/Member"
+            },
+            "title": "Members",
+            "type": "array"
+          },
+          "planName": {
+            "title": "Planname",
+            "type": "string"
+          },
+          "profile": {
+            "discriminator": {
+              "mapping": {
+                "AU": "#/components/schemas/AUProfile",
+                "CA": "#/components/schemas/CAProfile"
+              },
+              "propertyName": "kind"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/CAProfile"
+              },
+              {
+                "$ref": "#/components/schemas/AUProfile"
+              }
+            ],
+            "title": "Profile"
+          },
+          "region": {
+            "enum": [
+              "CA",
+              "AU"
+            ],
+            "title": "Region",
+            "type": "string"
+          },
+          "schemaVersion": {
+            "const": 1,
+            "default": 1,
+            "title": "Schemaversion",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "schemaVersion",
+          "id",
+          "region",
+          "insurer",
+          "planName",
+          "currency",
+          "identifiers",
+          "members",
+          "effectiveDate",
+          "benefitPeriod",
+          "categories",
+          "limitPools",
+          "costShares",
+          "claimRules",
+          "profile",
+          "document"
+        ],
+        "title": "Plan",
+        "type": "object"
+      },
+      "PlanDocument": {
+        "additionalProperties": false,
+        "properties": {
+          "extractedAt": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Extractedat"
+          },
+          "isDemo": {
+            "default": false,
+            "title": "Isdemo",
+            "type": "boolean"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "pageCount": {
+            "minimum": 0,
+            "title": "Pagecount",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "name",
+          "pageCount",
+          "extractedAt",
+          "isDemo"
+        ],
+        "title": "PlanDocument",
+        "type": "object"
+      },
+      "Receipt": {
+        "additionalProperties": false,
+        "properties": {
+          "currency": {
+            "anyOf": [
+              {
+                "enum": [
+                  "CAD",
+                  "AUD"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Currency"
+          },
+          "insurerPaidCents": {
+            "anyOf": [
+              {
+                "minimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Insurerpaidcents"
+          },
+          "providerName": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Providername"
+          },
+          "providerRegistrationNo": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Providerregistrationno"
+          },
+          "providerType": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Providertype"
+          },
+          "serviceLines": {
+            "items": {
+              "$ref": "#/components/schemas/ReceiptLine"
+            },
+            "title": "Servicelines",
+            "type": "array"
+          },
+          "totalCents": {
+            "anyOf": [
+              {
+                "minimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Totalcents"
+          }
+        },
+        "required": [
+          "providerName",
+          "providerType",
+          "providerRegistrationNo",
+          "serviceLines",
+          "totalCents",
+          "insurerPaidCents",
+          "currency"
+        ],
+        "title": "Receipt",
+        "type": "object"
+      },
+      "ReceiptAnalyzeResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "fieldConfidence": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/FieldConfidence"
+            },
+            "title": "Fieldconfidence",
+            "type": "object"
+          },
+          "issues": {
+            "items": {
+              "$ref": "#/components/schemas/Issue"
+            },
+            "title": "Issues",
+            "type": "array"
+          },
+          "receipt": {
+            "$ref": "#/components/schemas/Receipt"
+          },
+          "traceId": {
+            "title": "Traceid",
+            "type": "string"
+          },
+          "usage": {
+            "$ref": "#/components/schemas/Usage"
+          }
+        },
+        "required": [
+          "receipt",
+          "usage",
+          "traceId"
+        ],
+        "title": "ReceiptAnalyzeResponse",
+        "type": "object"
+      },
+      "ReceiptLine": {
+        "additionalProperties": false,
+        "properties": {
+          "amountCents": {
+            "anyOf": [
+              {
+                "minimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Amountcents"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Description"
+          },
+          "itemCode": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Itemcode"
+          },
+          "quantity": {
+            "anyOf": [
+              {
+                "minimum": 0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Quantity"
+          },
+          "serviceDate": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Servicedate"
+          }
+        },
+        "required": [
+          "serviceDate",
+          "description",
+          "itemCode",
+          "quantity",
+          "amountCents"
+        ],
+        "title": "ReceiptLine",
+        "type": "object"
+      },
+      "RowMeta": {
+        "additionalProperties": false,
+        "description": "Per-row provenance attached after verification and deterministic grounding.",
+        "properties": {
+          "confidence": {
+            "maximum": 1,
+            "minimum": 0,
+            "title": "Confidence",
+            "type": "number"
+          },
+          "grounded": {
+            "description": "True when the quote fuzzy-matches the page markdown.",
+            "title": "Grounded",
+            "type": "boolean"
+          },
+          "kind": {
+            "enum": [
+              "header",
+              "benefit",
+              "pool",
+              "cost_share",
+              "rule",
+              "hospital_category"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "page": {
+            "title": "Page",
+            "type": "integer"
+          },
+          "rowId": {
+            "title": "Rowid",
+            "type": "string"
+          },
+          "verifierVerdict": {
+            "anyOf": [
+              {
+                "enum": [
+                  "supported",
+                  "corrected",
+                  "unsupported"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Verifierverdict"
+          }
+        },
+        "required": [
+          "rowId",
+          "kind",
+          "page",
+          "confidence",
+          "grounded"
+        ],
+        "title": "RowMeta",
+        "type": "object"
+      },
+      "ScheduleItem": {
+        "additionalProperties": false,
+        "properties": {
+          "benefitCents": {
+            "minimum": 0,
+            "title": "Benefitcents",
+            "type": "integer"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          },
+          "itemCode": {
+            "title": "Itemcode",
+            "type": "string"
+          }
+        },
+        "required": [
+          "itemCode",
+          "description",
+          "benefitCents"
+        ],
+        "title": "ScheduleItem",
+        "type": "object"
+      },
+      "SourceRef": {
+        "additionalProperties": false,
+        "description": "Where a value came from in the (redacted) booklet.",
+        "properties": {
+          "confidence": {
+            "maximum": 1,
+            "minimum": 0,
+            "title": "Confidence",
+            "type": "number"
+          },
+          "page": {
+            "minimum": 1,
+            "title": "Page",
+            "type": "integer"
+          },
+          "quote": {
+            "maxLength": 600,
+            "title": "Quote",
+            "type": "string"
+          },
+          "verifierVerdict": {
+            "anyOf": [
+              {
+                "enum": [
+                  "supported",
+                  "corrected",
+                  "unsupported"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Verifierverdict"
+          }
+        },
+        "required": [
+          "page",
+          "quote",
+          "confidence",
+          "verifierVerdict"
+        ],
+        "title": "SourceRef",
+        "type": "object"
+      },
+      "Usage": {
+        "additionalProperties": false,
+        "properties": {
+          "byStepMs": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "title": "Bystepms",
+            "type": "object"
+          },
+          "contentSafetyRecords": {
+            "default": 0,
+            "title": "Contentsafetyrecords",
+            "type": "integer"
+          },
+          "cuPages": {
+            "default": 0,
+            "title": "Cupages",
+            "type": "integer"
+          },
+          "estimatedCostUsd": {
+            "default": 0.0,
+            "title": "Estimatedcostusd",
+            "type": "number"
+          },
+          "inputTokens": {
+            "default": 0,
+            "title": "Inputtokens",
+            "type": "integer"
+          },
+          "languageRecords": {
+            "default": 0,
+            "title": "Languagerecords",
+            "type": "integer"
+          },
+          "outputTokens": {
+            "default": 0,
+            "title": "Outputtokens",
+            "type": "integer"
+          }
+        },
+        "title": "Usage",
+        "type": "object"
+      },
+      "WaitingPeriod": {
+        "additionalProperties": false,
+        "properties": {
+          "months": {
+            "maximum": 60,
+            "minimum": 0,
+            "title": "Months",
+            "type": "integer"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Note"
+          }
+        },
+        "required": [
+          "months",
+          "note"
+        ],
+        "title": "WaitingPeriod",
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "title": "Benefura API",
+    "version": "0.1.0"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/healthz": {
+      "get": {
+        "operationId": "healthz_healthz_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Healthz"
+      }
+    }
+  }
+}
