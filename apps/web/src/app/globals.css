@@ -1,0 +1,115 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+
+  --color-canvas: #ececef;
+  --color-surface: #ffffff;
+  --color-sunken: #f6f6f8;
+  --color-ink: #000000;
+  --color-ink-2: #3b3b42;
+  --color-muted: #68686f;
+  --color-faint: #8e8e97;
+  --color-line: #ededf1;
+  --color-glow-cyan: #dcf3f6;
+  --color-glow-mint: #dff5ee;
+  --color-orb-from: #0078bf;
+  --color-orb-to: #28ceac;
+  --color-positive: #2c7548;
+  --color-caution: #965a0d;
+  --color-negative: #b8403a;
+  --color-focus: #5c9df6;
+
+  --radius-shell: 2.5rem;
+  --radius-tile: 1.25rem;
+
+  --shadow-float: 0 48px 90px -40px rgb(24 24 48 / 0.22), 0 2px 8px rgb(24 24 48 / 0.04);
+  --shadow-pill: inset 0 1px 0 rgb(255 255 255 / 1), inset 0 -6px 14px rgb(24 24 48 / 0.025),
+    0 12px 26px -14px rgb(24 24 48 / 0.2), 0 0 0 1px rgb(24 24 48 / 0.035);
+  --shadow-tile: 0 8px 22px -10px rgb(24 24 48 / 0.14), 0 0 0 1px rgb(24 24 48 / 0.03);
+  --shadow-orb: 0 20px 44px -12px rgb(10 140 170 / 0.55), inset 0 1px 1px rgb(255 255 255 / 0.35);
+
+  --text-hero: clamp(3.5rem, 11vw, 6rem);
+  --text-hero--line-height: 0.95;
+  --text-hero--letter-spacing: -0.045em;
+
+  --animate-orb-breathe: orb-breathe 6s ease-in-out infinite;
+  @keyframes orb-breathe {
+    0%,
+    100% {
+      filter: saturate(1) brightness(1);
+    }
+    50% {
+      filter: saturate(1.15) brightness(1.05);
+    }
+  }
+}
+
+:root {
+  color-scheme: light;
+}
+
+html,
+body {
+  background: var(--color-canvas);
+  color: var(--color-ink);
+}
+
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-glow-mint);
+}
+
+/* In the base layer so utilities like outline-none can override it. */
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 3px;
+  }
+}
+
+@layer components {
+  .glow-corner {
+    background:
+      radial-gradient(38rem 22rem at 100% 0%, var(--color-glow-cyan) 0%, transparent 60%),
+      radial-gradient(34rem 26rem at 100% 70%, var(--color-glow-mint) 0%, transparent 62%),
+      var(--color-surface);
+  }
+
+  .orb {
+    background:
+      radial-gradient(circle at 28% 24%, rgb(150 226 255 / 0.9), transparent 42%),
+      radial-gradient(circle at 78% 82%, rgb(40 206 172 / 0.95), transparent 48%),
+      linear-gradient(135deg, var(--color-orb-from), var(--color-orb-to));
+    box-shadow: var(--shadow-orb);
+  }
+
+  .pill-soft {
+    background: linear-gradient(180deg, #ffffff 0%, #f7f7f9 100%);
+    box-shadow: var(--shadow-pill);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media print {
+  html,
+  body {
+    background: #fff;
+  }
+  .no-print {
+    display: none !important;
+  }
+}
