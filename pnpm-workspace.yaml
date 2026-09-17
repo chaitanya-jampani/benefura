@@ -1,0 +1,7 @@
+packages:
+  - apps/web
+
+onlyBuiltDependencies:
+  - canvas
+  - sharp
+  - unrs-resolver

@@ -1,0 +1,8 @@
+# Build outputs of scripts/copy-vendor.mjs
+public/vendor/
+public/samples/
+
+# Playwright
+playwright-report/
+test-results/
+e2e/.cache/

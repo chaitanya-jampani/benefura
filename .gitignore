@@ -1,0 +1,36 @@
+# deps / builds
+node_modules/
+.next/
+out/
+dist/
+*.tsbuildinfo
+.pnpm-store/
+coverage/
+playwright-report/
+test-results/
+apps/web/public/vendor/
+
+# python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# env / azure
+.env
+.env.*
+!.env.example
+.azure/
+
+# knowledge ingestion: fetched public content is never committed
+knowledge/.cache/
+knowledge/out/
+
+# local-only booklets (never commit real documents)
+samples/local/
+*.local.pdf
+
+.DS_Store
+
