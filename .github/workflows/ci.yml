@@ -1,0 +1,133 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  NODE_VERSION: "24"
+  PYTHON_VERSION: "3.12"
+
+jobs:
+  api:
+    name: api (ruff, pyright, pytest, openapi drift)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/api
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: astral-sh/setup-uv@v10
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          enable-cache: true
+          cache-dependency-glob: apps/api/uv.lock
+
+      - name: Install
+        run: uv sync --locked
+
+      - name: Ruff lint
+        run: uv run ruff check .
+
+      - name: Ruff format
+        run: uv run ruff format --check .
+
+      - name: Pyright
+        run: uv run pyright
+
+      - name: Pytest
+        run: uv run pytest
+
+      - name: openapi.json drift
+        run: uv run python -m scripts.export_openapi --check
+
+  web:
+    name: web (types, lint, vitest, build)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      # Version comes from "packageManager" in package.json.
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Generated API types are current
+        working-directory: apps/web
+        run: pnpm gen:check
+
+      - name: Typecheck
+        working-directory: apps/web
+        run: pnpm typecheck
+
+      - name: Lint
+        working-directory: apps/web
+        run: pnpm lint
+
+      - name: Vitest
+        working-directory: apps/web
+        run: pnpm test
+
+      - name: Build (static export)
+        working-directory: apps/web
+        env:
+          NEXT_PUBLIC_API_BASE_URL: http://localhost:8000
+        run: pnpm build
+
+  python-packages:
+    name: ${{ matrix.package }} (pytest)
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        package: [knowledge, evals, samples]
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Check for pyproject.toml
+        id: present
+        run: |
+          if [ -f "${{ matrix.package }}/pyproject.toml" ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::${{ matrix.package }}/pyproject.toml not found; skipping."
+          fi
+
+      - uses: astral-sh/setup-uv@v10
+        if: steps.present.outputs.present == 'true'
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          enable-cache: true
+          cache-dependency-glob: ${{ matrix.package }}/uv.lock
+
+      - name: Install
+        if: steps.present.outputs.present == 'true'
+        run: |
+          if [ -f "${{ matrix.package }}/uv.lock" ]; then
+            uv sync --project "${{ matrix.package }}" --locked
+          else
+            uv sync --project "${{ matrix.package }}"
+          fi
+
+      # Run from the repo root so `import knowledge.*` / `evals.*` / `samples.*` resolves.
+      - name: Pytest
+        if: steps.present.outputs.present == 'true'
+        run: uv run --project "${{ matrix.package }}" python -m pytest "${{ matrix.package }}"
