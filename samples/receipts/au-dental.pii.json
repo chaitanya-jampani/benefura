@@ -1,0 +1,20 @@
+[
+  {
+    "value": "Tamsin Okonkwo",
+    "kind": "person_name",
+    "page": 1,
+    "aliasToken": "[MEMBER_B]"
+  },
+  {
+    "value": "23/09/1981",
+    "kind": "date_of_birth",
+    "page": 1,
+    "aliasToken": null
+  },
+  {
+    "value": "14 Banksia Rise, Kallista Downs VIC 3791",
+    "kind": "address",
+    "page": 1,
+    "aliasToken": "[ADDRESS_A]"
+  }
+]

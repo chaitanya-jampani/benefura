@@ -1,0 +1,24 @@
+{
+  "providerName": "Lakeshore Physiotherapy & Wellness",
+  "providerType": "Physiotherapist",
+  "providerRegistrationNo": null,
+  "serviceLines": [
+    {
+      "serviceDate": "2026-05-12",
+      "description": "Physiotherapy treatment",
+      "itemCode": null,
+      "quantity": 1.0,
+      "amountCents": 11000
+    },
+    {
+      "serviceDate": "2026-05-26",
+      "description": "Physiotherapy treatment",
+      "itemCode": null,
+      "quantity": 1.0,
+      "amountCents": 9500
+    }
+  ],
+  "totalCents": 20500,
+  "insurerPaidCents": 16400,
+  "currency": "CAD"
+}

@@ -1,0 +1,31 @@
+{
+  "providerName": "Clearview Family Optometry",
+  "providerType": "Optometrist",
+  "providerRegistrationNo": "7731",
+  "serviceLines": [
+    {
+      "serviceDate": "2026-05-28",
+      "description": "Comprehensive eye examination",
+      "itemCode": null,
+      "quantity": 1.0,
+      "amountCents": 12000
+    },
+    {
+      "serviceDate": "2026-06-08",
+      "description": "Frames",
+      "itemCode": null,
+      "quantity": 1.0,
+      "amountCents": 18500
+    },
+    {
+      "serviceDate": "2026-06-08",
+      "description": "Single vision lenses, polycarbonate (pair)",
+      "itemCode": null,
+      "quantity": 1.0,
+      "amountCents": 16000
+    }
+  ],
+  "totalCents": 46500,
+  "insurerPaidCents": null,
+  "currency": "CAD"
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "value": "Rowan Lindqvist",
+    "kind": "person_name",
+    "page": 1,
+    "aliasToken": "[MEMBER_A]"
+  },
+  {
+    "value": "Juniper Lindqvist",
+    "kind": "person_name",
+    "page": 1,
+    "aliasToken": "[MEMBER_C]"
+  },
+  {
+    "value": "2016-08-23",
+    "kind": "date_of_birth",
+    "page": 1,
+    "aliasToken": null
+  },
+  {
+    "value": "416-555-0147",
+    "kind": "phone",
+    "page": 1,
+    "aliasToken": "[PHONE_A]"
+  }
+]

@@ -1,0 +1,31 @@
+{
+  "providerName": "Bottlebrush Dental Studio",
+  "providerType": "Dentist",
+  "providerRegistrationNo": "7730419F",
+  "serviceLines": [
+    {
+      "serviceDate": "2026-06-12",
+      "description": "Periodic oral examination",
+      "itemCode": "012",
+      "quantity": 1.0,
+      "amountCents": 6500
+    },
+    {
+      "serviceDate": "2026-06-12",
+      "description": "Removal of calculus",
+      "itemCode": "114",
+      "quantity": 1.0,
+      "amountCents": 14500
+    },
+    {
+      "serviceDate": "2026-06-12",
+      "description": "Topical fluoride",
+      "itemCode": "121",
+      "quantity": 1.0,
+      "amountCents": 4000
+    }
+  ],
+  "totalCents": 25000,
+  "insurerPaidCents": null,
+  "currency": "AUD"
+}

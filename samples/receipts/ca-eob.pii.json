@@ -1,0 +1,26 @@
+[
+  {
+    "value": "Rowan Lindqvist",
+    "kind": "person_name",
+    "page": 1,
+    "aliasToken": "[MEMBER_A]"
+  },
+  {
+    "value": "G-40718-2",
+    "kind": "group_policy_number",
+    "page": 1,
+    "aliasToken": "[POLICY_1]"
+  },
+  {
+    "value": "NW-00731946",
+    "kind": "certificate_number",
+    "page": 1,
+    "aliasToken": "[CERT_1]"
+  },
+  {
+    "value": "88 Larkspur Lane, Toronto ON M4K 2P7",
+    "kind": "address",
+    "page": 1,
+    "aliasToken": "[ADDRESS_A]"
+  }
+]

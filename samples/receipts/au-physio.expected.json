@@ -1,0 +1,24 @@
+{
+  "providerName": "Riverbend Physiotherapy",
+  "providerType": "Physiotherapist",
+  "providerRegistrationNo": "0482716T",
+  "serviceLines": [
+    {
+      "serviceDate": "2026-06-02",
+      "description": "Initial consultation",
+      "itemCode": "500",
+      "quantity": 1.0,
+      "amountCents": 9500
+    },
+    {
+      "serviceDate": "2026-06-09",
+      "description": "Subsequent consultation",
+      "itemCode": "505",
+      "quantity": 1.0,
+      "amountCents": 8000
+    }
+  ],
+  "totalCents": 17500,
+  "insurerPaidCents": 10000,
+  "currency": "AUD"
+}

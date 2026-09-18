@@ -1,0 +1,17 @@
+{
+  "providerName": "Summit Spine Chiropractic",
+  "providerType": "Chiropractor",
+  "providerRegistrationNo": "CH-3318",
+  "serviceLines": [
+    {
+      "serviceDate": "2026-06-14",
+      "description": "Chiropractic adjustment, subsequent visit",
+      "itemCode": null,
+      "quantity": 1.0,
+      "amountCents": 7500
+    }
+  ],
+  "totalCents": 7500,
+  "insurerPaidCents": null,
+  "currency": "CAD"
+}

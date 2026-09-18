@@ -1,0 +1,17 @@
+{
+  "providerName": "Maple Grove Massage Therapy Clinic",
+  "providerType": "Registered massage therapist",
+  "providerRegistrationNo": "20417",
+  "serviceLines": [
+    {
+      "serviceDate": "2026-06-10",
+      "description": "Massage therapy treatment",
+      "itemCode": null,
+      "quantity": 1.0,
+      "amountCents": 12000
+    }
+  ],
+  "totalCents": 12000,
+  "insurerPaidCents": null,
+  "currency": "CAD"
+}

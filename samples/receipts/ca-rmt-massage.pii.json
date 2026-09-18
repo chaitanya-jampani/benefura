@@ -1,0 +1,14 @@
+[
+  {
+    "value": "Rowan Lindqvist",
+    "kind": "person_name",
+    "page": 1,
+    "aliasToken": "[MEMBER_A]"
+  },
+  {
+    "value": "88 Larkspur Lane, Toronto ON M4K 2P7",
+    "kind": "address",
+    "page": 1,
+    "aliasToken": "[ADDRESS_A]"
+  }
+]

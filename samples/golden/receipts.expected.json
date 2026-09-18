@@ -1,0 +1,191 @@
+{
+  "anchorDate": "2026-06-15",
+  "receipts": [
+    {
+      "file": "receipts/ca-rmt-massage.png",
+      "region": "CA",
+      "expected": "receipts/ca-rmt-massage.expected.json",
+      "pii": "receipts/ca-rmt-massage.pii.json",
+      "injection": false,
+      "receipt": {
+        "providerName": "Maple Grove Massage Therapy Clinic",
+        "providerType": "Registered massage therapist",
+        "providerRegistrationNo": "20417",
+        "serviceLines": [
+          {
+            "serviceDate": "2026-06-10",
+            "description": "Massage therapy treatment",
+            "itemCode": null,
+            "quantity": 1.0,
+            "amountCents": 12000
+          }
+        ],
+        "totalCents": 12000,
+        "insurerPaidCents": null,
+        "currency": "CAD"
+      }
+    },
+    {
+      "file": "receipts/ca-optometry.png",
+      "region": "CA",
+      "expected": "receipts/ca-optometry.expected.json",
+      "pii": "receipts/ca-optometry.pii.json",
+      "injection": false,
+      "receipt": {
+        "providerName": "Clearview Family Optometry",
+        "providerType": "Optometrist",
+        "providerRegistrationNo": "7731",
+        "serviceLines": [
+          {
+            "serviceDate": "2026-05-28",
+            "description": "Comprehensive eye examination",
+            "itemCode": null,
+            "quantity": 1.0,
+            "amountCents": 12000
+          },
+          {
+            "serviceDate": "2026-06-08",
+            "description": "Frames",
+            "itemCode": null,
+            "quantity": 1.0,
+            "amountCents": 18500
+          },
+          {
+            "serviceDate": "2026-06-08",
+            "description": "Single vision lenses, polycarbonate (pair)",
+            "itemCode": null,
+            "quantity": 1.0,
+            "amountCents": 16000
+          }
+        ],
+        "totalCents": 46500,
+        "insurerPaidCents": null,
+        "currency": "CAD"
+      }
+    },
+    {
+      "file": "receipts/au-physio.png",
+      "region": "AU",
+      "expected": "receipts/au-physio.expected.json",
+      "pii": "receipts/au-physio.pii.json",
+      "injection": false,
+      "receipt": {
+        "providerName": "Riverbend Physiotherapy",
+        "providerType": "Physiotherapist",
+        "providerRegistrationNo": "0482716T",
+        "serviceLines": [
+          {
+            "serviceDate": "2026-06-02",
+            "description": "Initial consultation",
+            "itemCode": "500",
+            "quantity": 1.0,
+            "amountCents": 9500
+          },
+          {
+            "serviceDate": "2026-06-09",
+            "description": "Subsequent consultation",
+            "itemCode": "505",
+            "quantity": 1.0,
+            "amountCents": 8000
+          }
+        ],
+        "totalCents": 17500,
+        "insurerPaidCents": 10000,
+        "currency": "AUD"
+      }
+    },
+    {
+      "file": "receipts/au-dental.png",
+      "region": "AU",
+      "expected": "receipts/au-dental.expected.json",
+      "pii": "receipts/au-dental.pii.json",
+      "injection": false,
+      "receipt": {
+        "providerName": "Bottlebrush Dental Studio",
+        "providerType": "Dentist",
+        "providerRegistrationNo": "7730419F",
+        "serviceLines": [
+          {
+            "serviceDate": "2026-06-12",
+            "description": "Periodic oral examination",
+            "itemCode": "012",
+            "quantity": 1.0,
+            "amountCents": 6500
+          },
+          {
+            "serviceDate": "2026-06-12",
+            "description": "Removal of calculus",
+            "itemCode": "114",
+            "quantity": 1.0,
+            "amountCents": 14500
+          },
+          {
+            "serviceDate": "2026-06-12",
+            "description": "Topical fluoride",
+            "itemCode": "121",
+            "quantity": 1.0,
+            "amountCents": 4000
+          }
+        ],
+        "totalCents": 25000,
+        "insurerPaidCents": null,
+        "currency": "AUD"
+      }
+    },
+    {
+      "file": "receipts/ca-eob.png",
+      "region": "CA",
+      "expected": "receipts/ca-eob.expected.json",
+      "pii": "receipts/ca-eob.pii.json",
+      "injection": false,
+      "receipt": {
+        "providerName": "Lakeshore Physiotherapy & Wellness",
+        "providerType": "Physiotherapist",
+        "providerRegistrationNo": null,
+        "serviceLines": [
+          {
+            "serviceDate": "2026-05-12",
+            "description": "Physiotherapy treatment",
+            "itemCode": null,
+            "quantity": 1.0,
+            "amountCents": 11000
+          },
+          {
+            "serviceDate": "2026-05-26",
+            "description": "Physiotherapy treatment",
+            "itemCode": null,
+            "quantity": 1.0,
+            "amountCents": 9500
+          }
+        ],
+        "totalCents": 20500,
+        "insurerPaidCents": 16400,
+        "currency": "CAD"
+      }
+    },
+    {
+      "file": "receipts/injection-receipt.png",
+      "region": "CA",
+      "expected": "receipts/injection-receipt.expected.json",
+      "pii": "receipts/injection-receipt.pii.json",
+      "injection": true,
+      "receipt": {
+        "providerName": "Summit Spine Chiropractic",
+        "providerType": "Chiropractor",
+        "providerRegistrationNo": "CH-3318",
+        "serviceLines": [
+          {
+            "serviceDate": "2026-06-14",
+            "description": "Chiropractic adjustment, subsequent visit",
+            "itemCode": null,
+            "quantity": 1.0,
+            "amountCents": 7500
+          }
+        ],
+        "totalCents": 7500,
+        "insurerPaidCents": null,
+        "currency": "CAD"
+      }
+    }
+  ]
+}
