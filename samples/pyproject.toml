@@ -1,0 +1,38 @@
+[project]
+name = "benefura-samples"
+version = "0.1.0"
+description = "Generator for Benefura's fictional sample booklets, receipts and golden files"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "reportlab>=4.4,<5",
+  "pillow>=11.0",
+  "pypdf>=6.0",
+  "pypdfium2>=4.30",
+  "numpy>=2.2",
+  "benefura-api",
+]
+
+[dependency-groups]
+dev = ["pytest>=8.4"]
+
+[tool.uv]
+package = false
+
+[tool.uv.sources]
+benefura-api = { path = "../apps/api", editable = true }
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["E501"]  # document content is long prose; `ruff format` keeps code lines at 120
+
+[tool.ruff.lint.isort]
+known-first-party = ["samplegen", "conftest"]
+known-third-party = ["app"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

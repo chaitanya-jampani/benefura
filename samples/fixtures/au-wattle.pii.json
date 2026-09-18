@@ -1,0 +1,152 @@
+[
+  {
+    "value": "Callum Ashgrove",
+    "kind": "person_name",
+    "page": 1,
+    "aliasToken": "[MEMBER_A]"
+  },
+  {
+    "value": "Tamsin Okonkwo",
+    "kind": "person_name",
+    "page": 1,
+    "aliasToken": "[MEMBER_B]"
+  },
+  {
+    "value": "WHF 6031 8274",
+    "kind": "membership_number",
+    "page": 1,
+    "aliasToken": "[POLICY_1]"
+  },
+  {
+    "value": "Callum Ashgrove",
+    "kind": "person_name",
+    "page": 2,
+    "aliasToken": "[MEMBER_A]"
+  },
+  {
+    "value": "Tamsin Okonkwo",
+    "kind": "person_name",
+    "page": 2,
+    "aliasToken": "[MEMBER_B]"
+  },
+  {
+    "value": "07/02/1979",
+    "kind": "date_of_birth",
+    "page": 2,
+    "aliasToken": null
+  },
+  {
+    "value": "23/09/1981",
+    "kind": "date_of_birth",
+    "page": 2,
+    "aliasToken": null
+  },
+  {
+    "value": "WHF 6031 8274",
+    "kind": "membership_number",
+    "page": 2,
+    "aliasToken": "[POLICY_1]"
+  },
+  {
+    "value": "2953 71603 1",
+    "kind": "medicare_number",
+    "page": 2,
+    "aliasToken": null
+  },
+  {
+    "value": "14 Banksia Rise, Kallista Downs VIC 3791",
+    "kind": "address",
+    "page": 2,
+    "aliasToken": "[ADDRESS_A]"
+  },
+  {
+    "value": "0491 570 156",
+    "kind": "phone",
+    "page": 2,
+    "aliasToken": "[PHONE_A]"
+  },
+  {
+    "value": "callum.ashgrove@example.org",
+    "kind": "email",
+    "page": 2,
+    "aliasToken": "[EMAIL_A]"
+  },
+  {
+    "value": "WHF 6031 8274",
+    "kind": "membership_number",
+    "page": 3,
+    "aliasToken": "[POLICY_1]"
+  },
+  {
+    "value": "WHF 6031 8274",
+    "kind": "membership_number",
+    "page": 4,
+    "aliasToken": "[POLICY_1]"
+  },
+  {
+    "value": "WHF 6031 8274",
+    "kind": "membership_number",
+    "page": 5,
+    "aliasToken": "[POLICY_1]"
+  },
+  {
+    "value": "WHF 6031 8274",
+    "kind": "membership_number",
+    "page": 6,
+    "aliasToken": "[POLICY_1]"
+  },
+  {
+    "value": "WHF 6031 8274",
+    "kind": "membership_number",
+    "page": 7,
+    "aliasToken": "[POLICY_1]"
+  },
+  {
+    "value": "WHF 6031 8274",
+    "kind": "membership_number",
+    "page": 8,
+    "aliasToken": "[POLICY_1]"
+  },
+  {
+    "value": "WHF 6031 8274",
+    "kind": "membership_number",
+    "page": 9,
+    "aliasToken": "[POLICY_1]"
+  },
+  {
+    "value": "WHF 6031 8274",
+    "kind": "membership_number",
+    "page": 10,
+    "aliasToken": "[POLICY_1]"
+  },
+  {
+    "value": "WHF 6031 8274",
+    "kind": "membership_number",
+    "page": 11,
+    "aliasToken": "[POLICY_1]"
+  },
+  {
+    "value": "Callum Ashgrove",
+    "kind": "person_name",
+    "page": 12,
+    "aliasToken": "[MEMBER_A]"
+  },
+  {
+    "value": "WHF 6031 8274",
+    "kind": "membership_number",
+    "page": 12,
+    "aliasToken": "[POLICY_1]"
+  },
+  {
+    "value": "733-218",
+    "kind": "bsb",
+    "page": 12,
+    "aliasToken": null
+  },
+  {
+    "value": "2047 91836",
+    "kind": "bank_account_number",
+    "page": 12,
+    "aliasToken": null
+  }
+]

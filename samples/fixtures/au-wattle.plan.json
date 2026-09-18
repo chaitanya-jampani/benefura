@@ -1,0 +1,310 @@
+{
+  "schemaVersion": 1,
+  "id": "demo-au-wattle",
+  "region": "AU",
+  "insurer": "Wattle Health Fund",
+  "planName": "Silver Plus Hospital and Mid Extras",
+  "currency": "AUD",
+  "identifiers": ["[POLICY_1]"],
+  "members": [
+    { "id": "m-a", "alias": "[MEMBER_A]", "relationship": "self" },
+    { "id": "m-b", "alias": "[MEMBER_B]", "relationship": "spouse" }
+  ],
+  "effectiveDate": "2024-07-01",
+  "benefitPeriod": { "kind": "benefit_year", "startMonth": 1, "startDay": 1, "months": null, "years": null },
+  "categories": [
+    {
+      "id": "cat-general-dental",
+      "name": "General dental",
+      "kind": "dental",
+      "benefits": [
+        {
+          "id": "ben-general-dental",
+          "categoryId": "cat-general-dental",
+          "name": "General dental",
+          "keywords": ["dentist", "check-up", "scale and clean", "x-ray", "fluoride"],
+          "itemCodes": ["011", "012", "022", "114", "121"],
+          "coverage": {
+            "kind": "schedule",
+            "percent": null,
+            "capCents": null,
+            "amountCents": null,
+            "scheduleNote": "Fixed benefit per item number",
+            "scheduleItems": [
+              { "itemCode": "011", "description": "Comprehensive oral examination", "benefitCents": 4500 },
+              { "itemCode": "012", "description": "Periodic oral examination", "benefitCents": 4000 },
+              { "itemCode": "022", "description": "Intraoral periapical radiograph", "benefitCents": 3000 },
+              { "itemCode": "114", "description": "Removal of calculus", "benefitCents": 7000 },
+              { "itemCode": "121", "description": "Topical fluoride", "benefitCents": 2000 }
+            ]
+          },
+          "limits": [
+            { "unit": "cents", "value": 80000, "period": { "kind": "benefit_year", "startMonth": 1, "startDay": 1, "months": null, "years": null }, "scope": "per_person" }
+          ],
+          "frequency": null,
+          "waitingPeriod": { "months": 2, "note": null },
+          "requirements": [],
+          "poolId": null,
+          "costShareIds": [],
+          "notes": null,
+          "source": { "page": 7, "quote": "General dental: $800 per person per calendar year, 2 month waiting period", "confidence": 1, "verifierVerdict": "supported" }
+        }
+      ]
+    },
+    {
+      "id": "cat-major-dental",
+      "name": "Major dental",
+      "kind": "dental",
+      "benefits": [
+        {
+          "id": "ben-major-dental",
+          "categoryId": "cat-major-dental",
+          "name": "Major dental",
+          "keywords": ["crown", "bridge", "denture", "root canal", "wisdom teeth"],
+          "itemCodes": [],
+          "coverage": { "kind": "percent", "percent": 60, "capCents": null, "amountCents": null, "scheduleNote": null, "scheduleItems": [] },
+          "limits": [
+            { "unit": "cents", "value": 100000, "period": { "kind": "benefit_year", "startMonth": 1, "startDay": 1, "months": null, "years": null }, "scope": "per_person" }
+          ],
+          "frequency": null,
+          "waitingPeriod": { "months": 12, "note": null },
+          "requirements": [],
+          "poolId": null,
+          "costShareIds": [],
+          "notes": null,
+          "source": { "page": 7, "quote": "Major dental: 60% of the charge, up to $1,000 per person per calendar year, 12 month waiting period", "confidence": 1, "verifierVerdict": "supported" }
+        }
+      ]
+    },
+    {
+      "id": "cat-optical",
+      "name": "Optical",
+      "kind": "vision",
+      "benefits": [
+        {
+          "id": "ben-optical",
+          "categoryId": "cat-optical",
+          "name": "Glasses and contact lenses",
+          "keywords": ["glasses", "spectacles", "contacts", "contact lenses", "frames", "optometrist"],
+          "itemCodes": [],
+          "coverage": { "kind": "percent", "percent": 100, "capCents": null, "amountCents": null, "scheduleNote": null, "scheduleItems": [] },
+          "limits": [
+            { "unit": "cents", "value": 25000, "period": { "kind": "benefit_year", "startMonth": 1, "startDay": 1, "months": null, "years": null }, "scope": "per_person" }
+          ],
+          "frequency": null,
+          "waitingPeriod": { "months": 6, "note": null },
+          "requirements": ["Prescription lenses only"],
+          "poolId": null,
+          "costShareIds": [],
+          "notes": null,
+          "source": { "page": 8, "quote": "Optical: 100% back up to $250 per person per calendar year, 6 month waiting period", "confidence": 1, "verifierVerdict": "supported" }
+        }
+      ]
+    },
+    {
+      "id": "cat-therapies",
+      "name": "Therapies",
+      "kind": "extras",
+      "benefits": [
+        {
+          "id": "ben-physio",
+          "categoryId": "cat-therapies",
+          "name": "Physiotherapy",
+          "keywords": ["physio", "physiotherapist"],
+          "itemCodes": ["500", "505"],
+          "coverage": {
+            "kind": "schedule",
+            "percent": null,
+            "capCents": null,
+            "amountCents": null,
+            "scheduleNote": "Fixed benefit per item number",
+            "scheduleItems": [
+              { "itemCode": "500", "description": "Initial consultation", "benefitCents": 5500 },
+              { "itemCode": "505", "description": "Subsequent consultation", "benefitCents": 4500 }
+            ]
+          },
+          "limits": [],
+          "frequency": null,
+          "waitingPeriod": { "months": 2, "note": null },
+          "requirements": [],
+          "poolId": "pool-therapies",
+          "costShareIds": [],
+          "notes": null,
+          "source": { "page": 8, "quote": "Physiotherapy: initial consultation (item 500) $55, subsequent consultation (item 505) $45", "confidence": 1, "verifierVerdict": "supported" }
+        },
+        {
+          "id": "ben-chiro",
+          "categoryId": "cat-therapies",
+          "name": "Chiropractic",
+          "keywords": ["chiropractor", "chiro"],
+          "itemCodes": ["1500", "1505"],
+          "coverage": {
+            "kind": "schedule",
+            "percent": null,
+            "capCents": null,
+            "amountCents": null,
+            "scheduleNote": "Fixed benefit per item number",
+            "scheduleItems": [
+              { "itemCode": "1500", "description": "Initial consultation", "benefitCents": 5000 },
+              { "itemCode": "1505", "description": "Subsequent consultation", "benefitCents": 4000 }
+            ]
+          },
+          "limits": [],
+          "frequency": null,
+          "waitingPeriod": { "months": 2, "note": null },
+          "requirements": [],
+          "poolId": "pool-therapies",
+          "costShareIds": [],
+          "notes": null,
+          "source": { "page": 8, "quote": "Chiropractic: initial consultation (item 1500) $50, subsequent consultation (item 1505) $40", "confidence": 1, "verifierVerdict": "supported" }
+        },
+        {
+          "id": "ben-remedial-massage",
+          "categoryId": "cat-therapies",
+          "name": "Remedial massage",
+          "keywords": ["massage", "remedial massage therapist", "myotherapy"],
+          "itemCodes": ["105", "205"],
+          "coverage": {
+            "kind": "schedule",
+            "percent": null,
+            "capCents": null,
+            "amountCents": null,
+            "scheduleNote": "Fixed benefit per item number",
+            "scheduleItems": [
+              { "itemCode": "105", "description": "Initial treatment", "benefitCents": 4000 },
+              { "itemCode": "205", "description": "Subsequent treatment", "benefitCents": 3500 }
+            ]
+          },
+          "limits": [],
+          "frequency": null,
+          "waitingPeriod": { "months": 2, "note": null },
+          "requirements": ["Provider must be recognised by Wattle Health Fund"],
+          "poolId": "pool-therapies",
+          "costShareIds": [],
+          "notes": null,
+          "source": { "page": 8, "quote": "Remedial massage: initial treatment (item 105) $40, subsequent treatment (item 205) $35", "confidence": 1, "verifierVerdict": "supported" }
+        },
+        {
+          "id": "ben-psychology",
+          "categoryId": "cat-therapies",
+          "name": "Psychology",
+          "keywords": ["psychologist", "counselling", "mental health"],
+          "itemCodes": [],
+          "coverage": { "kind": "percent_capped", "percent": 60, "capCents": 8000, "amountCents": null, "scheduleNote": null, "scheduleItems": [] },
+          "limits": [
+            { "unit": "cents", "value": 50000, "period": { "kind": "benefit_year", "startMonth": 1, "startDay": 1, "months": null, "years": null }, "scope": "per_person" }
+          ],
+          "frequency": null,
+          "waitingPeriod": { "months": 2, "note": null },
+          "requirements": [],
+          "poolId": null,
+          "costShareIds": [],
+          "notes": "Sessions claimed under a Medicare Better Access plan cannot also be claimed here.",
+          "source": { "page": 9, "quote": "Psychology: 60% of the charge up to $80 per session, to $500 per person per calendar year", "confidence": 1, "verifierVerdict": "supported" }
+        }
+      ]
+    },
+    {
+      "id": "cat-ambulance",
+      "name": "Ambulance",
+      "kind": "ambulance",
+      "benefits": [
+        {
+          "id": "ben-ambulance",
+          "categoryId": "cat-ambulance",
+          "name": "Emergency ambulance",
+          "keywords": ["ambulance", "paramedics", "emergency transport"],
+          "itemCodes": [],
+          "coverage": { "kind": "percent", "percent": 100, "capCents": null, "amountCents": null, "scheduleNote": null, "scheduleItems": [] },
+          "limits": [],
+          "frequency": null,
+          "waitingPeriod": { "months": 0, "note": null },
+          "requirements": ["Emergency transport by a state ambulance service"],
+          "poolId": null,
+          "costShareIds": [],
+          "notes": null,
+          "source": { "page": 9, "quote": "Emergency ambulance: 100% of the charge, unlimited, no waiting period", "confidence": 1, "verifierVerdict": "supported" }
+        }
+      ]
+    },
+    {
+      "id": "cat-hospital",
+      "name": "Hospital",
+      "kind": "hospital",
+      "benefits": [
+        {
+          "id": "ben-hospital-admission",
+          "categoryId": "cat-hospital",
+          "name": "Private hospital admission",
+          "keywords": ["hospital", "surgery", "admission", "theatre", "accommodation"],
+          "itemCodes": [],
+          "coverage": { "kind": "percent", "percent": 100, "capCents": null, "amountCents": null, "scheduleNote": "Accommodation and theatre fees at agreement hospitals, after the excess", "scheduleItems": [] },
+          "limits": [],
+          "frequency": null,
+          "waitingPeriod": { "months": 2, "note": "12 months for pre-existing conditions" },
+          "requirements": ["Clinical category must be covered by the policy"],
+          "poolId": null,
+          "costShareIds": ["cs-hospital-excess"],
+          "notes": "Hospital estimates are informational only in Benefura.",
+          "source": { "page": 4, "quote": "Accommodation and theatre fees at agreement private hospitals are covered for included clinical categories, after your excess", "confidence": 1, "verifierVerdict": "supported" }
+        }
+      ]
+    }
+  ],
+  "limitPools": [
+    {
+      "id": "pool-therapies",
+      "name": "Therapies combined limit",
+      "limit": { "unit": "cents", "value": 70000, "period": { "kind": "benefit_year", "startMonth": 1, "startDay": 1, "months": null, "years": null }, "scope": "per_person" },
+      "benefitIds": ["ben-physio", "ben-chiro", "ben-remedial-massage"],
+      "source": { "page": 8, "quote": "Physiotherapy, chiropractic and remedial massage share a combined limit of $700 per person per calendar year", "confidence": 1, "verifierVerdict": "supported" }
+    }
+  ],
+  "costShares": [
+    {
+      "id": "cs-hospital-excess",
+      "name": "Hospital excess",
+      "kind": "excess",
+      "amountCents": 50000,
+      "percent": null,
+      "period": { "kind": "benefit_year", "startMonth": 1, "startDay": 1, "months": null, "years": null },
+      "scope": "per_person",
+      "appliesToCategoryIds": ["cat-hospital"],
+      "appliesToBenefitIds": [],
+      "source": { "page": 4, "quote": "Excess: $500 per person per calendar year, payable once per admission and no more than once each year", "confidence": 1, "verifierVerdict": "supported" }
+    }
+  ],
+  "claimRules": {
+    "submissionDays": 730,
+    "daysAfterPeriodEnd": null,
+    "receiptsRequired": true,
+    "coordinationOfBenefits": false,
+    "notes": [
+      "Claim on the spot with your member card where the provider has a HICAPS terminal.",
+      "Benefits cannot be paid for services claimed from Medicare or another insurer."
+    ],
+    "source": { "page": 11, "quote": "Extras claims must be lodged within 2 years of the date of service", "confidence": 1, "verifierVerdict": "supported" }
+  },
+  "profile": {
+    "kind": "AU",
+    "coverType": "combined",
+    "hospital": {
+      "tier": "silver",
+      "plus": true,
+      "categories": [
+        { "name": "Back, neck and spine", "status": "covered", "source": { "page": 5, "quote": "Back, neck and spine: Covered", "confidence": 1, "verifierVerdict": "supported" } },
+        { "name": "Cataracts", "status": "covered", "source": { "page": 5, "quote": "Cataracts: Covered", "confidence": 1, "verifierVerdict": "supported" } },
+        { "name": "Heart and vascular system", "status": "covered", "source": { "page": 5, "quote": "Heart and vascular system: Covered", "confidence": 1, "verifierVerdict": "supported" } },
+        { "name": "Joint replacements", "status": "covered", "source": { "page": 5, "quote": "Joint replacements: Covered", "confidence": 1, "verifierVerdict": "supported" } },
+        { "name": "Dental surgery", "status": "covered", "source": { "page": 5, "quote": "Dental surgery: Covered", "confidence": 1, "verifierVerdict": "supported" } },
+        { "name": "Hospital psychiatric services", "status": "covered", "source": { "page": 5, "quote": "Hospital psychiatric services: Covered", "confidence": 1, "verifierVerdict": "supported" } },
+        { "name": "Rehabilitation", "status": "covered", "source": { "page": 5, "quote": "Rehabilitation: Covered", "confidence": 1, "verifierVerdict": "supported" } },
+        { "name": "Insulin pumps", "status": "restricted", "source": { "page": 6, "quote": "Insulin pumps: Restricted", "confidence": 1, "verifierVerdict": "supported" } },
+        { "name": "Pregnancy and birth", "status": "excluded", "source": { "page": 6, "quote": "Pregnancy and birth: Not covered", "confidence": 1, "verifierVerdict": "supported" } },
+        { "name": "Weight loss surgery", "status": "excluded", "source": { "page": 6, "quote": "Weight loss surgery: Not covered", "confidence": 1, "verifierVerdict": "supported" } }
+      ],
+      "excess": { "amountCents": 50000, "per": "year", "maxPerYearCents": 50000 }
+    }
+  },
+  "document": { "name": "au-wattle-policy.pdf", "pageCount": 12, "extractedAt": null, "isDemo": true }
+}

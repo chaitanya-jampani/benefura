@@ -1,0 +1,248 @@
+[
+  {
+    "value": "Harbourview Logistics Inc.",
+    "kind": "employer_name",
+    "page": 1,
+    "aliasToken": "[EMPLOYER_A]"
+  },
+  {
+    "value": "G-40718-2",
+    "kind": "group_policy_number",
+    "page": 1,
+    "aliasToken": "[POLICY_1]"
+  },
+  {
+    "value": "Rowan Lindqvist",
+    "kind": "person_name",
+    "page": 2,
+    "aliasToken": "[MEMBER_A]"
+  },
+  {
+    "value": "Amara Lindqvist",
+    "kind": "person_name",
+    "page": 2,
+    "aliasToken": "[MEMBER_B]"
+  },
+  {
+    "value": "Juniper Lindqvist",
+    "kind": "person_name",
+    "page": 2,
+    "aliasToken": "[MEMBER_C]"
+  },
+  {
+    "value": "1986-04-19",
+    "kind": "date_of_birth",
+    "page": 2,
+    "aliasToken": null
+  },
+  {
+    "value": "1985-11-02",
+    "kind": "date_of_birth",
+    "page": 2,
+    "aliasToken": null
+  },
+  {
+    "value": "2016-08-23",
+    "kind": "date_of_birth",
+    "page": 2,
+    "aliasToken": null
+  },
+  {
+    "value": "Harbourview Logistics Inc.",
+    "kind": "employer_name",
+    "page": 2,
+    "aliasToken": "[EMPLOYER_A]"
+  },
+  {
+    "value": "G-40718-2",
+    "kind": "group_policy_number",
+    "page": 2,
+    "aliasToken": "[POLICY_1]"
+  },
+  {
+    "value": "NW-00731946",
+    "kind": "certificate_number",
+    "page": 2,
+    "aliasToken": "[CERT_1]"
+  },
+  {
+    "value": "046 832 150",
+    "kind": "sin",
+    "page": 2,
+    "aliasToken": null
+  },
+  {
+    "value": "5824-613-904-KT",
+    "kind": "health_card_number",
+    "page": 2,
+    "aliasToken": null
+  },
+  {
+    "value": "88 Larkspur Lane, Toronto ON M4K 2P7",
+    "kind": "address",
+    "page": 2,
+    "aliasToken": "[ADDRESS_A]"
+  },
+  {
+    "value": "416-555-0147",
+    "kind": "phone",
+    "page": 2,
+    "aliasToken": "[PHONE_A]"
+  },
+  {
+    "value": "rowan.lindqvist@example.net",
+    "kind": "email",
+    "page": 2,
+    "aliasToken": "[EMAIL_A]"
+  },
+  {
+    "value": "Harbourview Logistics Inc.",
+    "kind": "employer_name",
+    "page": 3,
+    "aliasToken": "[EMPLOYER_A]"
+  },
+  {
+    "value": "G-40718-2",
+    "kind": "group_policy_number",
+    "page": 3,
+    "aliasToken": "[POLICY_1]"
+  },
+  {
+    "value": "Harbourview Logistics Inc.",
+    "kind": "employer_name",
+    "page": 4,
+    "aliasToken": "[EMPLOYER_A]"
+  },
+  {
+    "value": "G-40718-2",
+    "kind": "group_policy_number",
+    "page": 4,
+    "aliasToken": "[POLICY_1]"
+  },
+  {
+    "value": "Harbourview Logistics Inc.",
+    "kind": "employer_name",
+    "page": 5,
+    "aliasToken": "[EMPLOYER_A]"
+  },
+  {
+    "value": "G-40718-2",
+    "kind": "group_policy_number",
+    "page": 5,
+    "aliasToken": "[POLICY_1]"
+  },
+  {
+    "value": "Harbourview Logistics Inc.",
+    "kind": "employer_name",
+    "page": 6,
+    "aliasToken": "[EMPLOYER_A]"
+  },
+  {
+    "value": "G-40718-2",
+    "kind": "group_policy_number",
+    "page": 6,
+    "aliasToken": "[POLICY_1]"
+  },
+  {
+    "value": "Harbourview Logistics Inc.",
+    "kind": "employer_name",
+    "page": 7,
+    "aliasToken": "[EMPLOYER_A]"
+  },
+  {
+    "value": "G-40718-2",
+    "kind": "group_policy_number",
+    "page": 7,
+    "aliasToken": "[POLICY_1]"
+  },
+  {
+    "value": "Harbourview Logistics Inc.",
+    "kind": "employer_name",
+    "page": 8,
+    "aliasToken": "[EMPLOYER_A]"
+  },
+  {
+    "value": "G-40718-2",
+    "kind": "group_policy_number",
+    "page": 8,
+    "aliasToken": "[POLICY_1]"
+  },
+  {
+    "value": "Harbourview Logistics Inc.",
+    "kind": "employer_name",
+    "page": 9,
+    "aliasToken": "[EMPLOYER_A]"
+  },
+  {
+    "value": "G-40718-2",
+    "kind": "group_policy_number",
+    "page": 9,
+    "aliasToken": "[POLICY_1]"
+  },
+  {
+    "value": "Harbourview Logistics Inc.",
+    "kind": "employer_name",
+    "page": 10,
+    "aliasToken": "[EMPLOYER_A]"
+  },
+  {
+    "value": "G-40718-2",
+    "kind": "group_policy_number",
+    "page": 10,
+    "aliasToken": "[POLICY_1]"
+  },
+  {
+    "value": "Harbourview Logistics Inc.",
+    "kind": "employer_name",
+    "page": 11,
+    "aliasToken": "[EMPLOYER_A]"
+  },
+  {
+    "value": "G-40718-2",
+    "kind": "group_policy_number",
+    "page": 11,
+    "aliasToken": "[POLICY_1]"
+  },
+  {
+    "value": "Harbourview Logistics Inc.",
+    "kind": "employer_name",
+    "page": 12,
+    "aliasToken": "[EMPLOYER_A]"
+  },
+  {
+    "value": "G-40718-2",
+    "kind": "group_policy_number",
+    "page": 12,
+    "aliasToken": "[POLICY_1]"
+  },
+  {
+    "value": "Harbourview Logistics Inc.",
+    "kind": "employer_name",
+    "page": 13,
+    "aliasToken": "[EMPLOYER_A]"
+  },
+  {
+    "value": "G-40718-2",
+    "kind": "group_policy_number",
+    "page": 13,
+    "aliasToken": "[POLICY_1]"
+  },
+  {
+    "value": "NW-00731946",
+    "kind": "certificate_number",
+    "page": 13,
+    "aliasToken": "[CERT_1]"
+  },
+  {
+    "value": "Harbourview Logistics Inc.",
+    "kind": "employer_name",
+    "page": 14,
+    "aliasToken": "[EMPLOYER_A]"
+  },
+  {
+    "value": "G-40718-2",
+    "kind": "group_policy_number",
+    "page": 14,
+    "aliasToken": "[POLICY_1]"
+  }
+]
