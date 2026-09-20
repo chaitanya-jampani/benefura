@@ -1,5 +1,7 @@
 import { EyeOff, HardDrive, ImageUp } from "lucide-react";
 
+import { ContinuePlan } from "@/components/demo/ContinuePlan";
+import { DemoActions } from "@/components/demo/DemoActions";
 import { IconTile, Surface } from "@/components/ui";
 
 const PROMISES = [
@@ -31,7 +33,11 @@ export default function Home() {
           Benefura reads your extended health booklet or private health policy, then shows what&apos;s left to claim for each
           person, when limits reset and what a new claim should pay back.
         </p>
+        <DemoActions className="mt-10" />
+        <p className="mt-6 text-base text-muted">The demos use fictional plans and people, and work without an account.</p>
       </Surface>
+
+      <ContinuePlan />
 
       <section aria-labelledby="privacy-title" className="px-1 pt-4">
         <h2 id="privacy-title" className="text-2xl font-medium tracking-tight text-ink sm:text-[1.75rem]">

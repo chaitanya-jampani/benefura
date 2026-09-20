@@ -10,6 +10,7 @@
     "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
+    "e2e": "playwright test",
     "gen:types": "openapi-typescript ../api/openapi.json -o src/api/schema.d.ts",
     "gen:check": "openapi-typescript ../api/openapi.json -o /tmp/benefura-schema.d.ts && diff -q /tmp/benefura-schema.d.ts src/api/schema.d.ts"
   },
