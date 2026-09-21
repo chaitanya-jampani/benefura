@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "node scripts/copy-vendor.mjs && next build",
     "start": "npx serve out",
     "lint": "eslint",
     "typecheck": "next typegen && tsc --noEmit",
@@ -12,7 +12,8 @@
     "test:watch": "vitest",
     "e2e": "playwright test",
     "gen:types": "openapi-typescript ../api/openapi.json -o src/api/schema.d.ts",
-    "gen:check": "openapi-typescript ../api/openapi.json -o /tmp/benefura-schema.d.ts && diff -q /tmp/benefura-schema.d.ts src/api/schema.d.ts"
+    "gen:check": "openapi-typescript ../api/openapi.json -o /tmp/benefura-schema.d.ts && diff -q /tmp/benefura-schema.d.ts src/api/schema.d.ts",
+    "postinstall": "node scripts/copy-vendor.mjs"
   },
   "dependencies": {
     "@ai-sdk/react": "4.0.108",
