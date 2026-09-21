@@ -21,8 +21,7 @@
               {
                 "type": "null"
               }
-            ],
-            "default": null
+            ]
           },
           "kind": {
             "const": "AU",
@@ -115,8 +114,8 @@
             "type": "string"
           },
           "pageCount": {
-            "maximum": 120,
-            "minimum": 1,
+            "maximum": 120.0,
+            "minimum": 1.0,
             "title": "Pagecount",
             "type": "integer"
           },
@@ -182,8 +181,7 @@
               {
                 "type": "null"
               }
-            ],
-            "default": null
+            ]
           },
           "id": {
             "title": "Id",
@@ -223,7 +221,6 @@
                 "type": "null"
               }
             ],
-            "default": null,
             "title": "Notes"
           },
           "poolId": {
@@ -235,7 +232,6 @@
                 "type": "null"
               }
             ],
-            "default": null,
             "title": "Poolid"
           },
           "requirements": {
@@ -253,8 +249,7 @@
               {
                 "type": "null"
               }
-            ],
-            "default": null
+            ]
           },
           "waitingPeriod": {
             "anyOf": [
@@ -264,8 +259,7 @@
               {
                 "type": "null"
               }
-            ],
-            "default": null
+            ]
           }
         },
         "required": [
@@ -287,6 +281,42 @@
         "title": "Benefit",
         "type": "object"
       },
+      "Body_analyze_chunk_api_plan_analyze_chunk_post": {
+        "properties": {
+          "documentId": {
+            "description": "Random per-booklet id from the browser (booklet and page caps).",
+            "title": "Documentid",
+            "type": "string"
+          },
+          "file": {
+            "contentMediaType": "application/octet-stream",
+            "description": "application/pdf, \u22648 MB, image-only pages.",
+            "title": "File",
+            "type": "string"
+          },
+          "pages": {
+            "description": "Comma-separated 1-based page numbers in this chunk.",
+            "title": "Pages",
+            "type": "string"
+          },
+          "region": {
+            "enum": [
+              "CA",
+              "AU"
+            ],
+            "title": "Region",
+            "type": "string"
+          }
+        },
+        "required": [
+          "documentId",
+          "region",
+          "pages",
+          "file"
+        ],
+        "title": "Body_analyze_chunk_api_plan_analyze_chunk_post",
+        "type": "object"
+      },
       "CAProfile": {
         "additionalProperties": false,
         "properties": {
@@ -298,8 +328,7 @@
               {
                 "type": "null"
               }
-            ],
-            "default": null
+            ]
           },
           "kind": {
             "const": "CA",
@@ -841,15 +870,14 @@
           "daysAfterPeriodEnd": {
             "anyOf": [
               {
-                "maximum": 730,
-                "minimum": 0,
+                "maximum": 730.0,
+                "minimum": 0.0,
                 "type": "integer"
               },
               {
                 "type": "null"
               }
             ],
-            "default": null,
             "title": "Daysafterperiodend"
           },
           "notes": {
@@ -872,21 +900,19 @@
               {
                 "type": "null"
               }
-            ],
-            "default": null
+            ]
           },
           "submissionDays": {
             "anyOf": [
               {
-                "maximum": 1095,
-                "minimum": 1,
+                "maximum": 1095.0,
+                "minimum": 1.0,
                 "type": "integer"
               },
               {
                 "type": "null"
               }
             ],
-            "default": null,
             "title": "Submissiondays"
           }
         },
@@ -908,14 +934,13 @@
           "amountCents": {
             "anyOf": [
               {
-                "minimum": 0,
+                "minimum": 0.0,
                 "type": "integer"
               },
               {
                 "type": "null"
               }
             ],
-            "default": null,
             "title": "Amountcents"
           },
           "appliesToBenefitIds": {
@@ -953,15 +978,14 @@
           "percent": {
             "anyOf": [
               {
-                "maximum": 100,
-                "minimum": 0,
+                "maximum": 100.0,
+                "minimum": 0.0,
                 "type": "number"
               },
               {
                 "type": "null"
               }
             ],
-            "default": null,
             "title": "Percent"
           },
           "period": {
@@ -972,8 +996,7 @@
               {
                 "type": "null"
               }
-            ],
-            "default": null
+            ]
           },
           "scope": {
             "default": "per_person",
@@ -993,8 +1016,7 @@
               {
                 "type": "null"
               }
-            ],
-            "default": null
+            ]
           }
         },
         "required": [
@@ -1019,27 +1041,25 @@
           "amountCents": {
             "anyOf": [
               {
-                "minimum": 0,
+                "minimum": 0.0,
                 "type": "integer"
               },
               {
                 "type": "null"
               }
             ],
-            "default": null,
             "title": "Amountcents"
           },
           "capCents": {
             "anyOf": [
               {
-                "minimum": 0,
+                "minimum": 0.0,
                 "type": "integer"
               },
               {
                 "type": "null"
               }
             ],
-            "default": null,
             "title": "Capcents"
           },
           "kind": {
@@ -1056,15 +1076,14 @@
           "percent": {
             "anyOf": [
               {
-                "maximum": 100,
-                "minimum": 0,
+                "maximum": 100.0,
+                "minimum": 0.0,
                 "type": "number"
               },
               {
                 "type": "null"
               }
             ],
-            "default": null,
             "title": "Percent"
           },
           "scheduleItems": {
@@ -1083,7 +1102,6 @@
                 "type": "null"
               }
             ],
-            "default": null,
             "title": "Schedulenote"
           }
         },
@@ -1133,7 +1151,6 @@
                 "type": "null"
               }
             ],
-            "default": null,
             "title": "Details"
           },
           "message": {
@@ -1149,7 +1166,6 @@
                 "type": "null"
               }
             ],
-            "default": null,
             "title": "Retryafterseconds"
           },
           "traceId": {
@@ -1161,7 +1177,6 @@
                 "type": "null"
               }
             ],
-            "default": null,
             "title": "Traceid"
           }
         },
@@ -2111,7 +2126,7 @@
         "description": "At most ``count`` services per ``period`` (e.g. one eye exam every 24 months).",
         "properties": {
           "count": {
-            "minimum": 1,
+            "minimum": 1.0,
             "title": "Count",
             "type": "integer"
           },
@@ -2197,14 +2212,14 @@
         "additionalProperties": false,
         "properties": {
           "annualCreditCents": {
-            "minimum": 0,
+            "minimum": 0.0,
             "title": "Annualcreditcents",
             "type": "integer"
           },
           "carryForwardYears": {
             "default": 0,
-            "maximum": 2,
-            "minimum": 0,
+            "maximum": 2.0,
+            "minimum": 0.0,
             "title": "Carryforwardyears",
             "type": "integer"
           }
@@ -2231,8 +2246,7 @@
               {
                 "type": "null"
               }
-            ],
-            "default": null
+            ]
           },
           "status": {
             "enum": [
@@ -2270,8 +2284,7 @@
               {
                 "type": "null"
               }
-            ],
-            "default": null
+            ]
           },
           "plus": {
             "default": false,
@@ -2302,21 +2315,20 @@
         "additionalProperties": false,
         "properties": {
           "amountCents": {
-            "minimum": 0,
+            "minimum": 0.0,
             "title": "Amountcents",
             "type": "integer"
           },
           "maxPerYearCents": {
             "anyOf": [
               {
-                "minimum": 0,
+                "minimum": 0.0,
                 "type": "integer"
               },
               {
                 "type": "null"
               }
             ],
-            "default": null,
             "title": "Maxperyearcents"
           },
           "per": {
@@ -2348,7 +2360,6 @@
                 "type": "null"
               }
             ],
-            "default": null,
             "description": "PII category, never the matched value.",
             "title": "Category"
           },
@@ -2386,7 +2397,6 @@
                 "type": "null"
               }
             ],
-            "default": null,
             "title": "Page"
           },
           "rowId": {
@@ -2398,7 +2408,6 @@
                 "type": "null"
               }
             ],
-            "default": null,
             "title": "Rowid"
           },
           "severity": {
@@ -2448,7 +2457,7 @@
             "type": "string"
           },
           "value": {
-            "minimum": 0,
+            "minimum": 0.0,
             "title": "Value",
             "type": "integer"
           }
@@ -2492,8 +2501,7 @@
               {
                 "type": "null"
               }
-            ],
-            "default": null
+            ]
           }
         },
         "required": [
@@ -2557,57 +2565,53 @@
           "months": {
             "anyOf": [
               {
-                "maximum": 120,
-                "minimum": 1,
+                "maximum": 120.0,
+                "minimum": 1.0,
                 "type": "integer"
               },
               {
                 "type": "null"
               }
             ],
-            "default": null,
             "title": "Months"
           },
           "startDay": {
             "anyOf": [
               {
-                "maximum": 31,
-                "minimum": 1,
+                "maximum": 31.0,
+                "minimum": 1.0,
                 "type": "integer"
               },
               {
                 "type": "null"
               }
             ],
-            "default": null,
             "title": "Startday"
           },
           "startMonth": {
             "anyOf": [
               {
-                "maximum": 12,
-                "minimum": 1,
+                "maximum": 12.0,
+                "minimum": 1.0,
                 "type": "integer"
               },
               {
                 "type": "null"
               }
             ],
-            "default": null,
             "title": "Startmonth"
           },
           "years": {
             "anyOf": [
               {
-                "maximum": 10,
-                "minimum": 1,
+                "maximum": 10.0,
+                "minimum": 1.0,
                 "type": "integer"
               },
               {
                 "type": "null"
               }
             ],
-            "default": null,
             "title": "Years"
           }
         },
@@ -2637,7 +2641,6 @@
                 "type": "null"
               }
             ],
-            "default": null,
             "title": "Page"
           },
           "polygon": {
@@ -2652,7 +2655,6 @@
                 "type": "null"
               }
             ],
-            "default": null,
             "description": "Page-relative polygon in inches (CU word polygon), if available.",
             "title": "Polygon"
           }
@@ -2702,8 +2704,7 @@
               {
                 "type": "null"
               }
-            ],
-            "default": null
+            ]
           },
           "effectiveDate": {
             "anyOf": [
@@ -2715,7 +2716,6 @@
                 "type": "null"
               }
             ],
-            "default": null,
             "title": "Effectivedate"
           },
           "id": {
@@ -2818,7 +2818,6 @@
                 "type": "null"
               }
             ],
-            "default": null,
             "title": "Extractedat"
           },
           "isDemo": {
@@ -2831,7 +2830,7 @@
             "type": "string"
           },
           "pageCount": {
-            "minimum": 0,
+            "minimum": 0.0,
             "title": "Pagecount",
             "type": "integer"
           }
@@ -3064,8 +3063,8 @@
         "description": "Per-row provenance attached after verification and deterministic grounding.",
         "properties": {
           "confidence": {
-            "maximum": 1,
-            "minimum": 0,
+            "maximum": 1.0,
+            "minimum": 0.0,
             "title": "Confidence",
             "type": "number"
           },
@@ -3108,7 +3107,6 @@
                 "type": "null"
               }
             ],
-            "default": null,
             "title": "Verifierverdict"
           }
         },
@@ -3126,7 +3124,7 @@
         "additionalProperties": false,
         "properties": {
           "benefitCents": {
-            "minimum": 0,
+            "minimum": 0.0,
             "title": "Benefitcents",
             "type": "integer"
           },
@@ -3152,13 +3150,13 @@
         "description": "Where a value came from in the (redacted) booklet.",
         "properties": {
           "confidence": {
-            "maximum": 1,
-            "minimum": 0,
+            "maximum": 1.0,
+            "minimum": 0.0,
             "title": "Confidence",
             "type": "number"
           },
           "page": {
-            "minimum": 1,
+            "minimum": 1.0,
             "title": "Page",
             "type": "integer"
           },
@@ -3181,7 +3179,6 @@
                 "type": "null"
               }
             ],
-            "default": null,
             "title": "Verifierverdict"
           }
         },
@@ -3242,8 +3239,8 @@
         "additionalProperties": false,
         "properties": {
           "months": {
-            "maximum": 60,
-            "minimum": 0,
+            "maximum": 60.0,
+            "minimum": 0.0,
             "title": "Months",
             "type": "integer"
           },
@@ -3256,7 +3253,6 @@
                 "type": "null"
               }
             ],
-            "default": null,
             "title": "Note"
           }
         },
@@ -3275,6 +3271,202 @@
   },
   "openapi": "3.1.0",
   "paths": {
+    "/api/plan/analyze-chunk": {
+      "post": {
+        "operationId": "analyze_chunk_api_plan_analyze_chunk_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_analyze_chunk_api_plan_analyze_chunk_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnalyzeChunkResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "415": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unsupported Media Type"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "502": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Gateway"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        },
+        "summary": "Analyze Chunk"
+      }
+    },
+    "/api/plan/assemble": {
+      "post": {
+        "operationId": "assemble_api_plan_assemble_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssembleRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssembleResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "415": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unsupported Media Type"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "502": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Gateway"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        },
+        "summary": "Assemble"
+      }
+    },
     "/healthz": {
       "get": {
         "operationId": "healthz_healthz_get",

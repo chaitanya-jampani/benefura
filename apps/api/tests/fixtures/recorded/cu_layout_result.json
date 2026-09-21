@@ -1,0 +1,106 @@
+{
+  "id": "00000000-0000-0000-0000-000000000001",
+  "status": "Succeeded",
+  "result": {
+    "analyzerId": "prebuilt-layout",
+    "apiVersion": "2025-11-01",
+    "createdAt": "2026-09-16T12:00:00Z",
+    "warnings": [],
+    "contents": [
+      {
+        "path": "input1",
+        "kind": "document",
+        "mimeType": "application/pdf",
+        "markdown": "# Paramedical practitioners\n\nMassage therapy: 80% up to $80 per visit\n\nSIN 046 454 286\n\n<!-- PageBreak -->\n\n# Vision care\n\n| Service | Coverage |\n| --- | --- |\n| Eye exam | 100% |",
+        "startPageNumber": 1,
+        "endPageNumber": 2,
+        "unit": "inch",
+        "pages": [
+          {
+            "pageNumber": 1,
+            "width": 8.5,
+            "height": 11,
+            "spans": [
+              {
+                "offset": 0,
+                "length": 86
+              }
+            ],
+            "words": [
+              {
+                "content": "Massage",
+                "span": {
+                  "offset": 29,
+                  "length": 7
+                },
+                "confidence": 0.99,
+                "source": "D(1,1.0,2.0,1.84,2.0,1.84,2.2,1.0,2.2)"
+              },
+              {
+                "content": "SIN",
+                "span": {
+                  "offset": 71,
+                  "length": 3
+                },
+                "confidence": 0.99,
+                "source": "D(1,1.0,3.0,1.36,3.0,1.36,3.2,1.0,3.2)"
+              },
+              {
+                "content": "046",
+                "span": {
+                  "offset": 75,
+                  "length": 3
+                },
+                "confidence": 0.99,
+                "source": "D(1,1.5,3.0,1.86,3.0,1.86,3.2,1.5,3.2)"
+              },
+              {
+                "content": "454",
+                "span": {
+                  "offset": 79,
+                  "length": 3
+                },
+                "confidence": 0.99,
+                "source": "D(1,2.0,3.0,2.36,3.0,2.36,3.2,2.0,3.2)"
+              },
+              {
+                "content": "286",
+                "span": {
+                  "offset": 83,
+                  "length": 3
+                },
+                "confidence": 0.99,
+                "source": "D(1,2.5,3.0,2.86,3.0,2.86,3.2,2.5,3.2)"
+              }
+            ]
+          },
+          {
+            "pageNumber": 2,
+            "width": 8.5,
+            "height": 11,
+            "spans": [
+              {
+                "offset": 108,
+                "length": 71
+              }
+            ],
+            "words": [
+              {
+                "content": "Eye",
+                "span": {
+                  "offset": 162,
+                  "length": 3
+                },
+                "confidence": 0.99,
+                "source": "D(2,1.0,2.0,1.36,2.0,1.36,2.2,1.0,2.2)"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "usage": {
+    "documentPagesStandard": 2
+  }
+}

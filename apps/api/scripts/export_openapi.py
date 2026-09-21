@@ -9,32 +9,13 @@ from pathlib import Path
 from pydantic.json_schema import models_json_schema
 
 from app.main import app
-from app.models.api import (
-    AnalyzeChunkResponse,
-    AssembleRequest,
-    AssembleResponse,
-    ChatContext,
-    ChatRequest,
-    ErrorResponse,
-    ReceiptAnalyzeResponse,
-)
+from app.models.api import ChatContext, ChatRequest, ErrorResponse, ReceiptAnalyzeResponse
 from app.models.claim import Claim
 from app.models.plan import Plan
 from app.models.receipt import Receipt
 
 OUT = Path(__file__).resolve().parents[1] / "openapi.json"
-EXTRA_MODELS = [
-    Plan,
-    Claim,
-    Receipt,
-    AnalyzeChunkResponse,
-    AssembleRequest,
-    AssembleResponse,
-    ReceiptAnalyzeResponse,
-    ChatRequest,
-    ChatContext,
-    ErrorResponse,
-]
+EXTRA_MODELS = [Plan, Claim, Receipt, ReceiptAnalyzeResponse, ChatRequest, ChatContext, ErrorResponse]
 
 
 def build() -> str:

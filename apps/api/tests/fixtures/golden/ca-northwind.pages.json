@@ -1,0 +1,26 @@
+[
+  {
+    "page": 1,
+    "markdown": "# Northwind Life & Health\n\nGroup Extended Health and Dental, Class A\n\nPlan member: [MEMBER_A]\n\nPolicy number: [POLICY_1] · Certificate: [CERT_1]\n\nEffective date: January 1, 2025. Benefits are calculated per calendar year. Province of issue: Ontario."
+  },
+  {
+    "page": 2,
+    "markdown": "## Paramedical practitioners\n\n| Practitioner | Coverage | Maximum |\n|---|---|---|\n| Massage therapy (registered massage therapist) | 80% up to $80 per visit | $500 per person per benefit year |\n| Physiotherapy | 80% | $750 per person per benefit year |\n\nMassage therapy, physiotherapy and chiropractic share a combined maximum of $1,500 per person per benefit year."
+  },
+  {
+    "page": 3,
+    "markdown": "## Vision care\n\nEye examinations: 100%, one exam every 24 months per person.\n\nPrescription glasses or contact lenses: 100%, to a maximum of $300 per person in any 2 consecutive benefit years."
+  },
+  {
+    "page": 4,
+    "markdown": "## Prescription drugs\n\nEligible prescription drugs are reimbursed at 80% after the annual deductible.\n\nAnnual deductible: $25 per family per benefit year, applied to prescription drugs only.\n\nDependants covered: Spouse: [MEMBER_B]"
+  },
+  {
+    "page": 5,
+    "markdown": "## Health spending account\n\nYour employer credits $500 to your health spending account each benefit year. Unused credits carry forward 1 year."
+  },
+  {
+    "page": 6,
+    "markdown": "## Making a claim\n\nClaims must be received no later than 90 days after the end of the benefit year in which the expense was incurred.\n\nKeep original receipts for 12 months in case of audit."
+  }
+]

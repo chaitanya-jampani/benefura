@@ -1,0 +1,72 @@
+{
+  "id": "00000000-0000-0000-0000-000000000002",
+  "status": "Succeeded",
+  "result": {
+    "analyzerId": "benefura-receipt",
+    "apiVersion": "2025-11-01",
+    "createdAt": "2026-09-16T12:00:00Z",
+    "warnings": [],
+    "contents": [
+      {
+        "path": "input1",
+        "kind": "document",
+        "mimeType": "image/jpeg",
+        "markdown": "# Riverbend Physiotherapy\n\nPatient: [MEMBER_A]\n\n| Date | Service | Item | Amount |\n| --- | --- | --- | --- |\n| 2026-08-04 | Initial consultation | 500 | $95.00 |\n| 2026-08-11 | Subsequent consultation | 505 | $75.50 |\n\nTotal $170.50",
+        "startPageNumber": 1,
+        "endPageNumber": 1,
+        "unit": "pixel",
+        "pages": [
+          {
+            "pageNumber": 1,
+            "width": 1240,
+            "height": 1754,
+            "spans": [{ "offset": 0, "length": 209 }],
+            "words": []
+          }
+        ],
+        "fields": {
+          "providerName": {
+            "type": "string",
+            "valueString": "Riverbend Physiotherapy",
+            "confidence": 0.97,
+            "source": "D(1,80,60,620,60,620,110,80,110)",
+            "spans": [{ "offset": 2, "length": 23 }]
+          },
+          "providerType": {
+            "type": "string",
+            "valueString": "Physiotherapist",
+            "confidence": 0.72,
+            "source": "D(1,80,60,620,60,620,110,80,110)"
+          },
+          "serviceLines": {
+            "type": "array",
+            "valueArray": [
+              {
+                "type": "object",
+                "valueObject": {
+                  "serviceDate": { "type": "date", "valueDate": "2026-08-04", "confidence": 0.93, "source": "D(1,80,400,260,400,260,430,80,430)" },
+                  "description": { "type": "string", "valueString": "Initial consultation", "confidence": 0.9 },
+                  "itemCode": { "type": "string", "valueString": "500", "confidence": 0.88 },
+                  "amount": { "type": "number", "valueNumber": 95.0, "confidence": 0.95, "source": "D(1,900,400,1020,400,1020,430,900,430)" }
+                }
+              },
+              {
+                "type": "object",
+                "valueObject": {
+                  "serviceDate": { "type": "date", "valueDate": "2026-08-11", "confidence": 0.91 },
+                  "description": { "type": "string", "valueString": "Subsequent consultation", "confidence": 0.89 },
+                  "itemCode": { "type": "string", "valueString": "505", "confidence": 0.41 },
+                  "quantity": { "type": "number", "valueNumber": 1, "confidence": 0.6 },
+                  "amount": { "type": "number", "valueNumber": 75.5, "confidence": 0.94 }
+                }
+              }
+            ]
+          },
+          "total": { "type": "number", "valueNumber": 170.5, "confidence": 0.96, "source": "D(1,900,700,1060,700,1060,740,900,740)" },
+          "currency": { "type": "string", "valueString": "$", "confidence": 0.5 }
+        }
+      }
+    ]
+  },
+  "usage": { "documentPagesStandard": 1, "contextualizationTokens": 1000 }
+}

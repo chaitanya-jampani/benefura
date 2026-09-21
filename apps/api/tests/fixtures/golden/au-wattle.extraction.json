@@ -1,0 +1,128 @@
+{
+  "header": [
+    {
+      "row_id": "h1",
+      "page": 1,
+      "quote": "Wattle Health Fund",
+      "insurer": "Wattle Health Fund",
+      "plan_name": "Silver Plus Hospital and Mid Extras",
+      "currency": "AUD",
+      "effective_date": null,
+      "benefit_period_kind": "benefit_year",
+      "benefit_period_start_month": null,
+      "province": null,
+      "cover_type": "combined",
+      "hospital_tier": "silver",
+      "hospital_plus": true,
+      "hsa_annual_credit": null,
+      "hsa_carry_forward_years": null
+    },
+    {
+      "row_id": "h2",
+      "page": 1,
+      "quote": "Membership [POLICY_1] · Adult 1: [MEMBER_A] · Partner: [MEMBER_B]",
+      "insurer": null,
+      "plan_name": null,
+      "currency": null,
+      "effective_date": null,
+      "benefit_period_kind": null,
+      "benefit_period_start_month": null,
+      "province": null,
+      "cover_type": null,
+      "hospital_tier": null,
+      "hospital_plus": null,
+      "hsa_annual_credit": null,
+      "hsa_carry_forward_years": null
+    }
+  ],
+  "benefits": [
+    {
+      "row_id": "b1",
+      "page": 3,
+      "quote": "Physiotherapy initial consultation | 500 | $55.00",
+      "category_name": "Therapies",
+      "category_kind": "extras",
+      "benefit_name": "Physiotherapy",
+      "keywords": null,
+      "item_codes": "500, 505",
+      "coverage_kind": "schedule",
+      "coverage_percent": null,
+      "coverage_cap_amount": null,
+      "coverage_amount": null,
+      "limit_unit": null,
+      "limit_value": null,
+      "limit_period_kind": null,
+      "limit_period_months": null,
+      "limit_scope": null,
+      "frequency_count": null,
+      "frequency_period_kind": null,
+      "frequency_period_months": null,
+      "waiting_period_months": 2,
+      "requirements": null,
+      "pool_name": "Therapies combined limit",
+      "notes": "Schedule: 500 Physiotherapy initial consultation $55; 505 Physiotherapy subsequent consultation $45."
+    }
+  ],
+  "pools": [
+    {
+      "row_id": "p1",
+      "page": 3,
+      "quote": "Physiotherapy and chiropractic share a combined limit of $700 per person per calendar year",
+      "pool_name": "Therapies combined limit",
+      "limit_unit": "dollars",
+      "limit_value": 700.0,
+      "period_kind": "calendar_year",
+      "period_months": null,
+      "scope": "per_person",
+      "benefit_names": "Physiotherapy"
+    }
+  ],
+  "cost_shares": [
+    {
+      "row_id": "c1",
+      "page": 2,
+      "quote": "Excess: $500 per person per calendar year, payable once per admission",
+      "name": "Hospital excess",
+      "kind": "excess",
+      "amount": 500.0,
+      "percent": null,
+      "period_kind": "calendar_year",
+      "scope": "per_person",
+      "applies_to": "Hospital"
+    }
+  ],
+  "rules": [
+    {
+      "row_id": "r1",
+      "page": 4,
+      "quote": "Extras claims must be lodged within 2 years of the date of service",
+      "rule_kind": "submission_deadline",
+      "deadline_days": 730,
+      "deadline_basis": "service_date",
+      "text": null
+    }
+  ],
+  "hospital_categories": [
+    {
+      "row_id": "hc1",
+      "page": 2,
+      "quote": "Joint replacements | Covered",
+      "name": "Joint replacements",
+      "status": "covered"
+    },
+    {
+      "row_id": "hc2",
+      "page": 2,
+      "quote": "Insulin pumps | Restricted",
+      "name": "Insulin pumps",
+      "status": "restricted"
+    },
+    {
+      "row_id": "hc3",
+      "page": 2,
+      "quote": "Pregnancy and birth | Not covered",
+      "name": "Pregnancy and birth",
+      "status": "excluded"
+    }
+  ]
+}
