@@ -1,0 +1,18 @@
+[
+  {
+    "page": 1,
+    "markdown": "# Wattle Health Fund\n\nSilver Plus Hospital and Mid Extras\n\nMembership [POLICY_1] · Adult 1: [MEMBER_A] · Partner: [MEMBER_B]"
+  },
+  {
+    "page": 2,
+    "markdown": "## Hospital cover\n\n| Clinical category | Status |\n|---|---|\n| Joint replacements | Covered |\n| Insulin pumps | Restricted |\n| Pregnancy and birth | Not covered |\n\nExcess: $500 per person per calendar year, payable once per admission."
+  },
+  {
+    "page": 3,
+    "markdown": "## Extras\n\n| Service | Item | Benefit |\n|---|---|---|\n| Physiotherapy initial consultation | 500 | $55.00 |\n| Physiotherapy subsequent consultation | 505 | $45.00 |\n\nPhysiotherapy and chiropractic share a combined limit of $700 per person per calendar year. Waiting period: 2 months."
+  },
+  {
+    "page": 4,
+    "markdown": "## Claiming\n\nExtras claims must be lodged within 2 years of the date of service."
+  }
+]

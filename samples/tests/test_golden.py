@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from typing import Any
 
 import pytest
@@ -73,6 +74,23 @@ def test_extraction_quotes_are_on_their_page(doc: str) -> None:
         for token, value in raw_by_token.items():
             unredacted = unredacted.replace(token, value)
         assert norm(unredacted) in text[row["page"]], (section, row["row_id"])
+
+
+@pytest.mark.parametrize("doc", BOOKLETS)
+def test_alias_header_rows_give_members_and_identifiers(doc: str) -> None:
+    from app.pipelines.assemble import IDENTIFIER_STEMS, relationship_hint
+
+    header = load(f"golden/{doc}.extraction.json")["header"]
+    alias = [r for r in header if r["row_id"].startswith("hdr-alias-")]
+    assert alias and all(v is None for r in alias for k, v in r.items() if k not in ("row_id", "page", "quote"))
+    quotes_ = [r["quote"] for r in alias]
+    tokens = {t for q in quotes_ for t in re.findall(r"\[[A-Z]+_[A-Z0-9]+\]", q)}
+    p = plan(doc)
+    assert tokens == {m["alias"] for m in p["members"]} | set(p["identifiers"])
+    assert {t for t in tokens if t[1:-1].rsplit("_", 1)[0] in IDENTIFIER_STEMS} == set(p["identifiers"])
+    for m in p["members"]:
+        stem = m["alias"][1:-1].rsplit("_", 1)[0]
+        assert relationship_hint(m["alias"], stem, quotes_) == m["relationship"], m
 
 
 @pytest.mark.parametrize("doc", BOOKLETS)

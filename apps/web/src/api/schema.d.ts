@@ -4,6 +4,40 @@
  */
 
 export interface paths {
+    "/api/plan/analyze-chunk": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Analyze Chunk */
+        post: operations["analyze_chunk_api_plan_analyze_chunk_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/plan/assemble": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Assemble */
+        post: operations["assemble_api_plan_assemble_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/healthz": {
         parameters: {
             query?: never;
@@ -32,7 +66,6 @@ export interface components {
              * @enum {string}
              */
             coverType: "hospital" | "extras" | "combined";
-            /** @default null */
             hospital: components["schemas"]["HospitalCover"] | null;
             /**
              * @description discriminator enum property added by openapi-typescript
@@ -90,7 +123,6 @@ export interface components {
             /** Costshareids */
             costShareIds: string[];
             coverage: components["schemas"]["Coverage"];
-            /** @default null */
             frequency: components["schemas"]["Frequency"] | null;
             /** Id */
             id: string;
@@ -102,26 +134,40 @@ export interface components {
             limits: components["schemas"]["Limit"][];
             /** Name */
             name: string;
-            /**
-             * Notes
-             * @default null
-             */
+            /** Notes */
             notes: string | null;
-            /**
-             * Poolid
-             * @default null
-             */
+            /** Poolid */
             poolId: string | null;
             /** Requirements */
             requirements: string[];
-            /** @default null */
             source: components["schemas"]["SourceRef"] | null;
-            /** @default null */
             waitingPeriod: components["schemas"]["WaitingPeriod"] | null;
+        };
+        /** Body_analyze_chunk_api_plan_analyze_chunk_post */
+        Body_analyze_chunk_api_plan_analyze_chunk_post: {
+            /**
+             * Documentid
+             * @description Random per-booklet id from the browser (booklet and page caps).
+             */
+            documentId: string;
+            /**
+             * File
+             * @description application/pdf, ≤8 MB, image-only pages.
+             */
+            file: string;
+            /**
+             * Pages
+             * @description Comma-separated 1-based page numbers in this chunk.
+             */
+            pages: string;
+            /**
+             * Region
+             * @enum {string}
+             */
+            region: "CA" | "AU";
         };
         /** CAProfile */
         CAProfile: {
-            /** @default null */
             hsa: components["schemas"]["HealthSpendingAccount"] | null;
             /**
              * @description discriminator enum property added by openapi-typescript
@@ -346,10 +392,7 @@ export interface components {
              * @default false
              */
             coordinationOfBenefits: boolean;
-            /**
-             * Daysafterperiodend
-             * @default null
-             */
+            /** Daysafterperiodend */
             daysAfterPeriodEnd: number | null;
             /** Notes */
             notes: string[];
@@ -358,12 +401,8 @@ export interface components {
              * @default true
              */
             receiptsRequired: boolean;
-            /** @default null */
             source: components["schemas"]["SourceRef"] | null;
-            /**
-             * Submissiondays
-             * @default null
-             */
+            /** Submissiondays */
             submissionDays: number | null;
         };
         /**
@@ -374,10 +413,7 @@ export interface components {
          *     amount per service; ``coinsurance`` is informational because coverage percent already encodes it.
          */
         CostShare: {
-            /**
-             * Amountcents
-             * @default null
-             */
+            /** Amountcents */
             amountCents: number | null;
             /** Appliestobenefitids */
             appliesToBenefitIds: string[];
@@ -392,12 +428,8 @@ export interface components {
             kind: "deductible" | "excess" | "copay" | "coinsurance";
             /** Name */
             name: string;
-            /**
-             * Percent
-             * @default null
-             */
+            /** Percent */
             percent: number | null;
-            /** @default null */
             period: components["schemas"]["Period"] | null;
             /**
              * Scope
@@ -405,7 +437,6 @@ export interface components {
              * @enum {string}
              */
             scope: "per_person" | "per_family" | "per_policy";
-            /** @default null */
             source: components["schemas"]["SourceRef"] | null;
         };
         /**
@@ -420,32 +451,20 @@ export interface components {
          *       as a fallback when set.
          */
         Coverage: {
-            /**
-             * Amountcents
-             * @default null
-             */
+            /** Amountcents */
             amountCents: number | null;
-            /**
-             * Capcents
-             * @default null
-             */
+            /** Capcents */
             capCents: number | null;
             /**
              * Kind
              * @enum {string}
              */
             kind: "percent" | "percent_capped" | "fixed_per_service" | "per_diem" | "schedule";
-            /**
-             * Percent
-             * @default null
-             */
+            /** Percent */
             percent: number | null;
             /** Scheduleitems */
             scheduleItems: components["schemas"]["ScheduleItem"][];
-            /**
-             * Schedulenote
-             * @default null
-             */
+            /** Schedulenote */
             scheduleNote: string | null;
         };
         /** ErrorBody */
@@ -455,23 +474,14 @@ export interface components {
              * @enum {string}
              */
             code: "payload_too_large" | "pii_detected" | "unsafe_image" | "rate_limited" | "budget_exhausted" | "ai_disabled" | "invalid_request" | "unsupported_media_type" | "page_cap_exceeded" | "booklet_cap_exceeded" | "upstream_error" | "content_filtered" | "prompt_injection" | "internal_error";
-            /**
-             * Details
-             * @default null
-             */
-            details: components["schemas"]["PiiDetectedDetail"][] | null;
+            /** Details */
+            details?: components["schemas"]["PiiDetectedDetail"][] | null;
             /** Message */
             message: string;
-            /**
-             * Retryafterseconds
-             * @default null
-             */
-            retryAfterSeconds: number | null;
-            /**
-             * Traceid
-             * @default null
-             */
-            traceId: string | null;
+            /** Retryafterseconds */
+            retryAfterSeconds?: number | null;
+            /** Traceid */
+            traceId?: string | null;
         };
         /** ErrorResponse */
         ErrorResponse: {
@@ -740,7 +750,6 @@ export interface components {
         HospitalCategory: {
             /** Name */
             name: string;
-            /** @default null */
             source: components["schemas"]["SourceRef"] | null;
             /**
              * Status
@@ -752,7 +761,6 @@ export interface components {
         HospitalCover: {
             /** Categories */
             categories: components["schemas"]["HospitalCategory"][];
-            /** @default null */
             excess: components["schemas"]["HospitalExcess"] | null;
             /**
              * Plus
@@ -769,10 +777,7 @@ export interface components {
         HospitalExcess: {
             /** Amountcents */
             amountCents: number;
-            /**
-             * Maxperyearcents
-             * @default null
-             */
+            /** Maxperyearcents */
             maxPerYearCents: number | null;
             /**
              * Per
@@ -785,9 +790,8 @@ export interface components {
             /**
              * Category
              * @description PII category, never the matched value.
-             * @default null
              */
-            category: string | null;
+            category?: string | null;
             /**
              * Code
              * @enum {string}
@@ -795,16 +799,10 @@ export interface components {
             code: "pii_advisory" | "prompt_injection" | "page_excluded" | "page_irrelevant" | "unsupported_row" | "low_confidence" | "ungrounded_quote" | "verifier_rounds_exhausted" | "duplicate_removed" | "unlinked_pool" | "unlinked_cost_share" | "ocr_empty" | "field_missing" | "content_filtered" | "assumed_default";
             /** Message */
             message: string;
-            /**
-             * Page
-             * @default null
-             */
-            page: number | null;
-            /**
-             * Rowid
-             * @default null
-             */
-            rowId: string | null;
+            /** Page */
+            page?: number | null;
+            /** Rowid */
+            rowId?: string | null;
             /**
              * Severity
              * @enum {string}
@@ -843,7 +841,6 @@ export interface components {
             limit: components["schemas"]["Limit"];
             /** Name */
             name: string;
-            /** @default null */
             source: components["schemas"]["SourceRef"] | null;
         };
         /** Member */
@@ -878,42 +875,26 @@ export interface components {
              * @enum {string}
              */
             kind: "benefit_year" | "policy_anniversary" | "rolling_months" | "consecutive_benefit_years" | "lifetime" | "per_visit" | "per_admission";
-            /**
-             * Months
-             * @default null
-             */
+            /** Months */
             months: number | null;
-            /**
-             * Startday
-             * @default null
-             */
+            /** Startday */
             startDay: number | null;
-            /**
-             * Startmonth
-             * @default null
-             */
+            /** Startmonth */
             startMonth: number | null;
-            /**
-             * Years
-             * @default null
-             */
+            /** Years */
             years: number | null;
         };
         /** PiiDetectedDetail */
         PiiDetectedDetail: {
             /** Category */
             category: string;
-            /**
-             * Page
-             * @default null
-             */
-            page: number | null;
+            /** Page */
+            page?: number | null;
             /**
              * Polygon
              * @description Page-relative polygon in inches (CU word polygon), if available.
-             * @default null
              */
-            polygon: number[] | null;
+            polygon?: number[] | null;
         };
         /** Plan */
         Plan: {
@@ -928,12 +909,8 @@ export interface components {
              * @enum {string}
              */
             currency: "CAD" | "AUD";
-            /** @default null */
             document: components["schemas"]["PlanDocument"] | null;
-            /**
-             * Effectivedate
-             * @default null
-             */
+            /** Effectivedate */
             effectiveDate: string | null;
             /** Id */
             id: string;
@@ -966,10 +943,7 @@ export interface components {
         };
         /** PlanDocument */
         PlanDocument: {
-            /**
-             * Extractedat
-             * @default null
-             */
+            /** Extractedat */
             extractedAt: string | null;
             /**
              * Isdemo
@@ -1078,11 +1052,8 @@ export interface components {
             page: number;
             /** Rowid */
             rowId: string;
-            /**
-             * Verifierverdict
-             * @default null
-             */
-            verifierVerdict: ("supported" | "corrected" | "unsupported") | null;
+            /** Verifierverdict */
+            verifierVerdict?: ("supported" | "corrected" | "unsupported") | null;
         };
         /** ScheduleItem */
         ScheduleItem: {
@@ -1104,10 +1075,7 @@ export interface components {
             page: number;
             /** Quote */
             quote: string;
-            /**
-             * Verifierverdict
-             * @default null
-             */
+            /** Verifierverdict */
             verifierVerdict: ("supported" | "corrected" | "unsupported") | null;
         };
         /** Usage */
@@ -1151,10 +1119,7 @@ export interface components {
         WaitingPeriod: {
             /** Months */
             months: number;
-            /**
-             * Note
-             * @default null
-             */
+            /** Note */
             note: string | null;
         };
     };
@@ -1166,6 +1131,180 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    analyze_chunk_api_plan_analyze_chunk_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["Body_analyze_chunk_api_plan_analyze_chunk_post"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AnalyzeChunkResponse"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unsupported Media Type */
+            415: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Bad Gateway */
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    assemble_api_plan_assemble_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AssembleRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AssembleResponse"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unsupported Media Type */
+            415: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Bad Gateway */
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
     healthz_healthz_get: {
         parameters: {
             query?: never;
