@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from types import SimpleNamespace
 from typing import Any
 
@@ -84,3 +85,43 @@ def test_content_filter_detection_variants() -> None:
     assert is_content_filter_error(azure_error)
     assert not is_content_filter_error(RuntimeError("boom"))
     assert not is_content_filter_error(HttpResponseError(message="throttled"))
+
+
+def test_setup_cu_definitions(capsys: pytest.CaptureFixture[str]) -> None:
+    from app.config import get_settings
+    from scripts import setup_cu
+
+    assert setup_cu.main(["--dry-run"]) == 0
+    printed = json.loads(capsys.readouterr().out)
+    analyzer = printed["benefura-receipt"]
+    assert printed["defaults"]["modelDeployments"] == {
+        "gpt-5-mini": "gpt-5-mini",
+        "gpt-5-nano": "gpt-5-nano",
+        "text-embedding-3-small": "text-embedding-3-small",
+    }
+    assert analyzer["baseAnalyzerId"] == "prebuilt-document"
+    assert analyzer["config"]["estimateFieldSourceAndConfidence"] is True
+    fields = analyzer["fieldSchema"]["fields"]
+    assert set(fields) == {
+        "providerName",
+        "providerType",
+        "providerRegistrationNo",
+        "serviceLines",
+        "total",
+        "insurerPaid",
+        "currency",
+    }
+    assert set(fields["serviceLines"]["items"]["properties"]) == {
+        "serviceDate",
+        "description",
+        "itemCode",
+        "quantity",
+        "amount",
+    }
+
+    desired = setup_cu.receipt_analyzer(get_settings())
+    deployed = {**json.loads(json.dumps(desired)), "analyzerId": "benefura-receipt", "status": "ready"}
+    deployed["config"]["enableFormula"] = False  # service-added defaults do not count as drift
+    assert setup_cu.matches(deployed, desired)
+    deployed["fieldSchema"]["fields"]["total"]["description"] = "changed"
+    assert not setup_cu.matches(deployed, desired)
