@@ -169,6 +169,48 @@ def test_content_filter_on_chunk_is_200_with_issue(client: TestClient) -> None:
     assert any(i["code"] == "content_filtered" for i in body["issues"])
 
 
+def test_receipt_image_extracts_fields(client: TestClient) -> None:
+    response = client.post(
+        "/api/receipts/analyze", data={"region": "CA"}, files={"file": ("r.png", png_bytes(), "image/png")}
+    )
+    assert response.status_code == 200, response.text
+    body = response.json()
+    assert body["receipt"]["providerName"] == "Harbourfront Massage Therapy"
+    assert body["receipt"]["totalCents"] == 9500 and body["receipt"]["currency"] == "CAD"
+    assert body["fieldConfidence"]["totalCents"]["confidence"] == pytest.approx(0.94)
+    assert body["fieldConfidence"]["serviceLines[0].amountCents"]["source"].startswith("D(1,")
+    assert any(i["code"] == "low_confidence" for i in body["issues"])
+    assert body["traceId"] == response.headers[TRACE]
+
+
+def test_receipt_pdf_is_moderated_per_page(client: TestClient) -> None:
+    response = client.post(
+        "/api/receipts/analyze", data={"region": "AU"}, files={"file": ("r.pdf", image_pdf(2), "application/pdf")}
+    )
+    assert response.status_code == 200, response.text
+    assert response.json()["usage"]["contentSafetyRecords"] >= 2
+    assert response.json()["receipt"]["serviceLines"][0]["itemCode"] == "500"
+
+
+@pytest.mark.parametrize(
+    ("header", "code"),
+    [
+        ({"x-benefura-fake-unsafe-image": "1"}, "unsafe_image"),
+        ({"x-benefura-fake-injection": "1"}, "prompt_injection"),
+        ({"x-benefura-fake-content-filter": "1"}, "content_filtered"),
+        ({"x-benefura-fake-pii": "1:AUTaxFileNumber"}, "pii_detected"),
+    ],
+)
+def test_receipt_rejections_are_422(client: TestClient, header: dict[str, str], code: str) -> None:
+    response = client.post(
+        "/api/receipts/analyze",
+        data={"region": "AU"},
+        files={"file": ("r.png", png_bytes(), "image/png")},
+        headers=header,
+    )
+    assert_error(response, 422, code)
+
+
 def test_hooks_ignored_outside_fake_mode(monkeypatch: pytest.MonkeyPatch) -> None:
     from app.fake_hooks import current_hooks
 
@@ -218,12 +260,35 @@ def test_text_layer_pdf_is_refused(client: TestClient) -> None:
     assert_error(post_chunk(client, [1], pdf=text_pdf()), 400, "invalid_request")
 
 
+def test_receipt_image_dimensions(client: TestClient) -> None:
+    import io
+
+    from PIL import Image
+
+    buffer = io.BytesIO()
+    Image.new("RGB", (20, 20)).save(buffer, "PNG")
+    response = client.post(
+        "/api/receipts/analyze", data={"region": "CA"}, files={"file": ("r.png", buffer.getvalue(), "image/png")}
+    )
+    assert_error(response, 400, "invalid_request")
+    broken = client.post(
+        "/api/receipts/analyze", data={"region": "CA"}, files={"file": ("r.png", b"\x89PNG\r\n\x1a\nnope", "image/png")}
+    )
+    assert_error(broken, 415, "unsupported_media_type")
+
+
 def test_bad_document_id(client: TestClient) -> None:
     assert_error(post_chunk(client, [1], document_id="short"), 400, "invalid_request")
 
 
 def test_generic_content_type_is_sniffed(client: TestClient) -> None:
     assert post_chunk(client, [1], content_type="application/octet-stream").status_code == 200
+    response = client.post(
+        "/api/receipts/analyze",
+        data={"region": "AU"},
+        files={"file": ("receipt", png_bytes(), "application/octet-stream")},
+    )
+    assert response.status_code == 200, response.text
 
 
 def test_fake_mode_relaxes_caps_unless_set(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -242,6 +307,10 @@ def test_unsupported_media_type(client: TestClient) -> None:
     assert_error(
         post_chunk(client, [1], pdf=png_bytes(), content_type="application/pdf"), 415, "unsupported_media_type"
     )
+    response = client.post(
+        "/api/receipts/analyze", data={"region": "CA"}, files={"file": ("r.gif", b"GIF89a....", "image/gif")}
+    )
+    assert_error(response, 415, "unsupported_media_type")
 
 
 def test_body_too_large_by_content_length(client: TestClient, monkeypatch: pytest.MonkeyPatch) -> None:
@@ -266,6 +335,17 @@ def test_body_too_large_when_streamed(client: TestClient, monkeypatch: pytest.Mo
             yield b'{"padding": "' + b"x" * 400 + b'"}'
 
     response = client.post("/api/plan/assemble", content=chunks(), headers={"content-type": "application/json"})
+    assert_error(response, 413, "payload_too_large")
+
+
+def test_file_over_limit_is_413(client: TestClient, monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("MAX_RECEIPT_BYTES", "100")
+    from app.config import get_settings
+
+    get_settings.cache_clear()
+    response = client.post(
+        "/api/receipts/analyze", data={"region": "CA"}, files={"file": ("r.png", png_bytes() + b"0" * 200, "image/png")}
+    )
     assert_error(response, 413, "payload_too_large")
 
 
@@ -320,6 +400,10 @@ def test_ai_off_is_503(monkeypatch: pytest.MonkeyPatch) -> None:
     get_settings.cache_clear()
     with TestClient(create_app()) as off_client:
         assert_error(post_chunk(off_client, [1]), 503, "ai_disabled")
+        response = off_client.post(
+            "/api/receipts/analyze", data={"region": "CA"}, files={"file": ("r.png", png_bytes(), "image/png")}
+        )
+        assert_error(response, 503, "ai_disabled")
         health = off_client.get("/healthz").json()
         assert health["aiEnabled"] is False
 

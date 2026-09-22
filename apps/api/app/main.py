@@ -10,6 +10,7 @@ from typing import Annotated, Literal
 from fastapi import FastAPI, File, Form, Request, UploadFile
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
+from PIL import Image, UnidentifiedImageError
 from pypdf import PdfReader
 from pypdf.errors import PdfReadError
 from starlette.exceptions import HTTPException as StarletteHTTPException
@@ -34,8 +35,10 @@ from app.models.api import (
     AssembleResponse,
     ErrorResponse,
     HealthResponse,
+    ReceiptAnalyzeResponse,
 )
 from app.pipelines import chunk as chunk_pipeline
+from app.pipelines import receipt as receipt_pipeline
 from app.pipelines.assemble import assemble_plan
 from app.telemetry import configure_telemetry, current_trace_id, instrument_fastapi
 
@@ -137,6 +140,17 @@ def inspect_pdf(data: bytes, settings: Settings) -> int:
     return count
 
 
+def check_image(data: bytes) -> None:
+    """Content Safety accepts 50–7200 px per side (M0-verify); reject anything else before paying for calls."""
+    try:
+        with Image.open(io.BytesIO(data)) as image:
+            width, height = image.size
+    except (UnidentifiedImageError, OSError) as exc:
+        raise ApiError("unsupported_media_type", "The image could not be read.") from exc
+    if not (50 <= width <= 7200 and 50 <= height <= 7200):
+        raise ApiError("invalid_request", "Receipt images must be between 50 and 7200 pixels on each side.")
+
+
 def create_app() -> FastAPI:
     """CORS is fixed at startup; route handlers read settings per request."""
     settings = get_settings()
@@ -218,6 +232,39 @@ def create_app() -> FastAPI:
     @app.post("/api/plan/assemble", response_model=AssembleResponse, responses=ERROR_RESPONSES)
     async def assemble(body: AssembleRequest) -> AssembleResponse:
         return assemble_plan(body)
+
+    @app.post("/api/receipts/analyze", response_model=ReceiptAnalyzeResponse, responses=ERROR_RESPONSES)
+    async def analyze_receipt(
+        request: Request,
+        region: Annotated[Literal["CA", "AU"], Form()],
+        file: Annotated[UploadFile, File(description="image/jpeg or image/png ≤4 MB, or application/pdf.")],
+    ) -> ReceiptAnalyzeResponse:
+        settings = get_settings()
+        require_ai(settings)
+        data, content_type = await read_upload(
+            file, max_bytes=settings.max_receipt_bytes, allowed=("image/jpeg", "image/png", "application/pdf")
+        )
+        if content_type == "application/pdf" and inspect_pdf(data, settings) > settings.max_receipt_pages:
+            raise ApiError("invalid_request", f"Receipts can have at most {settings.max_receipt_pages} pages.")
+        if content_type != "application/pdf":
+            check_image(data)
+
+        namespace = namespace_from_request(request, "demo-extraction")
+        budget = get_budget()
+        await budget.ensure_available(namespace)
+
+        tracker = UsageTracker()
+        try:
+            result = await receipt_pipeline.analyze_receipt(data, content_type, region=region, tracker=tracker)
+        finally:
+            usage = await charge_usage(budget, namespace, tracker)
+        return ReceiptAnalyzeResponse(
+            receipt=result.receipt,
+            fieldConfidence=result.field_confidence,
+            issues=result.issues,
+            usage=usage,
+            traceId=trace_id_of(request),
+        )
 
     return app
 
