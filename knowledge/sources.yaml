@@ -1,0 +1,423 @@
+# Sources for the `public-knowledge-v1` index; rules are enforced in ingest/sources.py.
+# index: false is link-only (never fetched or pushed). verbatim stores converted text unchanged; excerpt stores
+# bounded excerpts only. Fetched content stays in the gitignored knowledge/.cache/.
+# URLs, titles and terms were checked against each publisher's terms page on 2026-09-16, and `licence_note`
+# quotes the terms relied on. Benefura is a non-commercial portfolio demo.
+version: 1
+sources:
+  # Canada: canada.ca, Government of Canada non-commercial reproduction terms
+  - id: cra-medical-expenses-lines-33099-33199
+    url: https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/about-your-tax-return/tax-return/completing-a-tax-return/deductions-credits-expenses/lines-33099-33199-eligible-medical-expenses-you-claim-on-your-tax-return.html
+    region: CA
+    title: Lines 33099 and 33199 – Eligible medical expenses you can claim on your tax return
+    publisher: Canada Revenue Agency
+    licence: Government of Canada non-commercial reproduction terms
+    licence_url: https://www.canada.ca/en/transparency/terms.html
+    licence_note: >-
+      canada.ca Terms and conditions (modified 2025-09-05): "Unless otherwise specified you may reproduce the
+      materials in whole or in part for non-commercial purposes, and in any format, without charge or further
+      permission, provided you do the following: exercise due diligence in ensuring the accuracy of the materials
+      reproduced; indicate both the complete title of the materials reproduced, as well as the author (where
+      available); indicate that the reproduction is a copy of the version available at [URL]". Commercial
+      redistribution needs written permission. Open Government Licence – Canada covers Open Government Portal
+      datasets, not canada.ca web pages.
+    attribution: >-
+      "Lines 33099 and 33199 – Eligible medical expenses you can claim on your tax return", Canada Revenue Agency.
+      Copy of the version available at canada.ca; not produced in affiliation with or endorsed by the Government of Canada.
+    reproduction: verbatim
+    index: true
+    topics: [eligible medical expenses, medical expense tax credit]
+
+  - id: cra-details-of-medical-expenses
+    url: https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/about-your-tax-return/tax-return/completing-a-tax-return/deductions-credits-expenses/lines-33099-33199-eligible-medical-expenses-you-claim-on-your-tax-return/details-medical-expenses.html
+    region: CA
+    title: Details of medical expenses
+    publisher: Canada Revenue Agency
+    licence: Government of Canada non-commercial reproduction terms
+    licence_url: https://www.canada.ca/en/transparency/terms.html
+    licence_note: >-
+      canada.ca Terms and conditions: "you may reproduce the materials in whole or in part for non-commercial
+      purposes, and in any format, without charge or further permission, provided you ... exercise due diligence in
+      ensuring the accuracy ... indicate both the complete title ... as well as the author ... indicate that the
+      reproduction is a copy of the version available at [URL]".
+    attribution: >-
+      "Details of medical expenses", Canada Revenue Agency. Copy of the version available at canada.ca; not produced
+      in affiliation with or endorsed by the Government of Canada.
+    reproduction: verbatim
+    index: true
+    topics: [eligible medical expenses, medical expense tax credit]
+
+  - id: cra-rc4065-medical-expenses-guide
+    url: https://www.canada.ca/content/dam/cra-arc/formspubs/pub/rc4065/rc4065-25e.pdf
+    region: CA
+    title: RC4065 Medical Expenses 2025
+    publisher: Canada Revenue Agency
+    licence: Government of Canada non-commercial reproduction terms
+    licence_url: https://www.canada.ca/en/transparency/terms.html
+    licence_note: >-
+      canada.ca Terms and conditions: "you may reproduce the materials in whole or in part for non-commercial
+      purposes, and in any format, without charge or further permission, provided you ... indicate that the
+      reproduction is a copy of the version available at [URL]". PDF linked from the RC4065 landing page
+      (https://www.canada.ca/en/revenue-agency/services/forms-publications/publications/rc4065.html); an HTML edition
+      with the same content also exists. The PDF is used so the guide goes through Content Understanding layout.
+    attribution: >-
+      "RC4065 Medical Expenses 2025", Canada Revenue Agency. Copy of the version available at canada.ca; not produced
+      in affiliation with or endorsed by the Government of Canada.
+    reproduction: verbatim
+    index: true
+    format: pdf
+    topics: [eligible medical expenses, medical expense tax credit]
+
+  - id: tbs-pshcp-overview
+    url: https://www.canada.ca/en/treasury-board-secretariat/topics/benefit-plans/plans/health-care-plan.html
+    region: CA
+    title: Public Service Health Care Plan
+    publisher: Treasury Board of Canada Secretariat
+    licence: Government of Canada non-commercial reproduction terms
+    licence_url: https://www.canada.ca/en/transparency/terms.html
+    licence_note: >-
+      canada.ca Terms and conditions: "you may reproduce the materials in whole or in part for non-commercial
+      purposes ... provided you ... indicate both the complete title ... as well as the author ... indicate that the
+      reproduction is a copy of the version available at [URL]". pshcp.ca (PSHCP-AA) grants no reproduction licence,
+      so only the canada.ca pages are used.
+    attribution: >-
+      "Public Service Health Care Plan", Treasury Board of Canada Secretariat. Copy of the version available at
+      canada.ca; not produced in affiliation with or endorsed by the Government of Canada.
+    reproduction: verbatim
+    index: true
+    topics: [extended health plan, group benefits]
+
+  - id: tbs-pshcp-summary
+    url: https://www.canada.ca/en/treasury-board-secretariat/services/benefit-plans/health-care-plan/public-service-health-care-plan-glance.html
+    region: CA
+    title: Public Service Health Care Plan summary
+    publisher: Treasury Board of Canada Secretariat
+    licence: Government of Canada non-commercial reproduction terms
+    licence_url: https://www.canada.ca/en/transparency/terms.html
+    licence_note: >-
+      canada.ca Terms and conditions: "Unless otherwise specified you may reproduce the materials in whole or in part
+      for non-commercial purposes". Stored as bounded excerpts (conservative): the page summarises the PSHCP
+      Directive hosted on the National Joint Council site (njc-cnm.gc.ca), whose terms were not verified.
+    attribution: >-
+      "Public Service Health Care Plan summary", Treasury Board of Canada Secretariat. Excerpt of the version
+      available at canada.ca; not produced in affiliation with or endorsed by the Government of Canada.
+    reproduction: excerpt
+    index: true
+    topics: [extended health plan, reimbursement levels, maximums]
+
+  - id: cdcp-overview
+    url: https://www.canada.ca/en/services/benefits/dental/dental-care-plan.html
+    region: CA
+    title: Canadian Dental Care Plan
+    publisher: Government of Canada
+    licence: Government of Canada non-commercial reproduction terms
+    licence_url: https://www.canada.ca/en/transparency/terms.html
+    licence_note: >-
+      canada.ca Terms and conditions: "you may reproduce the materials in whole or in part for non-commercial
+      purposes, and in any format, without charge or further permission, provided you ... indicate that the
+      reproduction is a copy of the version available at [URL]".
+    attribution: >-
+      "Canadian Dental Care Plan", Government of Canada. Copy of the version available at canada.ca; not produced in
+      affiliation with or endorsed by the Government of Canada.
+    reproduction: verbatim
+    index: true
+    topics: [dental care plan, eligibility]
+
+  - id: cdcp-what-is-covered
+    url: https://www.canada.ca/en/services/benefits/dental/dental-care-plan/coverage.html
+    region: CA
+    title: Canadian Dental Care Plan – What is covered
+    publisher: Government of Canada
+    licence: Government of Canada non-commercial reproduction terms
+    licence_url: https://www.canada.ca/en/transparency/terms.html
+    licence_note: >-
+      canada.ca Terms and conditions: "you may reproduce the materials in whole or in part for non-commercial
+      purposes, and in any format, without charge or further permission, provided you ... indicate that the
+      reproduction is a copy of the version available at [URL]".
+    attribution: >-
+      "Canadian Dental Care Plan – What is covered", Government of Canada. Copy of the version available at
+      canada.ca; not produced in affiliation with or endorsed by the Government of Canada.
+    reproduction: verbatim
+    index: true
+    topics: [dental care plan, covered services]
+
+  - id: health-canada-about-canada-health-act
+    url: https://www.canada.ca/en/health-canada/services/health-care-system/canada-health-care-system-medicare/canada-health-act.html
+    region: CA
+    title: About the Canada Health Act
+    publisher: Health Canada
+    licence: Government of Canada non-commercial reproduction terms
+    licence_url: https://www.canada.ca/en/transparency/terms.html
+    licence_note: >-
+      canada.ca Terms and conditions: "you may reproduce the materials in whole or in part for non-commercial
+      purposes, and in any format, without charge or further permission, provided you ... indicate that the
+      reproduction is a copy of the version available at [URL]".
+    attribution: >-
+      "About the Canada Health Act", Health Canada. Copy of the version available at canada.ca; not produced in
+      affiliation with or endorsed by the Government of Canada.
+    reproduction: verbatim
+    index: true
+    topics: [canada health act, insured services, public health insurance]
+
+  # Canada: Justice Laws Website
+  - id: canada-health-act-rsc-1985-c-c-6
+    url: https://laws-lois.justice.gc.ca/eng/acts/C-6/FullText.html
+    region: CA
+    title: Canada Health Act (R.S.C., 1985, c. C-6)
+    publisher: Department of Justice Canada
+    licence: Reproduction of Federal Law Order (SI/97-5)
+    licence_url: https://laws-lois.justice.gc.ca/eng/regulations/SI-97-5/page-1.html
+    licence_note: >-
+      Reproduction of Federal Law Order: "Anyone may, without charge or request for permission, reproduce enactments
+      and consolidations of enactments of the Government of Canada ... provided due diligence is exercised in
+      ensuring the accuracy of the materials reproduced and the reproduction is not represented as an official
+      version." Justice Laws Important Note: the Department "assumes no responsibility for the accuracy or
+      reliability of any reproduction derived from the legislative material on this site."
+    attribution: >-
+      Canada Health Act (R.S.C., 1985, c. C-6), Justice Laws Website, Department of Justice Canada. Unofficial
+      reproduction; not an official version.
+    reproduction: verbatim
+    index: true
+    topics: [canada health act, insured services, public health insurance]
+
+  # Canada: ontario.ca, Crown copyright, non-commercial and unmodified, so verbatim only
+  - id: ontario-what-ohip-covers
+    url: https://www.ontario.ca/page/what-ohip-covers
+    region: CA
+    title: What OHIP covers
+    publisher: Government of Ontario
+    licence: ontario.ca Crown copyright (non-commercial, unmodified reproduction)
+    licence_url: https://www.ontario.ca/page/copyright-information
+    licence_note: >-
+      ontario.ca Copyright information: "Unless otherwise indicated, the materials on this website are protected by
+      Crown copyright, which is held by the King's Printer for Ontario. If credit is given and Crown copyright is
+      acknowledged, the materials may be reproduced for non-commercial purposes if no changes are made to the
+      original content." Stored verbatim only; never paraphrased or excerpted.
+    attribution: >-
+      "What OHIP covers", Government of Ontario. © King's Printer for Ontario, 2026. Reproduced without changes for
+      non-commercial purposes.
+    reproduction: verbatim
+    index: true
+    topics: [ohip, public health insurance, insured services]
+
+  - id: ontario-apply-for-ohip-health-card
+    url: https://www.ontario.ca/page/apply-ohip-and-get-health-card
+    region: CA
+    title: Apply for OHIP and get a health card
+    publisher: Government of Ontario
+    licence: ontario.ca Crown copyright (non-commercial, unmodified reproduction)
+    licence_url: https://www.ontario.ca/page/copyright-information
+    licence_note: >-
+      ontario.ca Copyright information: "If credit is given and Crown copyright is acknowledged, the materials may be
+      reproduced for non-commercial purposes if no changes are made to the original content." Stored verbatim only.
+    attribution: >-
+      "Apply for OHIP and get a health card", Government of Ontario. © King's Printer for Ontario, 2025. Reproduced
+      without changes for non-commercial purposes.
+    reproduction: verbatim
+    index: true
+    topics: [ohip, health card, eligibility]
+
+  # Canada: link-only, terms do not permit reproduction
+  - id: bc-medical-services-plan
+    url: https://www2.gov.bc.ca/gov/content/health/health-drug-coverage/msp
+    region: CA
+    title: Medical Services Plan
+    publisher: Province of British Columbia
+    licence: Province of British Columbia copyright, all rights reserved
+    licence_url: https://www2.gov.bc.ca/gov/content/home/copyright
+    licence_note: >-
+      gov.bc.ca Copyright (updated 2026-03-16): "This material is owned by the Government of British Columbia and
+      protected by copyright law. It may not be reproduced or redistributed without the prior written permission of
+      the Province of British Columbia." Link-only.
+    attribution: Medical Services Plan, Province of British Columbia (link only).
+    reproduction: excerpt
+    index: false
+    topics: [msp, public health insurance]
+
+  - id: clhia-guide-supplementary-health-insurance
+    url: https://www.clhia.ca/en-ca/Consumers/Consumer-Guides/guide-to-supplementary-health-insurance
+    region: CA
+    title: Guide to Supplementary Health Insurance
+    publisher: Canadian Life and Health Insurance Association
+    licence: CLHIA Terms of Use (personal use only)
+    licence_url: https://www.clhia.ca/en-CA/Terms-of-Use
+    licence_note: >-
+      CLHIA Terms of Use: "The display of copyright on pages of the Site does not imply that a licence of any kind has
+      been granted to anyone else. The Information is for your personal use only. Any unauthorized downloading,
+      re-transmission, or other copying or modification of contents of the Site subject to copyright may be a
+      violation of federal legislation". Link-only.
+    attribution: Guide to Supplementary Health Insurance, Canadian Life and Health Insurance Association (link only).
+    reproduction: excerpt
+    index: false
+    topics: [extended health plan, group benefits]
+
+  # Australia: privatehealth.gov.au, CC BY 3.0 AU
+  - id: phio-waiting-periods
+    url: https://www.privatehealth.gov.au/health_insurance/howitworks/waiting_periods.htm
+    region: AU
+    title: Waiting periods
+    publisher: Private Health Insurance Ombudsman
+    licence: CC BY 3.0 AU
+    licence_url: https://creativecommons.org/licenses/by/3.0/au/
+    licence_note: &phio_note >-
+      privatehealth.gov.au Copyright: "With the exception of the Commonwealth Coat of Arms, any third party material or
+      where otherwise noted, material presented on Privatehealth.gov.au is provided under a Creative Commons
+      Attribution 3.0 International licence which can be accessed here: https://creativecommons.org/licenses/by/3.0/au/"
+      (the link, and therefore the licence relied on, is CC BY 3.0 Australia). "You must give appropriate credit,
+      provide a link to the license, and indicate if changes were made." No framing of the site.
+    attribution: &phio_attribution >-
+      Licensed from the Commonwealth of Australia under a Creative Commons Attribution 3.0 Australia licence
+      (https://creativecommons.org/licenses/by/3.0/au/). This material is available from the Private Health Insurance
+      Ombudsman website at https://privatehealth.gov.au/. Changes: split into passages for search.
+    reproduction: verbatim
+    index: true
+    topics: [waiting periods, pre-existing conditions]
+
+  - id: phio-clinical-categories
+    url: https://www.privatehealth.gov.au/health_insurance/howitworks/clinical_categories.htm
+    region: AU
+    title: Clinical categories
+    publisher: Private Health Insurance Ombudsman
+    licence: CC BY 3.0 AU
+    licence_url: https://creativecommons.org/licenses/by/3.0/au/
+    licence_note: *phio_note
+    attribution: *phio_attribution
+    reproduction: verbatim
+    index: true
+    topics: [clinical categories, hospital cover]
+
+  - id: phio-product-tiers
+    url: https://www.privatehealth.gov.au/health_insurance/howitworks/producttiers.htm
+    region: AU
+    title: Product tiers
+    publisher: Private Health Insurance Ombudsman
+    licence: CC BY 3.0 AU
+    licence_url: https://creativecommons.org/licenses/by/3.0/au/
+    licence_note: *phio_note
+    attribution: *phio_attribution
+    reproduction: verbatim
+    index: true
+    topics: [product tiers, hospital cover, gold silver bronze basic]
+
+  - id: phio-out-of-pocket-costs
+    url: https://www.privatehealth.gov.au/health_insurance/howitworks/out_of_pocket.htm
+    region: AU
+    title: Out of pocket costs
+    publisher: Private Health Insurance Ombudsman
+    licence: CC BY 3.0 AU
+    licence_url: https://creativecommons.org/licenses/by/3.0/au/
+    licence_note: *phio_note
+    attribution: *phio_attribution
+    reproduction: verbatim
+    index: true
+    topics: [out-of-pocket costs, gaps, excess]
+
+  - id: phio-overview-health-system
+    url: https://www.privatehealth.gov.au/health_insurance/what_is_covered/index.htm
+    region: AU
+    title: Overview of Health System
+    publisher: Private Health Insurance Ombudsman
+    licence: CC BY 3.0 AU
+    licence_url: https://creativecommons.org/licenses/by/3.0/au/
+    licence_note: *phio_note
+    attribution: *phio_attribution
+    reproduction: verbatim
+    index: true
+    topics: [medicare and private health insurance, public hospital, private patient]
+
+  - id: phio-what-medicare-covers
+    url: https://www.privatehealth.gov.au/health_insurance/what_is_covered/medicare.htm
+    region: AU
+    title: What is covered by Medicare?
+    publisher: Private Health Insurance Ombudsman
+    licence: CC BY 3.0 AU
+    licence_url: https://creativecommons.org/licenses/by/3.0/au/
+    licence_note: *phio_note
+    attribution: *phio_attribution
+    reproduction: verbatim
+    index: true
+    topics: [medicare and private health insurance, medicare]
+
+  - id: phio-what-private-health-covers
+    url: https://www.privatehealth.gov.au/health_insurance/what_is_covered/privatehealth.htm
+    region: AU
+    title: What is covered by private health insurance?
+    publisher: Private Health Insurance Ombudsman
+    licence: CC BY 3.0 AU
+    licence_url: https://creativecommons.org/licenses/by/3.0/au/
+    licence_note: *phio_note
+    attribution: *phio_attribution
+    reproduction: verbatim
+    index: true
+    topics: [hospital cover, extras cover, general treatment]
+
+  - id: phio-lifetime-health-cover
+    url: https://www.privatehealth.gov.au/health_insurance/surcharges_incentives/lifetime_health_cover.htm
+    region: AU
+    title: Lifetime Health Cover
+    publisher: Private Health Insurance Ombudsman
+    licence: CC BY 3.0 AU
+    licence_url: https://creativecommons.org/licenses/by/3.0/au/
+    licence_note: *phio_note
+    attribution: *phio_attribution
+    reproduction: verbatim
+    index: true
+    topics: [lifetime health cover, loading]
+
+  - id: phio-medicare-levy-surcharge
+    url: https://www.privatehealth.gov.au/health_insurance/surcharges_incentives/medicare_levy.htm
+    region: AU
+    title: Medicare Levy Surcharge
+    publisher: Private Health Insurance Ombudsman
+    licence: CC BY 3.0 AU
+    licence_url: https://creativecommons.org/licenses/by/3.0/au/
+    licence_note: *phio_note
+    attribution: *phio_attribution
+    reproduction: verbatim
+    index: true
+    topics: [medicare levy surcharge, income thresholds]
+
+  - id: phio-private-health-insurance-rebate
+    url: https://www.privatehealth.gov.au/health_insurance/surcharges_incentives/insurance_rebate.htm
+    region: AU
+    title: Australian Government Private Health Insurance Rebate
+    publisher: Private Health Insurance Ombudsman
+    licence: CC BY 3.0 AU
+    licence_url: https://creativecommons.org/licenses/by/3.0/au/
+    licence_note: *phio_note
+    attribution: *phio_attribution
+    reproduction: verbatim
+    index: true
+    topics: [private health insurance rebate, income tiers]
+
+  - id: phio-glossary
+    url: https://www.privatehealth.gov.au/footer/glossary.htm
+    region: AU
+    title: Glossary
+    publisher: Private Health Insurance Ombudsman
+    licence: CC BY 3.0 AU
+    licence_url: https://creativecommons.org/licenses/by/3.0/au/
+    licence_note: *phio_note
+    attribution: *phio_attribution
+    reproduction: verbatim
+    index: true
+    topics: [glossary, definitions]
+
+  # Australia: Services Australia, licence unconfirmed, so link-only
+  - id: services-australia-medicare-safety-nets
+    url: https://www.servicesaustralia.gov.au/medicare-safety-nets
+    region: AU
+    title: Medicare Safety Nets
+    publisher: Services Australia
+    licence: Unconfirmed (reportedly CC BY 4.0 International)
+    licence_url: https://www.servicesaustralia.gov.au/copyright?context=22
+    licence_note: >-
+      NOT CONFIRMED. servicesaustralia.gov.au refused automated fetches on 2026-09-16 (timeouts / HTTP/2 errors), so
+      the copyright page could not be read. Search-engine snippets of it say content is "licensed under a Creative
+      Commons Attribution 4.0 International Licence" with exceptions for logos, names, the Coat of Arms and
+      third-party material, attributed as "© Commonwealth of Australia". Keep index: false until a person reads the
+      copyright page and the site allows the ingest user agent.
+    attribution: Medicare Safety Nets, Services Australia, © Commonwealth of Australia (link only).
+    reproduction: excerpt
+    index: false
+    topics: [medicare safety net, out-of-pocket costs]
