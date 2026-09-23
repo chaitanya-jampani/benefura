@@ -317,6 +317,30 @@
         "title": "Body_analyze_chunk_api_plan_analyze_chunk_post",
         "type": "object"
       },
+      "Body_analyze_receipt_api_receipts_analyze_post": {
+        "properties": {
+          "file": {
+            "contentMediaType": "application/octet-stream",
+            "description": "image/jpeg or image/png \u22644 MB, or application/pdf.",
+            "title": "File",
+            "type": "string"
+          },
+          "region": {
+            "enum": [
+              "CA",
+              "AU"
+            ],
+            "title": "Region",
+            "type": "string"
+          }
+        },
+        "required": [
+          "region",
+          "file"
+        ],
+        "title": "Body_analyze_receipt_api_receipts_analyze_post",
+        "type": "object"
+      },
       "CAProfile": {
         "additionalProperties": false,
         "properties": {
@@ -2095,8 +2119,8 @@
         "additionalProperties": false,
         "properties": {
           "confidence": {
-            "maximum": 1,
-            "minimum": 0,
+            "maximum": 1.0,
+            "minimum": 0.0,
             "title": "Confidence",
             "type": "number"
           },
@@ -2109,7 +2133,6 @@
                 "type": "null"
               }
             ],
-            "default": null,
             "description": "CU source string, e.g. D(1,0.5,1.2,...).",
             "title": "Source"
           }
@@ -2860,20 +2883,18 @@
                 "type": "null"
               }
             ],
-            "default": null,
             "title": "Currency"
           },
           "insurerPaidCents": {
             "anyOf": [
               {
-                "minimum": 0,
+                "minimum": 0.0,
                 "type": "integer"
               },
               {
                 "type": "null"
               }
             ],
-            "default": null,
             "title": "Insurerpaidcents"
           },
           "providerName": {
@@ -2885,7 +2906,6 @@
                 "type": "null"
               }
             ],
-            "default": null,
             "title": "Providername"
           },
           "providerRegistrationNo": {
@@ -2897,7 +2917,6 @@
                 "type": "null"
               }
             ],
-            "default": null,
             "title": "Providerregistrationno"
           },
           "providerType": {
@@ -2909,7 +2928,6 @@
                 "type": "null"
               }
             ],
-            "default": null,
             "title": "Providertype"
           },
           "serviceLines": {
@@ -2922,14 +2940,13 @@
           "totalCents": {
             "anyOf": [
               {
-                "minimum": 0,
+                "minimum": 0.0,
                 "type": "integer"
               },
               {
                 "type": "null"
               }
             ],
-            "default": null,
             "title": "Totalcents"
           }
         },
@@ -2987,14 +3004,13 @@
           "amountCents": {
             "anyOf": [
               {
-                "minimum": 0,
+                "minimum": 0.0,
                 "type": "integer"
               },
               {
                 "type": "null"
               }
             ],
-            "default": null,
             "title": "Amountcents"
           },
           "description": {
@@ -3006,7 +3022,6 @@
                 "type": "null"
               }
             ],
-            "default": null,
             "title": "Description"
           },
           "itemCode": {
@@ -3018,20 +3033,18 @@
                 "type": "null"
               }
             ],
-            "default": null,
             "title": "Itemcode"
           },
           "quantity": {
             "anyOf": [
               {
-                "minimum": 0,
+                "minimum": 0.0,
                 "type": "number"
               },
               {
                 "type": "null"
               }
             ],
-            "default": null,
             "title": "Quantity"
           },
           "serviceDate": {
@@ -3044,7 +3057,6 @@
                 "type": "null"
               }
             ],
-            "default": null,
             "title": "Servicedate"
           }
         },
@@ -3465,6 +3477,104 @@
           }
         },
         "summary": "Assemble"
+      }
+    },
+    "/api/receipts/analyze": {
+      "post": {
+        "operationId": "analyze_receipt_api_receipts_analyze_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_analyze_receipt_api_receipts_analyze_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReceiptAnalyzeResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "415": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unsupported Media Type"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "502": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Gateway"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        },
+        "summary": "Analyze Receipt"
       }
     },
     "/healthz": {

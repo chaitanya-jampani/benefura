@@ -38,6 +38,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/receipts/analyze": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Analyze Receipt */
+        post: operations["analyze_receipt_api_receipts_analyze_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/healthz": {
         parameters: {
             query?: never;
@@ -160,6 +177,19 @@ export interface components {
              * @description Comma-separated 1-based page numbers in this chunk.
              */
             pages: string;
+            /**
+             * Region
+             * @enum {string}
+             */
+            region: "CA" | "AU";
+        };
+        /** Body_analyze_receipt_api_receipts_analyze_post */
+        Body_analyze_receipt_api_receipts_analyze_post: {
+            /**
+             * File
+             * @description image/jpeg or image/png ≤4 MB, or application/pdf.
+             */
+            file: string;
             /**
              * Region
              * @enum {string}
@@ -690,7 +720,6 @@ export interface components {
             /**
              * Source
              * @description CU source string, e.g. D(1,0.5,1.2,...).
-             * @default null
              */
             source: string | null;
         };
@@ -957,37 +986,19 @@ export interface components {
         };
         /** Receipt */
         Receipt: {
-            /**
-             * Currency
-             * @default null
-             */
+            /** Currency */
             currency: ("CAD" | "AUD") | null;
-            /**
-             * Insurerpaidcents
-             * @default null
-             */
+            /** Insurerpaidcents */
             insurerPaidCents: number | null;
-            /**
-             * Providername
-             * @default null
-             */
+            /** Providername */
             providerName: string | null;
-            /**
-             * Providerregistrationno
-             * @default null
-             */
+            /** Providerregistrationno */
             providerRegistrationNo: string | null;
-            /**
-             * Providertype
-             * @default null
-             */
+            /** Providertype */
             providerType: string | null;
             /** Servicelines */
             serviceLines: components["schemas"]["ReceiptLine"][];
-            /**
-             * Totalcents
-             * @default null
-             */
+            /** Totalcents */
             totalCents: number | null;
         };
         /** ReceiptAnalyzeResponse */
@@ -1005,30 +1016,15 @@ export interface components {
         };
         /** ReceiptLine */
         ReceiptLine: {
-            /**
-             * Amountcents
-             * @default null
-             */
+            /** Amountcents */
             amountCents: number | null;
-            /**
-             * Description
-             * @default null
-             */
+            /** Description */
             description: string | null;
-            /**
-             * Itemcode
-             * @default null
-             */
+            /** Itemcode */
             itemCode: string | null;
-            /**
-             * Quantity
-             * @default null
-             */
+            /** Quantity */
             quantity: number | null;
-            /**
-             * Servicedate
-             * @default null
-             */
+            /** Servicedate */
             serviceDate: string | null;
         };
         /**
@@ -1238,6 +1234,93 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["AssembleResponse"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unsupported Media Type */
+            415: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Bad Gateway */
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    analyze_receipt_api_receipts_analyze_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["Body_analyze_receipt_api_receipts_analyze_post"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReceiptAnalyzeResponse"];
                 };
             };
             /** @description Bad Request */

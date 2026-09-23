@@ -1,4 +1,4 @@
-"""Writes ``openapi.json`` plus the shared models the browser uses; ``--check`` fails on drift."""
+"""Writes ``openapi.json`` plus the browser-only models no route references; ``--check`` fails on drift."""
 
 from __future__ import annotations
 
@@ -9,13 +9,13 @@ from pathlib import Path
 from pydantic.json_schema import models_json_schema
 
 from app.main import app
-from app.models.api import ChatContext, ChatRequest, ErrorResponse, ReceiptAnalyzeResponse
+from app.models.api import ChatContext, ChatRequest, ErrorResponse
 from app.models.claim import Claim
 from app.models.plan import Plan
 from app.models.receipt import Receipt
 
 OUT = Path(__file__).resolve().parents[1] / "openapi.json"
-EXTRA_MODELS = [Plan, Claim, Receipt, ReceiptAnalyzeResponse, ChatRequest, ChatContext, ErrorResponse]
+EXTRA_MODELS = [Plan, Claim, Receipt, ChatRequest, ChatContext, ErrorResponse]
 
 
 def build() -> str:
