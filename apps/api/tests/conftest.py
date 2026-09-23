@@ -18,6 +18,7 @@ def clear_caches() -> None:
     from app.pipelines.booklet_workflow import get_workflow_clients
     from app.services.content_understanding import get_cu_client
     from app.services.rest import get_http_client
+    from app.services.search import get_search_client
 
     for cached in (
         get_settings,
@@ -26,6 +27,7 @@ def clear_caches() -> None:
         get_workflow_clients,
         get_http_client,
         get_cu_client,
+        get_search_client,
     ):
         clear = getattr(cached, "cache_clear", None)  # tests may monkeypatch a getter with a plain function
         if clear is not None:
