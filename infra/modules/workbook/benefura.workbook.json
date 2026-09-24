@@ -1,0 +1,525 @@
+{
+  "version": "Notebook/1.0",
+  "items": [
+    {
+      "type": 1,
+      "content": {
+        "json": "# Benefura: AI operations\nToken usage by agent and model, latency by pipeline step, safety signals, errors and daily budget spend. Metric and attribute names follow the telemetry contract in `infra/README.md`. Content recording is off: no rows here contain user text, PII values or alias maps."
+      },
+      "name": "text - 1"
+    },
+    {
+      "type": 9,
+      "content": {
+        "version": "KqlParameterItem/1.0",
+        "crossComponentResources": [
+          "__APPINSIGHTS_ID__"
+        ],
+        "parameters": [
+          {
+            "id": "7b0c3c2e-2a5e-4b8f-9d3f-1f0d5a6c7e01",
+            "version": "KqlParameterItem/1.0",
+            "name": "TimeRange",
+            "label": "Time range",
+            "type": 4,
+            "isRequired": true,
+            "value": {
+              "durationMs": 86400000
+            },
+            "typeSettings": {
+              "selectableValues": [
+                {
+                  "durationMs": 3600000
+                },
+                {
+                  "durationMs": 14400000
+                },
+                {
+                  "durationMs": 43200000
+                },
+                {
+                  "durationMs": 86400000
+                },
+                {
+                  "durationMs": 259200000
+                },
+                {
+                  "durationMs": 604800000
+                },
+                {
+                  "durationMs": 2592000000
+                }
+              ],
+              "allowCustom": true
+            }
+          }
+        ],
+        "style": "pills",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components"
+      },
+      "name": "parameters"
+    },
+    {
+      "type": 1,
+      "content": {
+        "json": "## Overview"
+      },
+      "name": "text - 2"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "let reqs = requests\n| summarize requests = count(), serverErrors = countif(toint(resultCode) >= 500), p95Ms = round(percentile(duration, 95), 0);\nlet safety = customMetrics\n| where name == 'benefura.safety.events'\n| summarize safetyEvents = sum(valueSum);\nlet tokens = customMetrics\n| where name == 'benefura.model.tokens'\n| summarize tokens = sum(valueSum);\nreqs | extend k = 1\n| join kind=fullouter (safety | extend k = 1) on k\n| join kind=fullouter (tokens | extend k = 1) on k\n| project requests = coalesce(requests, 0), serverErrors = coalesce(serverErrors, 0), p95Ms,\n          safetyEvents = coalesce(safetyEvents, 0.0), tokens = coalesce(tokens, 0.0)",
+        "size": 0,
+        "title": "Requests, server errors and safety events",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "crossComponentResources": [
+          "__APPINSIGHTS_ID__"
+        ],
+        "visualization": "table",
+        "timeContextFromParameter": "TimeRange"
+      },
+      "name": "query - 3"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "requests\n| summarize requests = count() by bin(timestamp, {TimeRange:grain}), status = strcat(substring(resultCode, 0, 1), 'xx')",
+        "size": 0,
+        "title": "Requests by status class",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "crossComponentResources": [
+          "__APPINSIGHTS_ID__"
+        ],
+        "visualization": "timechart",
+        "timeContextFromParameter": "TimeRange"
+      },
+      "name": "query - 4",
+      "customWidth": "50"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "requests\n| summarize requests = count(), p50Ms = round(percentile(duration, 50), 0), p95Ms = round(percentile(duration, 95), 0),\n            failures = countif(success == false) by endpoint = name\n| order by requests desc",
+        "size": 0,
+        "title": "API latency by endpoint (ms)",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "crossComponentResources": [
+          "__APPINSIGHTS_ID__"
+        ],
+        "visualization": "table",
+        "timeContextFromParameter": "TimeRange"
+      },
+      "name": "query - 5",
+      "customWidth": "50"
+    },
+    {
+      "type": 1,
+      "content": {
+        "json": "## Token usage by agent and model"
+      },
+      "name": "text - 6"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "customMetrics\n| where name == 'benefura.model.tokens'\n| extend agent = tostring(customDimensions['benefura.agent']), model = tostring(customDimensions['benefura.model'])\n| summarize tokens = sum(valueSum) by bin(timestamp, {TimeRange:grain}), series = strcat(agent, ' / ', model)",
+        "size": 0,
+        "title": "Tokens over time (agent / model)",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "crossComponentResources": [
+          "__APPINSIGHTS_ID__"
+        ],
+        "visualization": "timechart",
+        "timeContextFromParameter": "TimeRange",
+        "noDataMessage": "No data yet. Metrics appear after the API records them (see infra/README.md, telemetry contract).",
+        "noDataMessageStyle": 3
+      },
+      "name": "query - 7",
+      "customWidth": "50"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "customMetrics\n| where name == 'benefura.model.tokens'\n| extend agent = tostring(customDimensions['benefura.agent']), model = tostring(customDimensions['benefura.model']),\n         tokenType = tostring(customDimensions['benefura.token_type'])\n| summarize tokens = sum(valueSum) by agent, model, tokenType\n| evaluate pivot(tokenType, sum(tokens))\n| order by agent asc, model asc",
+        "size": 0,
+        "title": "Tokens by agent, model and type",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "crossComponentResources": [
+          "__APPINSIGHTS_ID__"
+        ],
+        "visualization": "table",
+        "timeContextFromParameter": "TimeRange",
+        "noDataMessage": "No data yet. Metrics appear after the API records them (see infra/README.md, telemetry contract).",
+        "noDataMessageStyle": 3
+      },
+      "name": "query - 8",
+      "customWidth": "50"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "customMetrics\n| where name == 'benefura.model.duration'\n| extend agent = tostring(customDimensions['benefura.agent']), model = tostring(customDimensions['benefura.model']),\n         n = tolong(valueCount), avgMs = valueSum / valueCount\n| where n > 0\n| summarize calls = sum(n), p50Ms = round(percentilew(avgMs, n, 50), 0), p95Ms = round(percentilew(avgMs, n, 95), 0),\n            maxMs = round(max(valueMax), 0) by agent, model\n| order by p95Ms desc",
+        "size": 0,
+        "title": "Model call latency by agent and model (ms)",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "crossComponentResources": [
+          "__APPINSIGHTS_ID__"
+        ],
+        "visualization": "table",
+        "timeContextFromParameter": "TimeRange",
+        "noDataMessage": "No data yet. Metrics appear after the API records them (see infra/README.md, telemetry contract).",
+        "noDataMessageStyle": 3
+      },
+      "name": "query - 9"
+    },
+    {
+      "type": 1,
+      "content": {
+        "json": "## Latency by pipeline step\nSteps: `router`, `cu`, `pii`, `shields`, `content_safety`, `triage`, `extractor`, `verifier`, `assemble`, `search`, `embedding`, `model`. Percentiles are weighted over exported histogram aggregates (exact at demo volume)."
+      },
+      "name": "text - 10"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "customMetrics\n| where name == 'benefura.step.duration'\n| extend step = tostring(customDimensions['benefura.step']), n = tolong(valueCount), avgMs = valueSum / valueCount\n| where n > 0\n| summarize samples = sum(n), p50Ms = round(percentilew(avgMs, n, 50), 0), p95Ms = round(percentilew(avgMs, n, 95), 0),\n            maxMs = round(max(valueMax), 0) by step\n| extend ord = case(step == 'router', 1, step == 'cu', 2, step == 'pii', 3, step == 'shields', 4,\n                    step == 'content_safety', 5, step == 'triage', 6, step == 'extractor', 7, step == 'verifier', 8,\n                    step == 'assemble', 9, step == 'search', 10, step == 'embedding', 11, step == 'model', 12, 20)\n| order by ord asc\n| project-away ord",
+        "size": 0,
+        "title": "p50 / p95 by step (ms)",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "crossComponentResources": [
+          "__APPINSIGHTS_ID__"
+        ],
+        "visualization": "table",
+        "timeContextFromParameter": "TimeRange",
+        "noDataMessage": "No data yet. Metrics appear after the API records them (see infra/README.md, telemetry contract).",
+        "noDataMessageStyle": 3
+      },
+      "name": "query - 11",
+      "customWidth": "50"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "customMetrics\n| where name == 'benefura.step.duration'\n| extend step = tostring(customDimensions['benefura.step']), n = tolong(valueCount), avgMs = valueSum / valueCount\n| where n > 0\n| summarize p95Ms = percentilew(avgMs, n, 95) by bin(timestamp, {TimeRange:grain}), step",
+        "size": 0,
+        "title": "p95 by step over time (ms)",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "crossComponentResources": [
+          "__APPINSIGHTS_ID__"
+        ],
+        "visualization": "timechart",
+        "timeContextFromParameter": "TimeRange",
+        "noDataMessage": "No data yet. Metrics appear after the API records them (see infra/README.md, telemetry contract).",
+        "noDataMessageStyle": 3
+      },
+      "name": "query - 12",
+      "customWidth": "50"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "dependencies\n| extend step = tostring(customDimensions['benefura.step'])\n| summarize calls = count(), p50Ms = round(percentile(duration, 50), 0), p95Ms = round(percentile(duration, 95), 0),\n            failures = countif(success == false) by type, target, name, step\n| top 25 by p95Ms desc",
+        "size": 0,
+        "title": "Slowest dependencies and spans (p95 ms)",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "crossComponentResources": [
+          "__APPINSIGHTS_ID__"
+        ],
+        "visualization": "table",
+        "timeContextFromParameter": "TimeRange"
+      },
+      "name": "query - 13"
+    },
+    {
+      "type": 1,
+      "content": {
+        "json": "## Router and tools"
+      },
+      "name": "text - 14"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "customMetrics\n| where name == 'benefura.router.decisions'\n| summarize decisions = sum(valueSum) by route = tostring(customDimensions['benefura.route'])",
+        "size": 0,
+        "title": "Router decisions",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "crossComponentResources": [
+          "__APPINSIGHTS_ID__"
+        ],
+        "visualization": "piechart",
+        "timeContextFromParameter": "TimeRange",
+        "noDataMessage": "No data yet. Metrics appear after the API records them (see infra/README.md, telemetry contract).",
+        "noDataMessageStyle": 3
+      },
+      "name": "query - 15",
+      "customWidth": "33"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "let calls = customMetrics\n| where name == 'benefura.tool.calls'\n| extend tool = tostring(customDimensions['benefura.tool']), executor = tostring(customDimensions['benefura.executor']),\n         outcome = tostring(customDimensions['benefura.outcome'])\n| summarize calls = sum(valueSum), errors = sumif(valueSum, outcome in ('error', 'rejected')) by tool, executor;\nlet durations = customMetrics\n| where name == 'benefura.tool.duration'\n| extend tool = tostring(customDimensions['benefura.tool']), executor = tostring(customDimensions['benefura.executor']),\n         n = tolong(valueCount), avgMs = valueSum / valueCount\n| where n > 0\n| summarize p95Ms = round(percentilew(avgMs, n, 95), 0) by tool, executor;\ncalls\n| join kind=leftouter durations on tool, executor\n| project tool, executor, calls, errors, errorRatePct = round(100.0 * errors / calls, 1), p95Ms\n| order by calls desc",
+        "size": 0,
+        "title": "Tool calls",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "crossComponentResources": [
+          "__APPINSIGHTS_ID__"
+        ],
+        "visualization": "table",
+        "timeContextFromParameter": "TimeRange",
+        "noDataMessage": "No data yet. Metrics appear after the API records them (see infra/README.md, telemetry contract).",
+        "noDataMessageStyle": 3
+      },
+      "name": "query - 16",
+      "customWidth": "67"
+    },
+    {
+      "type": 1,
+      "content": {
+        "json": "## Safety signals\nGuardrail blocks (content filter, jailbreak, indirect attack), Prompt Shields document attacks, unsafe images, PII hits by category and tier (never values) and verifier verdicts."
+      },
+      "name": "text - 17"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "customMetrics\n| where name == 'benefura.safety.events'\n| summarize events = sum(valueSum) by bin(timestamp, {TimeRange:grain}), kind = tostring(customDimensions['benefura.safety_kind'])",
+        "size": 0,
+        "title": "Safety events over time",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "crossComponentResources": [
+          "__APPINSIGHTS_ID__"
+        ],
+        "visualization": "timechart",
+        "timeContextFromParameter": "TimeRange",
+        "noDataMessage": "No data yet. Metrics appear after the API records them (see infra/README.md, telemetry contract).",
+        "noDataMessageStyle": 3
+      },
+      "name": "query - 18",
+      "customWidth": "50"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "customMetrics\n| where name == 'benefura.safety.events'\n| summarize events = sum(valueSum) by kind = tostring(customDimensions['benefura.safety_kind']),\n                                      surface = tostring(customDimensions['benefura.surface'])\n| order by events desc",
+        "size": 0,
+        "title": "Safety events by kind and surface",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "crossComponentResources": [
+          "__APPINSIGHTS_ID__"
+        ],
+        "visualization": "table",
+        "timeContextFromParameter": "TimeRange",
+        "noDataMessage": "No data yet. Metrics appear after the API records them (see infra/README.md, telemetry contract).",
+        "noDataMessageStyle": 3
+      },
+      "name": "query - 19",
+      "customWidth": "50"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "customMetrics\n| where name == 'benefura.pii.hits'\n| summarize hits = sum(valueSum) by category = tostring(customDimensions['benefura.pii_category']),\n                                    tier = tostring(customDimensions['benefura.pii_tier'])\n| order by hits desc",
+        "size": 0,
+        "title": "PII hits by category and tier",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "crossComponentResources": [
+          "__APPINSIGHTS_ID__"
+        ],
+        "visualization": "barchart",
+        "timeContextFromParameter": "TimeRange",
+        "noDataMessage": "No data yet. Metrics appear after the API records them (see infra/README.md, telemetry contract).",
+        "noDataMessageStyle": 3
+      },
+      "name": "query - 20",
+      "customWidth": "50"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "customMetrics\n| where name == 'benefura.verifier.verdicts'\n| summarize rows = sum(valueSum) by verdict = tostring(customDimensions['benefura.verdict'])",
+        "size": 0,
+        "title": "Verifier verdicts",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "crossComponentResources": [
+          "__APPINSIGHTS_ID__"
+        ],
+        "visualization": "piechart",
+        "timeContextFromParameter": "TimeRange",
+        "noDataMessage": "No data yet. Metrics appear after the API records them (see infra/README.md, telemetry contract).",
+        "noDataMessageStyle": 3
+      },
+      "name": "query - 21",
+      "customWidth": "50"
+    },
+    {
+      "type": 1,
+      "content": {
+        "json": "## Knowledge search"
+      },
+      "name": "text - 22"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "let q = customMetrics\n| where name == 'benefura.search.queries'\n| summarize queries = sum(valueSum), zeroResult = sumif(valueSum, tostring(customDimensions['benefura.zero_results']) == 'true');\nlet lat = customMetrics\n| where name == 'benefura.search.duration'\n| extend n = tolong(valueCount), avgMs = valueSum / valueCount\n| where n > 0\n| summarize p50Ms = round(percentilew(avgMs, n, 50), 0), p95Ms = round(percentilew(avgMs, n, 95), 0);\nlet score = customMetrics\n| where name == 'benefura.search.top_score'\n| summarize avgTopScore = round(sum(valueSum) / sum(valueCount), 3);\nq | extend k = 1\n| join kind=fullouter (lat | extend k = 1) on k\n| join kind=fullouter (score | extend k = 1) on k\n| project queries, zeroResultRatePct = round(100.0 * zeroResult / queries, 1), p50Ms, p95Ms, avgTopScore",
+        "size": 0,
+        "title": "Search health",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "crossComponentResources": [
+          "__APPINSIGHTS_ID__"
+        ],
+        "visualization": "table",
+        "timeContextFromParameter": "TimeRange",
+        "noDataMessage": "No data yet. Metrics appear after the API records them (see infra/README.md, telemetry contract).",
+        "noDataMessageStyle": 3
+      },
+      "name": "query - 23"
+    },
+    {
+      "type": 1,
+      "content": {
+        "json": "## Errors"
+      },
+      "name": "text - 24"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "requests\n| where toint(resultCode) >= 400\n| summarize failures = count() by endpoint = name, resultCode\n| order by failures desc",
+        "size": 0,
+        "title": "Failed requests by endpoint and status",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "crossComponentResources": [
+          "__APPINSIGHTS_ID__"
+        ],
+        "visualization": "table",
+        "timeContextFromParameter": "TimeRange"
+      },
+      "name": "query - 25",
+      "customWidth": "50"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "exceptions\n| summarize exceptions = count(), lastSeen = max(timestamp) by type, method\n| order by exceptions desc",
+        "size": 0,
+        "title": "Exceptions by type",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "crossComponentResources": [
+          "__APPINSIGHTS_ID__"
+        ],
+        "visualization": "table",
+        "timeContextFromParameter": "TimeRange"
+      },
+      "name": "query - 26",
+      "customWidth": "50"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "traces\n| where severityLevel >= 3\n| summarize traces = count(), lastSeen = max(timestamp) by message = substring(message, 0, 160), cloud_RoleName\n| top 20 by traces desc",
+        "size": 0,
+        "title": "Error and critical traces",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "crossComponentResources": [
+          "__APPINSIGHTS_ID__"
+        ],
+        "visualization": "table",
+        "timeContextFromParameter": "TimeRange"
+      },
+      "name": "query - 27"
+    },
+    {
+      "type": 1,
+      "content": {
+        "json": "## Daily budget (estimated USD)\nSpend recorded by the API per namespace since 00:00 UTC. The authoritative counter is the `budgets` table; the API returns 429 `budget_exhausted` at 100%."
+      },
+      "name": "text - 28"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "let budgets = datatable(namespace: string, dailyBudgetUsd: real) [\n    'demo-extraction', __BUDGET_EXTRACTION_USD__,\n    'demo-chat', __BUDGET_CHAT_USD__,\n    'evals', __BUDGET_EVALS_USD__\n];\ncustomMetrics\n| where timestamp >= startofday(now())\n| where name == 'benefura.budget.spend_usd'\n| summarize spentUsd = sum(valueSum) by namespace = tostring(customDimensions['benefura.namespace'])\n| join kind=rightouter budgets on namespace\n| project namespace = namespace1, spentUsd = round(coalesce(spentUsd, 0.0), 4), dailyBudgetUsd,\n          usedPct = round(100.0 * coalesce(spentUsd, 0.0) / dailyBudgetUsd, 1)",
+        "size": 0,
+        "title": "Spend today vs daily budget",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "crossComponentResources": [
+          "__APPINSIGHTS_ID__"
+        ],
+        "visualization": "table",
+        "timeContext": {
+          "durationMs": 86400000
+        }
+      },
+      "name": "query - 29",
+      "customWidth": "50"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "customMetrics\n| where name == 'benefura.budget.spend_usd'\n| summarize spentUsd = sum(valueSum) by bin(timestamp, {TimeRange:grain}), namespace = tostring(customDimensions['benefura.namespace'])",
+        "size": 0,
+        "title": "Spend over time by namespace (USD)",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "crossComponentResources": [
+          "__APPINSIGHTS_ID__"
+        ],
+        "visualization": "timechart",
+        "timeContextFromParameter": "TimeRange",
+        "noDataMessage": "No data yet. Metrics appear after the API records them (see infra/README.md, telemetry contract).",
+        "noDataMessageStyle": 3
+      },
+      "name": "query - 30",
+      "customWidth": "50"
+    }
+  ],
+  "fallbackResourceIds": [
+    "__APPINSIGHTS_ID__"
+  ],
+  "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
+}
