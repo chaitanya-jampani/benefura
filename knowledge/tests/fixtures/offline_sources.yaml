@@ -1,0 +1,54 @@
+# Synthetic fixtures only, so no third-party content is committed.
+version: 1
+sources:
+  - id: offline-ca-medical-expenses
+    url: https://example.org/ca/medical-expenses.html
+    region: CA
+    title: Synthetic eligible medical expenses page
+    publisher: Benefura test fixtures
+    licence: Synthetic test content
+    licence_note: Written for Benefura tests; not a real publication.
+    attribution: Synthetic Benefura test fixture.
+    reproduction: verbatim
+    index: true
+    format: html
+    fixture: ca-medical-expenses.html
+    topics: [eligible medical expenses]
+
+  - id: offline-au-waiting-periods
+    url: https://example.org/au/waiting-periods.html
+    region: AU
+    title: Synthetic waiting periods page
+    publisher: Benefura test fixtures
+    licence: Synthetic test content
+    licence_note: Written for Benefura tests; not a real publication.
+    attribution: Synthetic Benefura test fixture.
+    reproduction: verbatim
+    index: true
+    format: html
+    fixture: au-waiting-periods.html
+    topics: [waiting periods]
+
+  - id: offline-ca-guide-pdf
+    url: https://example.org/ca/synthetic-guide.pdf
+    region: CA
+    title: Synthetic medical expenses guide (PDF)
+    publisher: Benefura test fixtures
+    licence: Synthetic test content
+    licence_note: Written for Benefura tests; exercises the excerpt rule and the PDF path.
+    attribution: Synthetic Benefura test fixture.
+    reproduction: excerpt
+    index: true
+    format: pdf
+    fixture: synthetic-guide.pdf
+
+  - id: offline-link-only
+    url: https://example.org/ca/link-only.html
+    region: CA
+    title: Synthetic link-only page
+    publisher: Benefura test fixtures
+    licence: All rights reserved (synthetic)
+    licence_note: Link-only fixture; must never be fetched or indexed.
+    attribution: Synthetic Benefura test fixture (link only).
+    reproduction: excerpt
+    index: false

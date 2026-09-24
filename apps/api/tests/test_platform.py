@@ -87,6 +87,69 @@ def test_content_filter_detection_variants() -> None:
     assert not is_content_filter_error(HttpResponseError(message="throttled"))
 
 
+async def test_fake_search_filters_region_and_ranks() -> None:
+    from app.services.search import hybrid_search, region_filter
+
+    result = await hybrid_search("is massage therapy a medical expense", "CA", top_k=5)
+    assert result.hits and all(hit.region == "CA" for hit in result.hits)
+    assert result.hits[0].id == "ca-cra-medical-expenses-1" and result.hits[0].license
+    assert region_filter("AU") == "region eq 'AU'"
+
+
+async def test_live_search_uses_hybrid_vector_and_semantic(monkeypatch: pytest.MonkeyPatch) -> None:
+    from app.config import get_settings
+    from app.services import search
+
+    monkeypatch.setenv("AI_MODE", "live")
+    get_settings.cache_clear()
+    captured: dict[str, Any] = {}
+
+    class Results:
+        def __init__(self, docs: list[dict[str, Any]]) -> None:
+            self.docs = docs
+
+        def __aiter__(self) -> Any:
+            async def gen() -> Any:
+                for doc in self.docs:
+                    yield doc
+
+            return gen()
+
+    class FakeSearchClient:
+        async def search(self, **kwargs: Any) -> Results:
+            captured.update(kwargs)
+            return Results(
+                [
+                    {
+                        "id": "1",
+                        "content": "c",
+                        "title": "t",
+                        "url": "u",
+                        "region": "AU",
+                        "publisher": "p",
+                        "license": "CC BY 3.0 AU",
+                        "attribution": "a",
+                        "@search.score": 0.03,
+                        "@search.reranker_score": 2.7,
+                    }
+                ]
+            )
+
+    async def embed(query: str) -> tuple[list[float], int]:
+        return [0.1] * 512, 7
+
+    monkeypatch.setattr(search, "get_search_client", lambda: FakeSearchClient())
+    monkeypatch.setattr(search, "embed_query", embed)
+    result = await search.hybrid_search("waiting periods for physio", "AU", top_k=3)
+
+    assert captured["search_text"] == "waiting periods for physio"
+    assert captured["query_type"] == "semantic" and captured["semantic_configuration_name"] == "default"
+    assert captured["filter"] == "region eq 'AU'" and captured["top"] == 3
+    (vector_query,) = captured["vector_queries"]
+    assert len(vector_query.vector) == 512 and vector_query.fields == "contentVector"
+    assert result.embedding_tokens == 7 and result.hits[0].reranker_score == 2.7
+
+
 def test_setup_cu_definitions(capsys: pytest.CaptureFixture[str]) -> None:
     from app.config import get_settings
     from scripts import setup_cu

@@ -1,0 +1,52 @@
+[project]
+name = "benefura-knowledge"
+version = "0.1.0"
+description = "Benefura public-knowledge RAG ingestion (push model into Azure AI Search)"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "benefura-api",
+  "httpx>=0.28",
+  "pyyaml>=6.0",
+  "tiktoken>=0.12",
+  "beautifulsoup4>=4.13",
+  "markdownify>=1.2",
+]
+
+[dependency-groups]
+dev = [
+  "pytest>=8.4",
+  "pytest-asyncio>=1.1",
+  "respx>=0.22",
+  "ruff>=0.16",
+]
+
+[tool.uv.sources]
+benefura-api = { path = "../apps/api", editable = true }
+
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+# Repo root on sys.path so `knowledge.ingest` imports with `knowledge/` as a namespace package.
+[tool.hatch.build]
+dev-mode-dirs = [".."]
+
+[tool.hatch.build.targets.wheel]
+packages = ["ingest"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+extend-exclude = [".cache", "out"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "ASYNC", "S"]
+ignore = ["S101"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["knowledge", "app"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+addopts = "--import-mode=importlib"
