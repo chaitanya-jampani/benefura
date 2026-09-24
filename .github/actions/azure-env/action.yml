@@ -1,0 +1,66 @@
+name: azure-env
+description: >
+  OIDC login for az and azd, select (or create) the azd environment, optionally refresh outputs from the last
+  provisioning, and export the non-secret outputs to GITHUB_ENV.
+
+inputs:
+  client-id:
+    description: App registration client ID with a GitHub federated credential (vars.AZURE_CLIENT_ID).
+    required: true
+  tenant-id:
+    description: Entra tenant ID.
+    required: true
+  subscription-id:
+    description: Azure subscription ID.
+    required: true
+  env-name:
+    description: azd environment name (resource group rg-<env-name>).
+    required: true
+  location:
+    description: Primary Azure location.
+    required: false
+    default: eastus2
+  refresh:
+    description: Run `azd env refresh` and export outputs (ingest/evals workflows; deploy provisions instead).
+    required: false
+    default: "false"
+
+runs:
+  using: composite
+  steps:
+    - name: Azure login (OIDC)
+      uses: azure/login@v3
+      with:
+        client-id: ${{ inputs.client-id }}
+        tenant-id: ${{ inputs.tenant-id }}
+        subscription-id: ${{ inputs.subscription-id }}
+
+    - name: Install azd
+      uses: Azure/setup-azd@v2
+
+    - name: azd login (federated) and environment
+      shell: bash
+      env:
+        CLIENT_ID: ${{ inputs.client-id }}
+        TENANT_ID: ${{ inputs.tenant-id }}
+        SUBSCRIPTION_ID: ${{ inputs.subscription-id }}
+        ENV_NAME: ${{ inputs.env-name }}
+        LOCATION: ${{ inputs.location }}
+        REFRESH: ${{ inputs.refresh }}
+      run: |
+        set -euo pipefail
+        az config set extension.use_dynamic_install=yes_without_prompt --only-show-errors
+        azd auth login --client-id "$CLIENT_ID" --federated-credential-provider github --tenant-id "$TENANT_ID"
+        if ! azd env select "$ENV_NAME" >/dev/null 2>&1; then
+          azd env new "$ENV_NAME" --subscription "$SUBSCRIPTION_ID" --location "$LOCATION" --no-prompt
+        fi
+        azd env set AZURE_SUBSCRIPTION_ID "$SUBSCRIPTION_ID"
+        azd env set AZURE_LOCATION "$LOCATION"
+        if [ "$REFRESH" = "true" ]; then
+          # refresh resolves required parameters but never deploys, so a placeholder image is harmless.
+          if [ -z "$(azd env get-value API_IMAGE 2>/dev/null || true)" ]; then
+            azd env set API_IMAGE "ghcr.io/placeholder/benefura-api:refresh"
+          fi
+          azd env refresh --no-prompt
+          bash "$GITHUB_WORKSPACE/.github/scripts/export-azd-outputs.sh"
+        fi
