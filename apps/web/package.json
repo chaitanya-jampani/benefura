@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "node scripts/copy-vendor.mjs && next build",
+    "build": "node scripts/copy-vendor.mjs && next build && node scripts/write-swa-config.mjs",
     "start": "npx serve out",
     "lint": "eslint",
     "typecheck": "next typegen && tsc --noEmit",
