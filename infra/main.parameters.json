@@ -1,0 +1,33 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "environmentName": { "value": "${AZURE_ENV_NAME}" },
+    "location": { "value": "${AZURE_LOCATION=eastus2}" },
+    "principalId": { "value": "${AZURE_PRINCIPAL_ID}" },
+    "developerPrincipalId": { "value": "${AZURE_DEVELOPER_PRINCIPAL_ID=}" },
+    "ciPrincipalId": { "value": "${AZURE_CI_PRINCIPAL_ID=}" },
+    "apiImage": { "value": "${API_IMAGE}" },
+    "aiMode": { "value": "${AI_MODE=live}" },
+    "agentVersions": { "value": "${AGENT_VERSIONS=}" },
+    "extraCorsOrigins": { "value": "${EXTRA_CORS_ORIGINS=}" },
+    "dailyBudgetUsdExtraction": { "value": "${DAILY_BUDGET_USD_EXTRACTION=3.0}" },
+    "dailyBudgetUsdChat": { "value": "${DAILY_BUDGET_USD_CHAT=2.0}" },
+    "dailyBudgetUsdEvals": { "value": "${DAILY_BUDGET_USD_EVALS=5.0}" },
+    "evalsSharedSecret": { "value": "${EVALS_SHARED_SECRET=}" },
+    "chatModelName": { "value": "${AZURE_CHAT_MODEL_NAME=gpt-5-mini}" },
+    "chatModelVersion": { "value": "${AZURE_CHAT_MODEL_VERSION=2025-08-07}" },
+    "chatModelCapacity": { "value": "${AZURE_CHAT_MODEL_CAPACITY=200}" },
+    "nanoModelName": { "value": "${AZURE_NANO_MODEL_NAME=gpt-5-nano}" },
+    "nanoModelVersion": { "value": "${AZURE_NANO_MODEL_VERSION=2025-08-07}" },
+    "nanoModelCapacity": { "value": "${AZURE_NANO_MODEL_CAPACITY=100}" },
+    "embeddingModelCapacity": { "value": "${AZURE_EMBEDDING_MODEL_CAPACITY=100}" },
+    "existingSearchServiceName": { "value": "${AZURE_EXISTING_SEARCH_SERVICE_NAME=}" },
+    "existingSearchResourceGroupName": { "value": "${AZURE_EXISTING_SEARCH_RESOURCE_GROUP=}" },
+    "searchLocation": { "value": "${AZURE_SEARCH_LOCATION=canadacentral}" },
+    "alertEmail": { "value": "${ALERT_EMAIL=}" },
+    "monthlyBudgetAmount": { "value": "${AZURE_MONTHLY_BUDGET=20}" },
+    "budgetStartDate": { "value": "${AZURE_BUDGET_START_DATE}" },
+    "enablePrivateNetworking": { "value": "${ENABLE_PRIVATE_NETWORKING=false}" }
+  }
+}
