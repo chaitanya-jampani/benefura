@@ -1,0 +1,4 @@
+# Local run outputs; conclusions go in docs/adr/.
+results/
+work/
+__pycache__/
