@@ -1,0 +1,12 @@
+data: {"type":"start","messageId":"msg_1","messageMetadata":{"agent":null,"agentName":null,"agentVersion":null,"traceId":"4bf92f3577b34da6a3ce929d0e0e4736","route":"off_topic"}}
+
+data: {"type":"text-start","id":"text_2"}
+
+data: {"type":"text-delta","id":"text_2","delta":"I can only help with health benefits: what your plan covers, limits and what's left, reimbursement estimates, claims, and public reference information such as medical expense tax rules or private health insurance rules. Try asking about one of those."}
+
+data: {"type":"text-end","id":"text_2"}
+
+data: {"type":"finish","finishReason":"stop"}
+
+data: [DONE]
+

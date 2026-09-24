@@ -1,0 +1,8 @@
+data: {"type":"start","messageId":"msg_1","messageMetadata":{"agent":null,"agentName":null,"agentVersion":null,"traceId":"4bf92f3577b34da6a3ce929d0e0e4736","blocked":"pii"}}
+
+data: {"type":"data-pii-warning","data":{"categories":["CASocialInsuranceNumber"],"message":"Your message looks like it contains a personal identifier, so it wasn't sent to the assistant. Remove it and try again. The assistant never needs ID, health card, tax file or bank numbers, or dates of birth."}}
+
+data: {"type":"finish","finishReason":"stop"}
+
+data: [DONE]
+

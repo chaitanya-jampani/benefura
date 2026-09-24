@@ -24,6 +24,7 @@ from app.budget import (
     get_budget,
     namespace_from_request,
 )
+from app.chat.route import router as chat_router
 from app.config import VERSION, Settings, get_settings
 from app.errors import ApiError, api_error_handler, http_error_handler, validation_error_handler
 from app.fake_hooks import HOOK_HEADERS
@@ -69,10 +70,12 @@ async def close_clients() -> None:
     from app.services.content_understanding import close_cu_client
     from app.services.foundry import close_clients as close_foundry
     from app.services.rest import close_http_client
+    from app.services.search import close_search_client
 
     for close in (
         close_workflow_clients,
         close_cu_client,
+        close_search_client,
         close_http_client,
         close_budget,
         close_foundry,
@@ -266,6 +269,7 @@ def create_app() -> FastAPI:
             traceId=trace_id_of(request),
         )
 
+    app.include_router(chat_router)
     return app
 
 

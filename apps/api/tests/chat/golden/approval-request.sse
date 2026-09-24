@@ -1,0 +1,18 @@
+data: {"type":"start","messageMetadata":{"agent":"plan_claims","agentName":"benefura-plan-claims","agentVersion":"fake","traceId":"4bf92f3577b34da6a3ce929d0e0e4736"}}
+
+data: {"type":"start-step"}
+
+data: {"type":"tool-input-start","toolCallId":"call_pc_2","toolName":"draft_claim"}
+
+data: {"type":"tool-input-delta","toolCallId":"call_pc_2","inputTextDelta":"{\"member_alias\":\"[MEMBER_A]\",\"provider\":null,\"lines\":[{\"benefit_id\":\"ben-massage\",\"service_date\":\"2026-09-16\",\"charged_cents\":12000,\"quantity\":null,\"item_code\":null,\"description\":null,\"other_plan_paid_cents\":null}]}"}
+
+data: {"type":"tool-input-available","toolCallId":"call_pc_2","toolName":"draft_claim","input":{"member_alias":"[MEMBER_A]","provider":null,"lines":[{"benefit_id":"ben-massage","service_date":"2026-09-16","charged_cents":12000,"quantity":null,"item_code":null,"description":null,"other_plan_paid_cents":null}]}}
+
+data: {"type":"tool-approval-request","approvalId":"approval-call_pc_2","toolCallId":"call_pc_2"}
+
+data: {"type":"finish-step"}
+
+data: {"type":"finish","finishReason":"tool-calls"}
+
+data: [DONE]
+

@@ -1,0 +1,57 @@
+{
+  "messages": [
+    {
+      "id": "user-1",
+      "role": "user",
+      "parts": [
+        {
+          "type": "text",
+          "text": "Draft a claim for my massage, $120"
+        }
+      ]
+    },
+    {
+      "id": "assistant-1",
+      "role": "assistant",
+      "parts": [
+        {
+          "type": "step-start"
+        },
+        {
+          "type": "tool-find_benefits",
+          "toolCallId": "call_pc_1",
+          "state": "output-available",
+          "input": {
+            "query": "massage"
+          },
+          "output": {
+            "query": "massage",
+            "benefits": [
+              {
+                "benefitId": "ben-massage",
+                "name": "Massage therapy",
+                "category": "Paramedical practitioners",
+                "coverage": "80% up to $80.00 per visit",
+                "limits": [
+                  "$500.00 per person per benefit year"
+                ],
+                "pool": "Paramedical combined maximum",
+                "source": {
+                  "page": 5,
+                  "quote": "Massage therapy (registered massage therapist): 80% up to $80 per visit"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "metadata": {
+        "agent": "plan_claims",
+        "agentName": "benefura-plan-claims",
+        "agentVersion": "fake",
+        "traceId": "4bf92f3577b34da6a3ce929d0e0e4736",
+        "route": "plan_claims"
+      }
+    }
+  ]
+}
