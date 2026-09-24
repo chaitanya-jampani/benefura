@@ -1,0 +1,16 @@
+data: {"type":"start","messageId":"msg_1","messageMetadata":{"agent":"plan_claims","agentName":"benefura-plan-claims","agentVersion":"fake","traceId":"4bf92f3577b34da6a3ce929d0e0e4736","route":"plan_claims"}}
+
+data: {"type":"start-step"}
+
+data: {"type":"tool-input-start","toolCallId":"call_pc_1","toolName":"find_benefits"}
+
+data: {"type":"tool-input-delta","toolCallId":"call_pc_1","inputTextDelta":"{\"query\":\"massage\"}"}
+
+data: {"type":"tool-input-available","toolCallId":"call_pc_1","toolName":"find_benefits","input":{"query":"massage"}}
+
+data: {"type":"finish-step"}
+
+data: {"type":"finish","finishReason":"tool-calls"}
+
+data: [DONE]
+

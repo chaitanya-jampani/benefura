@@ -1,0 +1,14 @@
+{
+  "messages": [
+    {
+      "id": "user-1",
+      "role": "user",
+      "parts": [
+        {
+          "type": "text",
+          "text": "Is massage covered and is it a medical expense for tax?"
+        }
+      ]
+    }
+  ]
+}

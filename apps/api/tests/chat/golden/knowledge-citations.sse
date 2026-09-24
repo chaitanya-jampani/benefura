@@ -1,0 +1,34 @@
+data: {"type":"start","messageId":"msg_1","messageMetadata":{"agent":"knowledge","agentName":"benefura-knowledge","agentVersion":"fake","traceId":"4bf92f3577b34da6a3ce929d0e0e4736","route":"knowledge"}}
+
+data: {"type":"start-step"}
+
+data: {"type":"tool-input-start","toolCallId":"call_kn_1","toolName":"search_public_knowledge","providerExecuted":true}
+
+data: {"type":"tool-input-delta","toolCallId":"call_kn_1","inputTextDelta":"{\"query\":\"Is massage therapy a medical expense for tax?\",\"region\":\"CA\",\"top_k\":5}"}
+
+data: {"type":"tool-input-available","toolCallId":"call_kn_1","toolName":"search_public_knowledge","input":{"query":"Is massage therapy a medical expense for tax?","region":"CA","top_k":5},"providerExecuted":true}
+
+data: {"type":"data-citations","data":{"citations":[{"sourceId":"ca-cra-authorized-practitioners","title":"Authorized medical practitioners for the purposes of the medical expense tax credit","url":"https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/about-your-tax-return/tax-return/completing-a-tax-return/deductions-credits-expenses/lines-33099-33199-eligible-medical-expenses-you-claim-on-your-tax-return/authorized-medical-practitioners-purposes-medical-expense-tax-credit.html","publisher":"Canada Revenue Agency","license":"Crown copyright; non-commercial reproduction permitted","attribution":"Adapted from Canada Revenue Agency. Not an official version.","section":"Sample excerpt for local testing","region":"CA"},{"sourceId":"ca-cra-medical-expenses","title":"Lines 33099 and 33199 – Eligible medical expenses you can claim on your tax return","url":"https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/about-your-tax-return/tax-return/completing-a-tax-return/deductions-credits-expenses/lines-33099-33199-eligible-medical-expenses-you-claim-on-your-tax-return.html","publisher":"Canada Revenue Agency","license":"Crown copyright; non-commercial reproduction permitted","attribution":"Adapted from Canada Revenue Agency. Not an official version.","section":"Sample excerpt for local testing","region":"CA"}]},"id":"citations-call_kn_1"}
+
+data: {"type":"tool-output-available","toolCallId":"call_kn_1","output":{"query":"Is massage therapy a medical expense for tax?","region":"CA","results":[{"sourceId":"ca-cra-authorized-practitioners","title":"Authorized medical practitioners for the purposes of the medical expense tax credit","url":"https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/about-your-tax-return/tax-return/completing-a-tax-return/deductions-credits-expenses/lines-33099-33199-eligible-medical-expenses-you-claim-on-your-tax-return/authorized-medical-practitioners-purposes-medical-expense-tax-credit.html","publisher":"Canada Revenue Agency","license":"Crown copyright; non-commercial reproduction permitted","attribution":"Adapted from Canada Revenue Agency. Not an official version.","section":"Sample excerpt for local testing","region":"CA","snippet":"Whether fees for a practitioner, such as a massage therapist, count as medical expenses depends on the province or territory where the service is provided. Check the table of authorized medical practitioners for that province or territory before you claim."},{"sourceId":"ca-cra-medical-expenses","title":"Lines 33099 and 33199 – Eligible medical expenses you can claim on your tax return","url":"https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/about-your-tax-return/tax-return/completing-a-tax-return/deductions-credits-expenses/lines-33099-33199-eligible-medical-expenses-you-claim-on-your-tax-return.html","publisher":"Canada Revenue Agency","license":"Crown copyright; non-commercial reproduction permitted","attribution":"Adapted from Canada Revenue Agency. Not an official version.","section":"Sample excerpt for local testing","region":"CA","snippet":"You can claim eligible medical expenses paid in any 12-month period ending in the tax year that you did not claim in the previous year. You cannot claim the part of an expense that was reimbursed, for example by a private health services plan; only the unreimbursed portion may qualify."}]},"providerExecuted":true}
+
+data: {"type":"finish-step"}
+
+data: {"type":"start-step"}
+
+data: {"type":"text-start","id":"text_2"}
+
+data: {"type":"text-delta","id":"text_2","delta":"Whether fees for a practitioner, such as a massage therapist, count as medical expenses depends on"}
+
+data: {"type":"text-delta","id":"text_2","delta":" the province or territory where the service is provided. (Canada Revenue Agency, \"Authorized medical practitioners for"}
+
+data: {"type":"text-delta","id":"text_2","delta":" the purposes of the medical expense tax credit\")\n\nThis is general information, not tax or insurance advice."}
+
+data: {"type":"text-end","id":"text_2"}
+
+data: {"type":"finish-step"}
+
+data: {"type":"finish","finishReason":"stop"}
+
+data: [DONE]
+

@@ -1,0 +1,24 @@
+data: {"type":"start","messageMetadata":{"agent":"plan_claims","agentName":"benefura-plan-claims","agentVersion":"fake","traceId":"4bf92f3577b34da6a3ce929d0e0e4736"}}
+
+data: {"type":"tool-output-denied","toolCallId":"call_pc_2"}
+
+data: {"type":"start-step"}
+
+data: {"type":"text-start","id":"text_1"}
+
+data: {"type":"text-delta","id":"text_1","delta":"Okay, I won't create"}
+
+data: {"type":"text-delta","id":"text_1","delta":" that claim. Tell me"}
+
+data: {"type":"text-delta","id":"text_1","delta":" what you'd like to"}
+
+data: {"type":"text-delta","id":"text_1","delta":" change."}
+
+data: {"type":"text-end","id":"text_1"}
+
+data: {"type":"finish-step"}
+
+data: {"type":"finish","finishReason":"stop"}
+
+data: [DONE]
+

@@ -4,6 +4,23 @@
  */
 
 export interface paths {
+    "/api/chat": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Chat */
+        post: operations["chat_api_chat_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/plan/analyze-chunk": {
         parameters: {
             query?: never;
@@ -243,11 +260,8 @@ export interface components {
             currency: "CAD" | "AUD";
             /** Memberaliases */
             memberAliases?: string[];
-            /**
-             * Planname
-             * @default null
-             */
-            planName: string | null;
+            /** Planname */
+            planName?: string | null;
             /**
              * Region
              * @enum {string}
@@ -263,11 +277,8 @@ export interface components {
         };
         /** ChatRequest */
         ChatRequest: {
-            /**
-             * Activeagent
-             * @default null
-             */
-            activeAgent: ("plan_claims" | "knowledge") | null;
+            /** Activeagent */
+            activeAgent?: ("plan_claims" | "knowledge") | null;
             context: components["schemas"]["ChatContext"];
             /**
              * Messages
@@ -738,6 +749,11 @@ export interface components {
              */
             scope: "per_person" | "per_family" | "per_policy";
         };
+        /** HTTPValidationError */
+        HTTPValidationError: {
+            /** Detail */
+            detail?: components["schemas"]["ValidationError"][];
+        };
         /** HealthResponse */
         HealthResponse: {
             /** Agentversions */
@@ -1111,6 +1127,19 @@ export interface components {
              */
             outputTokens: number;
         };
+        /** ValidationError */
+        ValidationError: {
+            /** Context */
+            ctx?: Record<string, never>;
+            /** Input */
+            input?: unknown;
+            /** Location */
+            loc: (string | number)[];
+            /** Message */
+            msg: string;
+            /** Error Type */
+            type: string;
+        };
         /** WaitingPeriod */
         WaitingPeriod: {
             /** Months */
@@ -1127,6 +1156,75 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    chat_api_chat_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ChatRequest"];
+            };
+        };
+        responses: {
+            /** @description AI SDK UI message stream (v1). */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "text/event-stream": unknown;
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
     analyze_chunk_api_plan_analyze_chunk_post: {
         parameters: {
             query?: never;

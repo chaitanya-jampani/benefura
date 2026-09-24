@@ -1,0 +1,14 @@
+{
+  "messages": [
+    {
+      "id": "user-1",
+      "role": "user",
+      "parts": [
+        {
+          "type": "text",
+          "text": "Write me a poem about the weather"
+        }
+      ]
+    }
+  ]
+}

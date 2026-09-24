@@ -1,0 +1,16 @@
+data: {"type":"start","messageId":"msg_1","messageMetadata":{"agent":"plan_claims","agentName":"benefura-plan-claims","agentVersion":"fake","traceId":"4bf92f3577b34da6a3ce929d0e0e4736","route":"plan_claims"}}
+
+data: {"type":"start-step"}
+
+data: {"type":"text-start","id":"text_2"}
+
+data: {"type":"text-delta","id":"text_2","delta":"I can't help with that request. I can answer questions about your benefits, your claims and public health coverage information."}
+
+data: {"type":"text-end","id":"text_2"}
+
+data: {"type":"finish-step"}
+
+data: {"type":"finish","finishReason":"content-filter","messageMetadata":{"blocked":"content_filter"}}
+
+data: [DONE]
+

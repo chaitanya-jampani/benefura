@@ -1,0 +1,14 @@
+{
+  "messages": [
+    {
+      "id": "user-1",
+      "role": "user",
+      "parts": [
+        {
+          "type": "text",
+          "text": "My SIN is 046 454 286, can you check my claim?"
+        }
+      ]
+    }
+  ]
+}
