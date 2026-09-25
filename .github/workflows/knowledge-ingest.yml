@@ -1,0 +1,94 @@
+name: knowledge-ingest
+
+on:
+  schedule:
+    # Weekly runs also keep the Free search service active.
+    - cron: "17 6 * * 1"
+  workflow_dispatch:
+    inputs:
+      force:
+        description: Re-process every source even if its ETag/hash is unchanged.
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: knowledge-ingest
+  cancel-in-progress: false
+
+env:
+  PYTHON_VERSION: "3.12"
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    if: vars.AZURE_CLIENT_ID != '' && vars.AZURE_ENV_NAME != ''
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Check for knowledge/pyproject.toml
+        id: present
+        run: |
+          if [ -f knowledge/pyproject.toml ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::knowledge/pyproject.toml not found; nothing to ingest yet."
+          fi
+
+      - uses: ./.github/actions/azure-env
+        if: steps.present.outputs.present == 'true'
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+          env-name: ${{ vars.AZURE_ENV_NAME }}
+          location: ${{ vars.AZURE_LOCATION || 'eastus2' }}
+          refresh: "true"
+
+      - uses: astral-sh/setup-uv@v10.1.0
+        if: steps.present.outputs.present == 'true'
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          enable-cache: true
+          cache-dependency-glob: knowledge/uv.lock
+
+      - name: Install
+        if: steps.present.outputs.present == 'true'
+        run: |
+          if [ -f knowledge/uv.lock ]; then uv sync --project knowledge --locked; else uv sync --project knowledge; fi
+
+      - name: Ingest
+        if: steps.present.outputs.present == 'true'
+        env:
+          FORCE: ${{ inputs.force || false }}
+        run: |
+          set -o pipefail
+          args=(--report-json "$RUNNER_TEMP/ingest-report.json")
+          if [ "$FORCE" = "true" ]; then args+=(--force); fi
+          uv run --project knowledge python -m knowledge.ingest "${args[@]}" 2>&1 | tee "$RUNNER_TEMP/ingest.log"
+
+      - name: Log tail on failure
+        if: failure() && steps.present.outputs.present == 'true'
+        run: |
+          {
+            echo "### Knowledge ingestion failed"
+            echo '```'
+            tail -n 50 "$RUNNER_TEMP/ingest.log" 2>/dev/null || echo "(no log)"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload report
+        if: always() && steps.present.outputs.present == 'true'
+        uses: actions/upload-artifact@v7
+        with:
+          name: knowledge-ingest-report
+          path: |
+            ${{ runner.temp }}/ingest-report.json
+            ${{ runner.temp }}/ingest.log
+          retention-days: 30
+          if-no-files-found: ignore

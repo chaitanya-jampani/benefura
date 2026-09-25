@@ -1,0 +1,60 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Azure/azure-dev/main/schemas/v1.0/azure.yaml.json
+name: benefura
+metadata:
+  template: benefura@0.1.0
+
+infra:
+  provider: bicep
+  path: infra
+  module: main
+
+services:
+  # deploy.yml pushes the image to public GHCR; azd rejects `project` together with `image`.
+  # M0-verify: with no registry configured, `azd deploy api` sets ${API_IMAGE} as-is (no pull, retag or push).
+  api:
+    host: containerapp
+    image: ${API_IMAGE}
+
+  # prepackage rebuilds with NEXT_PUBLIC_API_BASE_URL=$API_URL so the bundle and the CSP in staticwebapp.config.json
+  # carry the API origin. M0-verify: whether azd passes its environment to the build step.
+  web:
+    project: apps/web
+    language: js
+    host: staticwebapp
+    dist: out
+    hooks:
+      prepackage:
+        posix:
+          shell: sh
+          run: NEXT_PUBLIC_API_BASE_URL="$API_URL" pnpm build
+          continueOnError: false
+        windows:
+          shell: pwsh
+          run: $env:NEXT_PUBLIC_API_BASE_URL = $env:API_URL; pnpm build
+          continueOnError: false
+
+hooks:
+  preprovision:
+    posix:
+      shell: sh
+      run: |
+        if [ -z "${API_IMAGE:-}" ]; then
+          echo "API_IMAGE is not set. Run: azd env set API_IMAGE ghcr.io/<owner>/benefura-api:<tag> (see infra/README.md)" >&2
+          exit 1
+        fi
+      continueOnError: false
+    windows:
+      shell: pwsh
+      run: |
+        if (-not $env:API_IMAGE) { Write-Error "API_IMAGE is not set. Run: azd env set API_IMAGE ghcr.io/<owner>/benefura-api:<tag>"; exit 1 }
+      continueOnError: false
+  # Needs the deployer's Cognitive Services User role on the account (roles.bicep).
+  postprovision:
+    posix:
+      shell: sh
+      run: cd apps/api && uv run python -m scripts.setup_cu
+      continueOnError: false
+    windows:
+      shell: pwsh
+      run: Set-Location apps/api; uv run python -m scripts.setup_cu
+      continueOnError: false

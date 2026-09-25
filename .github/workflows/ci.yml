@@ -97,7 +97,7 @@ jobs:
         working-directory: apps/web
         run: pnpm test
 
-      - name: Build (static export)
+      - name: Build (static export + staticwebapp.config.json)
         working-directory: apps/web
         env:
           NEXT_PUBLIC_API_BASE_URL: http://localhost:8000
@@ -165,3 +165,47 @@ jobs:
       - name: Pytest
         if: steps.present.outputs.present == 'true'
         run: uv run --project "${{ matrix.package }}" python -m pytest "${{ matrix.package }}"
+
+  bicep:
+    name: infra (bicep build + lint, private networking variant, workbook drift)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install Bicep
+        run: az bicep install && az bicep version
+
+      - name: Workbook JSON is current
+        run: python3 infra/scripts/gen_workbook.py --check
+
+      - name: Build and lint (fail on warnings)
+        run: |
+          set -o pipefail
+          status=0
+          for f in infra/main.bicep infra/modules/*.bicep; do
+            echo "::group::$f"
+            az bicep build --file "$f" --stdout > /dev/null 2> build.log || status=1
+            az bicep lint --file "$f" 2> lint.log || status=1
+            cat build.log lint.log
+            if grep -Eq "(Warning|Error) " build.log lint.log; then status=1; fi
+            echo "::endgroup::"
+          done
+          exit $status
+
+      - name: Parameter files (demo + enablePrivateNetworking=true)
+        run: |
+          status=0
+          for p in infra/params/*.bicepparam; do
+            echo "::group::$p"
+            az bicep build-params --file "$p" --stdout > /dev/null 2> params.log || status=1
+            cat params.log
+            if grep -Eq "(Warning|Error) " params.log; then status=1; fi
+            echo "::endgroup::"
+          done
+          exit $status
+
+      - name: SWA config generator
+        run: |
+          mkdir -p "$RUNNER_TEMP/out"
+          SWA_OUT_DIR="$RUNNER_TEMP/out" NEXT_PUBLIC_API_BASE_URL="https://api.example.test" node apps/web/scripts/write-swa-config.mjs
+          jq -e '.globalHeaders["Content-Security-Policy"] | contains("connect-src '"'"'self'"'"' https://api.example.test")' "$RUNNER_TEMP/out/staticwebapp.config.json"

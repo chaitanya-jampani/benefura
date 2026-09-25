@@ -1,0 +1,246 @@
+name: deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      what_if_private_networking:
+        description: Also run a subscription what-if for enablePrivateNetworking=true (no resources are created).
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  id-token: write
+  packages: write
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  PYTHON_VERSION: "3.12"
+  NODE_VERSION: "24"
+
+jobs:
+  image:
+    name: Build and push API image (GHCR)
+    # Skipped until `azd pipeline config` has created the repository variables.
+    if: vars.AZURE_CLIENT_ID != '' && vars.AZURE_ENV_NAME != ''
+    runs-on: ubuntu-latest
+    outputs:
+      image: ${{ steps.ref.outputs.image }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Image reference
+        id: ref
+        run: |
+          owner="$(echo "${GITHUB_REPOSITORY_OWNER}" | tr '[:upper:]' '[:lower:]')"
+          echo "name=ghcr.io/${owner}/benefura-api" >> "$GITHUB_OUTPUT"
+          echo "image=ghcr.io/${owner}/benefura-api:sha-${GITHUB_SHA}" >> "$GITHUB_OUTPUT"
+
+      - uses: docker/setup-buildx-action@v4
+
+      - uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: docker/metadata-action@v6
+        id: meta
+        with:
+          images: ${{ steps.ref.outputs.name }}
+          tags: |
+            type=sha,format=long,prefix=sha-
+            type=raw,value=latest,enable={{is_default_branch}}
+          labels: |
+            org.opencontainers.image.title=benefura-api
+            org.opencontainers.image.description=Benefura API (FastAPI on Azure Container Apps)
+
+      - uses: docker/build-push-action@v7
+        with:
+          context: apps/api
+          file: apps/api/Dockerfile
+          platforms: linux/amd64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Summary
+        run: |
+          {
+            echo "### API image"
+            echo "\`${{ steps.ref.outputs.image }}\`"
+            echo ""
+            echo "The GHCR package must be **public** (Package settings -> Change visibility) so Container Apps can pull it without credentials."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  deploy:
+    name: Provision, publish agents, deploy, smoke test
+    needs: image
+    if: vars.AZURE_CLIENT_ID != '' && vars.AZURE_ENV_NAME != ''
+    runs-on: ubuntu-latest
+    env:
+      API_IMAGE: ${{ needs.image.outputs.image }}
+      AZURE_ENV_NAME: ${{ vars.AZURE_ENV_NAME }}
+      AZURE_LOCATION: ${{ vars.AZURE_LOCATION || 'eastus2' }}
+      AZURE_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+      AZURE_TENANT_ID: ${{ vars.AZURE_TENANT_ID }}
+    outputs:
+      api_url: ${{ steps.urls.outputs.api_url }}
+      web_url: ${{ steps.urls.outputs.web_url }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: ./.github/actions/azure-env
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+          env-name: ${{ vars.AZURE_ENV_NAME }}
+          location: ${{ vars.AZURE_LOCATION || 'eastus2' }}
+
+      # uv for the postprovision hook and agent publishing; pnpm and node for the web build in `azd deploy web`.
+      - uses: astral-sh/setup-uv@v10.1.0
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          enable-cache: true
+          cache-dependency-glob: apps/api/uv.lock
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: API dependencies
+        working-directory: apps/api
+        run: uv sync --locked
+
+      - name: Configure azd environment
+        env:
+          ALERT_EMAIL: ${{ vars.ALERT_EMAIL }}
+          AZURE_DEVELOPER_PRINCIPAL_ID: ${{ vars.AZURE_DEVELOPER_PRINCIPAL_ID }}
+          AZURE_CI_PRINCIPAL_ID: ${{ vars.AZURE_CI_PRINCIPAL_ID }}
+          AZURE_EXISTING_SEARCH_SERVICE_NAME: ${{ vars.AZURE_EXISTING_SEARCH_SERVICE_NAME }}
+          AZURE_EXISTING_SEARCH_RESOURCE_GROUP: ${{ vars.AZURE_EXISTING_SEARCH_RESOURCE_GROUP }}
+          AZURE_SEARCH_LOCATION: ${{ vars.AZURE_SEARCH_LOCATION }}
+          AZURE_BUDGET_START_DATE: ${{ vars.AZURE_BUDGET_START_DATE }}
+          AZURE_CHAT_MODEL_NAME: ${{ vars.AZURE_CHAT_MODEL_NAME }}
+          AZURE_CHAT_MODEL_VERSION: ${{ vars.AZURE_CHAT_MODEL_VERSION }}
+          AZURE_CHAT_MODEL_CAPACITY: ${{ vars.AZURE_CHAT_MODEL_CAPACITY }}
+          EXTRA_CORS_ORIGINS: ${{ vars.EXTRA_CORS_ORIGINS }}
+        run: |
+          set -euo pipefail
+          azd env set API_IMAGE "$API_IMAGE"
+          for key in ALERT_EMAIL AZURE_DEVELOPER_PRINCIPAL_ID AZURE_CI_PRINCIPAL_ID AZURE_EXISTING_SEARCH_SERVICE_NAME \
+                     AZURE_EXISTING_SEARCH_RESOURCE_GROUP AZURE_SEARCH_LOCATION AZURE_BUDGET_START_DATE \
+                     AZURE_CHAT_MODEL_NAME AZURE_CHAT_MODEL_VERSION AZURE_CHAT_MODEL_CAPACITY EXTRA_CORS_ORIGINS; do
+            value="${!key:-}"
+            if [ -n "$value" ]; then azd env set "$key" "$value"; fi
+          done
+
+          # Carry the running agent pins through provisioning (as name=version pairs) so the new revision keeps them.
+          rg="rg-${AZURE_ENV_NAME}"
+          app_id="$(az resource list -g "$rg" --resource-type Microsoft.App/containerApps \
+            --query "[?tags.\"azd-service-name\"=='api'].id | [0]" -o tsv 2>/dev/null || true)"
+          pairs=""
+          if [ -n "$app_id" ]; then
+            current="$(az resource show --ids "$app_id" --api-version 2026-01-01 \
+              --query "properties.template.containers[0].env[?name=='AGENT_VERSIONS'].value | [0]" -o tsv 2>/dev/null || true)"
+            if [ -n "$current" ] && echo "$current" | jq -e 'type == "object"' > /dev/null 2>&1; then
+              pairs="$(echo "$current" | jq -r 'to_entries | map("\(.key)=\(.value)") | join(",")')"
+            fi
+          fi
+          if [ -n "$pairs" ]; then azd env set AGENT_VERSIONS "$pairs"; fi
+          echo "Preserved AGENT_VERSIONS pairs: '${pairs}'"
+
+      - name: azd provision
+        env:
+          EVALS_SHARED_SECRET: ${{ secrets.EVALS_SHARED_SECRET }}
+        run: azd provision --no-prompt
+
+      - name: Export outputs
+        run: bash .github/scripts/export-azd-outputs.sh
+
+      - name: Publish prompt agents
+        id: publish
+        working-directory: apps/api
+        env:
+          AI_MODE: live
+        run: |
+          set -euo pipefail
+          # publish prints the {agentName: version} JSON object as its last stdout line.
+          uv run python -m app.agents.publish | tee "$RUNNER_TEMP/publish.log"
+          versions="$(tail -n 1 "$RUNNER_TEMP/publish.log")"
+          echo "$versions" | jq -e 'type == "object"' > /dev/null || { echo "::error::publish did not print a JSON object"; exit 1; }
+          echo "agent_versions=$(echo "$versions" | jq -c .)" >> "$GITHUB_OUTPUT"
+
+      - name: Pin image and AGENT_VERSIONS on the container app
+        env:
+          AGENT_VERSIONS_JSON: ${{ steps.publish.outputs.agent_versions }}
+        run: |
+          set -euo pipefail
+          az extension add --name containerapp --upgrade --yes --only-show-errors
+          az containerapp update \
+            --name "$AZURE_CONTAINER_APP_NAME" \
+            --resource-group "$AZURE_RESOURCE_GROUP" \
+            --image "$API_IMAGE" \
+            --set-env-vars "AGENT_VERSIONS=${AGENT_VERSIONS_JSON}" \
+            --only-show-errors -o none
+          echo "Pinned ${API_IMAGE} with AGENT_VERSIONS=${AGENT_VERSIONS_JSON}"
+
+      - name: Install web dependencies
+        run: pnpm install --frozen-lockfile
+
+      # azure.yaml's prepackage hook builds the web app with NEXT_PUBLIC_API_BASE_URL=$API_URL.
+      - name: azd deploy web
+        run: azd deploy web --no-prompt
+
+      - name: URLs
+        id: urls
+        run: |
+          echo "api_url=${API_URL}" >> "$GITHUB_OUTPUT"
+          echo "web_url=${WEB_URL}" >> "$GITHUB_OUTPUT"
+          {
+            echo "### Deployed"
+            echo "- Web: ${WEB_URL}"
+            echo "- API: ${API_URL}"
+            echo "- Image: \`${API_IMAGE}\`"
+            echo "- Agent versions: \`${{ steps.publish.outputs.agent_versions }}\`"
+            echo ""
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Smoke tests
+        run: bash .github/scripts/smoke-test.sh
+
+  what-if-private-networking:
+    name: what-if (enablePrivateNetworking=true)
+    if: github.event_name == 'workflow_dispatch' && inputs.what_if_private_networking
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: azure/login@v3
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+      - name: what-if
+        run: |
+          set -euo pipefail
+          az deployment sub what-if \
+            --name "benefura-private-whatif-${GITHUB_RUN_ID}" \
+            --location "${{ vars.AZURE_LOCATION || 'eastus2' }}" \
+            --parameters infra/params/private-networking.bicepparam \
+            --result-format ResourceIdOnly \
+            | tee "$RUNNER_TEMP/what-if.txt"
+          { echo "### what-if (private networking)"; echo '```'; cat "$RUNNER_TEMP/what-if.txt"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"

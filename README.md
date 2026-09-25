@@ -8,3 +8,5 @@ To run what exists: `pnpm install`, then start the API with
 `cd apps/api && uv sync && AI_MODE=fake uv run uvicorn app.main:app --reload --port 8000` and the web
 app with `cd apps/web && pnpm dev`. Open http://localhost:3000 and choose **Try the Canadian demo**,
 or **Read my booklet** with the sample. Everything is fictional, and `AI_MODE=fake` needs no Azure account.
+
+`infra/` deploys it to Azure with azd and Bicep; see [infra/README.md](infra/README.md).
