@@ -1,0 +1,155 @@
+name: evals
+
+# The report PR needs Settings -> Actions -> "Allow GitHub Actions to create and approve pull requests".
+
+on:
+  schedule:
+    - cron: "41 7 * * 3"
+  workflow_dispatch:
+    inputs:
+      skip_red_team:
+        description: Skip the red-team scan (faster, cheaper).
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pull-requests: write
+  id-token: write
+
+concurrency:
+  group: evals
+  cancel-in-progress: false
+
+env:
+  PYTHON_VERSION: "3.12"
+
+jobs:
+  evals:
+    runs-on: ubuntu-latest
+    if: vars.AZURE_CLIENT_ID != '' && vars.AZURE_ENV_NAME != ''
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Check for evals/pyproject.toml
+        id: present
+        run: |
+          if [ -f evals/pyproject.toml ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::evals/pyproject.toml not found; nothing to evaluate yet."
+          fi
+
+      - uses: ./.github/actions/azure-env
+        if: steps.present.outputs.present == 'true'
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+          env-name: ${{ vars.AZURE_ENV_NAME }}
+          location: ${{ vars.AZURE_LOCATION || 'eastus2' }}
+          refresh: "true"
+
+      - uses: astral-sh/setup-uv@v10.1.0
+        if: steps.present.outputs.present == 'true'
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          enable-cache: true
+          cache-dependency-glob: evals/uv.lock
+
+      - name: Install
+        if: steps.present.outputs.present == 'true'
+        run: |
+          if [ -f evals/uv.lock ]; then uv sync --project evals --locked; else uv sync --project evals; fi
+
+      - name: Harness (evals budget namespace)
+        id: harness
+        if: steps.present.outputs.present == 'true'
+        env:
+          EVALS_SHARED_SECRET: ${{ secrets.EVALS_SHARED_SECRET }}
+          EVALS_API_URL: ${{ env.API_URL }}
+          EVALS_REPORTS_DIR: evals/reports
+        run: uv run --project evals python -m evals.harness
+
+      - name: Foundry cloud evaluations
+        id: cloud
+        if: steps.present.outputs.present == 'true'
+        env:
+          EVALS_REPORTS_DIR: evals/reports
+        run: uv run --project evals python -m evals.cloud_evals
+
+      - name: Red team
+        id: red_team
+        if: steps.present.outputs.present == 'true' && !inputs.skip_red_team
+        env:
+          EVALS_SHARED_SECRET: ${{ secrets.EVALS_SHARED_SECRET }}
+          EVALS_API_URL: ${{ env.API_URL }}
+          EVALS_REPORTS_DIR: evals/reports
+          RED_TEAM_SCORECARD_DIR: docs/evals
+        run: uv run --project evals python -m evals.red_team
+
+      # Enforced in the last step, so a regression still opens the report PR.
+      - name: Threshold gate
+        id: gate
+        if: always() && steps.present.outputs.present == 'true'
+        continue-on-error: true
+        env:
+          EVALS_REPORTS_DIR: evals/reports
+          EVALS_THRESHOLDS: evals/thresholds.yaml
+        run: |
+          set -o pipefail
+          uv run --project evals python -m evals.run 2>&1 | tee "$RUNNER_TEMP/gate.txt"
+
+      - name: Summary
+        if: always() && steps.present.outputs.present == 'true'
+        run: |
+          {
+            echo "### Evaluations"
+            echo "- Harness: ${{ steps.harness.outcome }}"
+            echo "- Cloud evals: ${{ steps.cloud.outcome }}"
+            echo "- Red team: ${{ steps.red_team.outcome }}"
+            echo "- Gate: ${{ steps.gate.outcome }}"
+            echo ""
+            echo '```'
+            tail -n 60 "$RUNNER_TEMP/gate.txt" 2>/dev/null || echo "(no gate output)"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload reports
+        if: always() && steps.present.outputs.present == 'true'
+        uses: actions/upload-artifact@v7
+        with:
+          name: eval-reports-${{ github.run_id }}
+          path: |
+            evals/reports/
+            docs/evals/
+          retention-days: 90
+          if-no-files-found: warn
+
+      - name: Open pull request with reports
+        if: always() && steps.present.outputs.present == 'true' && steps.harness.outcome == 'success'
+        uses: peter-evans/create-pull-request@v8
+        with:
+          branch: evals/report-${{ github.run_id }}
+          delete-branch: true
+          add-paths: |
+            evals/reports/**
+            docs/evals/**
+          commit-message: "Evals report ${{ github.run_id }} (gate: ${{ steps.gate.outcome }})"
+          title: "Evals report (gate: ${{ steps.gate.outcome }})"
+          body: |
+            Automated evaluation run [${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}).
+
+            - Harness: ${{ steps.harness.outcome }}
+            - Cloud evals: ${{ steps.cloud.outcome }}
+            - Red team: ${{ steps.red_team.outcome }}
+            - Threshold gate: ${{ steps.gate.outcome }}
+          labels: evals
+
+      - name: Enforce gate
+        if: steps.present.outputs.present == 'true' && steps.gate.outcome != 'success'
+        run: |
+          echo "::error::Evaluation scores are below evals/thresholds.yaml (or the gate did not run)."
+          exit 1
