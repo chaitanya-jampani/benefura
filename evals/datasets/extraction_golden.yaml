@@ -1,0 +1,18 @@
+# Paths are relative to the repo root. `pii` is the fake PII in each document and must never reach an eval payload.
+# `redacted_chunks` holds image-only 5-page chunk PDFs with 1-page overlap, as the browser uploads them; a document
+# whose chunks are missing is skipped.
+documents:
+  - doc: ca-northwind
+    region: CA
+    golden: samples/golden/ca-northwind.extraction.json
+    plan_fixture: samples/fixtures/ca-northwind.plan.json
+    pii: samples/fixtures/ca-northwind.pii.json
+    booklet: samples/ca-northwind-booklet.pdf
+    redacted_chunks: samples/redacted/ca-northwind
+  - doc: au-wattle
+    region: AU
+    golden: samples/golden/au-wattle.extraction.json
+    plan_fixture: samples/fixtures/au-wattle.plan.json
+    pii: samples/fixtures/au-wattle.pii.json
+    booklet: samples/au-wattle-policy.pdf
+    redacted_chunks: samples/redacted/au-wattle
